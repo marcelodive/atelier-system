@@ -1,1 +1,35 @@
-<p>Hello, World</p>
+<div layout="column" layout-fill layout-align="center">
+  <span layout layout-align="center center">Atêlie Luiza Sales</span>
+  <br>
+  <div flex="50" layout="row" layout-align="center">
+    <md-card layout="column" layout-align="center" flex="80" layout-padding style="max-width: 600px">
+      <form name="loginForm">
+        <md-input-container class="md-block">
+          <md-icon>
+            <i class="material-icons">email</i>
+          </md-icon>
+          <input ng-model="ctrl.user.email" 
+            type="email" placeholder="Email"  
+            name="email" ng-required="true">
+          <div ng-messages="loginForm.email.$error" class="alert-message" role="alert">
+            <div ng-message="email">Endereço de email inválido</div>
+          </div>
+        </md-input-container>
+        <md-input-container class="md-block">
+          <md-icon>
+            <i class="material-icons">vpn_key</i>
+          </md-icon>
+          <input ng-model="ctrl.user.password" name="password"
+            type="password" placeholder="Senha" 
+            ng-required="true">
+          <div ng-messages="loginForm.email.$error" class="alert-message" role="alert">
+            <div ng-message="required">É necessário digitar uma senha</div>
+          </div>
+        </md-input-container>
+        <md-button class="md-raised md-primary" type="submit" ng-click="ctrl.login()">
+          Entrar
+        </md-button>  
+      </form>    
+    </md-card>
+  </div>
+</div>
