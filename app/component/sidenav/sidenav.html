@@ -1,5 +1,14 @@
-<div layout="row">
-    <md-sidenav md-component-id="left-sidenav" md-is-locked-open="ctrl.isDesktop">
-      Left Nav!
-    </md-sidenav>
-  </div>
+<md-sidenav class="sidenav"
+  md-component-id="left-sidenav"
+  md-is-locked-open="$mdMedia('gt-sm')">
+  <md-toolbar class="md-theme-indigo">
+    <h1 class="md-toolbar-tools">Atêlie Luiza Sales</h1>
+  </md-toolbar>
+  <md-content layout="column">
+    <sidenav-link icon="dvr" title="Pedidos"></sidenav-link>
+    <sidenav-link icon="cake" title="Produtos"></sidenav-link>
+    <sidenav-link icon="perm_identity" title="Clientes"></sidenav-link>
+    <sidenav-link icon="notifications" title="Notificações"></sidenav-link>
+    <sidenav-link icon="build" title="Configurações"></sidenav-link>
+  </md-content>
+</md-sidenav>

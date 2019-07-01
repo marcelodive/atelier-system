@@ -2,3 +2,12 @@
     color: rgb(221,44,0);
     font-size: 0.8em
 }
+
+.sidenav {
+    height: 100vh;
+    max-width: 15em;
+}
+
+.main-content {
+    width: 100%;
+}

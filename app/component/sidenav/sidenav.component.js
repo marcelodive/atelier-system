@@ -5,16 +5,17 @@ angular.module('App')
   controllerAs: 'ctrl'
 });
 
-function SidenavController ($scope, $mdSidenav, $mdMedia) {
+function SidenavController ($mdSidenav) {
   const vm = this;
 
   vm.openLeftMenu = openLeftMenu;
+  vm.closeLeftMenu - closeLeftMenu;
 
   function openLeftMenu () {
     $mdSidenav('left-sidenav').toggle();
   };
 
-  $scope.$watch(() => $mdMedia('gt-sm'), () => {
-    vm.isDesktop = $mdMedia('gt-sm');
-  })
+  function closeLeftMenu () {
+    $mdSidenav('left-sidenav').close();
+  }
 }

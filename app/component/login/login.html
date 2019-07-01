@@ -6,10 +6,10 @@
       <form name="loginForm">
         <md-input-container class="md-block">
           <md-icon>
-            <i class="material-icons">email</i>
+            <md-icon>email</md-icon>
           </md-icon>
-          <input ng-model="ctrl.user.email" 
-            type="email" placeholder="Email"  
+          <input ng-model="ctrl.user.email"
+            type="email" placeholder="Email"
             name="email" ng-required="true">
           <div ng-messages="loginForm.email.$error" class="alert-message" role="alert">
             <div ng-message="email">Endereço de email inválido</div>
@@ -17,19 +17,30 @@
         </md-input-container>
         <md-input-container class="md-block">
           <md-icon>
-            <i class="material-icons">vpn_key</i>
+            <md-icon>vpn_key</md-icon>
           </md-icon>
           <input ng-model="ctrl.user.password" name="password"
-            type="password" placeholder="Senha" 
+            type="password" placeholder="Senha"
             ng-required="true">
           <div ng-messages="loginForm.email.$error" class="alert-message" role="alert">
             <div ng-message="required">É necessário digitar uma senha</div>
           </div>
         </md-input-container>
-        <md-button class="md-raised md-primary" type="submit" ng-click="ctrl.login()">
-          Entrar
-        </md-button>  
-      </form>    
+        <p class="alert-message" ng-show="ctrl.unauthorizedUser">Usuário e/ou senha inválidos</p>
+        <div layout="row" layout-align="start center">
+          <md-button
+            ng-disabled="ctrl.isLoggingIn"
+            class="md-raised md-primary"
+            type="submit"
+            ng-click="ctrl.login()">
+            Entrar
+          </md-button>
+          <md-progress-circular
+            ng-show="ctrl.isLoggingIn"
+            md-diameter="20">
+          </md-progress-circular>
+        </div>
+      </form>
     </md-card>
   </div>
 </div>

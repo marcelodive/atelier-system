@@ -1,6 +1,14 @@
-<!-- <login ng-if="!ctrl.isAuthenticated"></login> -->
-<div layout="row" ng-if="!ctrl.isAuthenticated">
+<login ng-if="!ctrl.isAuthenticated"></login>
+<div layout="row" ng-if="ctrl.isAuthenticated">
     <sidenav></sidenav>
-    <div>Estamos aqui curtindo um som</div>
-    <div ng-view></div>
+    <div layout="column" class="main-content">
+        <toolbar class=""></toolbar>
+        <md-content layout-padding>
+            <md-card>
+                <p>
+                    Os sonhos começam aqui.
+                </p>
+            </md-card>
+        </md-content>
+    </div>
 </div>
