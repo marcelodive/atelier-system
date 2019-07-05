@@ -11,6 +11,12 @@ angular.module('App')
   };
 })
 
+.config(function($mdThemingProvider) {
+  $mdThemingProvider.theme('default')
+    .primaryPalette('pink')
+    .accentPalette('brown');
+})
+
 .config(function ($compileProvider) {
   $compileProvider.debugInfoEnabled(false);
 });

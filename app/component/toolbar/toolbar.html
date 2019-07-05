@@ -1,11 +1,12 @@
 <md-toolbar md-scroll-shrink="true" class="md-hue-2">
   <div class="md-toolbar-tools">
-    <md-button class="md-icon-button" aria-label="Menu">
+    <md-button class="md-icon-button" ng-show="!ctrl.$mdMedia('gt-sm')"
+      aria-label="Menu" ng-click="ctrl.openSidenav()">
       <md-icon>menu</md-icon>
     </md-button>
 
     <md-truncate flex>
-      Pedidos
+      {{ctrl.toolbarTitle}}
     </md-truncate>
 
     <md-button class="md-icon-button" aria-label="Sair" ng-click="ctrl.logout()">

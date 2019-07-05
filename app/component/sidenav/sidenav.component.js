@@ -5,17 +5,6 @@ angular.module('App')
   controllerAs: 'ctrl'
 });
 
-function SidenavController ($mdSidenav) {
+function SidenavController () {
   const vm = this;
-
-  vm.openLeftMenu = openLeftMenu;
-  vm.closeLeftMenu - closeLeftMenu;
-
-  function openLeftMenu () {
-    $mdSidenav('left-sidenav').toggle();
-  };
-
-  function closeLeftMenu () {
-    $mdSidenav('left-sidenav').close();
-  }
 }

@@ -5,7 +5,8 @@ angular.module('App')
   controllerAs: 'ctrl',
   bindings: {
     icon: '@',
-    title: '@'
+    title: '@',
+    goesTo: '@'
   }
 });
 
