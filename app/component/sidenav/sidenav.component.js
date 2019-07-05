@@ -5,6 +5,13 @@ angular.module('App')
   controllerAs: 'ctrl'
 });
 
-function SidenavController () {
+function SidenavController ($mdMedia, $scope, sidenavFactory) {
   const vm = this;
+
+  vm.showTitle = true;
+  vm.isLockedOpen = $mdMedia('gt-sm');
+
+  $scope.$watch(() => sidenavFactory.isSidenavLockedOpen(), () => {
+    vm.showTitle = sidenavFactory.isSidenavLockedOpen();
+  });
 }

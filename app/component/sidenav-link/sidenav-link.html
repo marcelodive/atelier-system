@@ -1,4 +1,4 @@
 <md-button layout="row" layout-fill ng-href="{{ctrl.goesTo}}">
-  <i class="material-icons">{{ctrl.icon}}</i>
-  <p layout-padding>{{ctrl.title}}</p>
+  <i class="material-icons" layout-padding="ctrl.showTitle">{{ctrl.icon}}</i>
+  <p layout-padding ng-show="ctrl.showTitle">{{ctrl.title}}</p>
 </md-button>

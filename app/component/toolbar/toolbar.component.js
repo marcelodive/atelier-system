@@ -11,7 +11,7 @@ function ToolbarController ($cookies, $location, $scope, $mdMedia, toolbarFactor
   vm.$mdMedia = $mdMedia;
 
   vm.logout = logout;
-  vm.openSidenav = openSidenav;
+  vm.toggleLeftMenu = toggleLeftMenu;
 
 
   function logout () {
@@ -19,8 +19,8 @@ function ToolbarController ($cookies, $location, $scope, $mdMedia, toolbarFactor
     $location.path('/');
   }
 
-  function openSidenav () {
-    sidenavFactory.openLeftMenu();
+  function toggleLeftMenu () {
+    sidenavFactory.toggleLeftMenu();
   }
 
   $scope.$watch(() => toolbarFactory.getToolbarTitle(), () => {

@@ -3,9 +3,18 @@
     font-size: 0.8em
 }
 
+.hide-overflow {
+    overflow: hidden;
+}
+
 .sidenav {
     height: 100vh;
     max-width: 15em;
+}
+
+.sidenav-small {
+    height: 100vh;
+    max-width: 4em;
 }
 
 .main-content {

@@ -6,7 +6,8 @@ angular.module('App')
   bindings: {
     icon: '@',
     title: '@',
-    goesTo: '@'
+    goesTo: '@',
+    showTitle: '<'
   }
 });
 

@@ -1,11 +1,19 @@
 angular.module('App')
-.factory('sidenavFactory', ($mdSidenav) => {
+.factory('sidenavFactory', ($mdSidenav, $rootScope, $mdMedia) => {
+  const componentId = 'left-sidenav';
+  $rootScope.isSidenavLockedOpen = $mdMedia('gt-sm');
 
-  function openLeftMenu () {
-    $mdSidenav('left-sidenav').toggle();
-  };
+  function toggleLeftMenu () {
+    $mdSidenav(componentId).toggle();
+    $rootScope.isSidenavLockedOpen = !$rootScope.isSidenavLockedOpen;
+  }
+
+  function isSidenavLockedOpen () {
+    return $rootScope.isSidenavLockedOpen;
+  }
 
   return {
-    openLeftMenu: openLeftMenu
+    toggleLeftMenu: toggleLeftMenu,
+    isSidenavLockedOpen: isSidenavLockedOpen
   }
 });
