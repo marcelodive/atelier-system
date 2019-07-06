@@ -20,3 +20,20 @@
 .main-content {
     width: 100%;
 }
+
+/* Animations */
+
+/* fade ng-show & ng-if*/
+.fade, .fade.ng-enter {
+    animation: fadeIn 0.5s;
+}
+.fade.ng-hide, .fade.ng-leave {
+    animation: fadeOut 0.5s;
+}
+
+.fade-in-up-down.ng-enter, .fade-in-up-down.ng-enter {
+    animation: fadeInDown 0.5s;
+}
+.fade-in-up-down.ng-leave, .fade-in-up-down {
+    animation: fadeInUp 0.5s;
+}
