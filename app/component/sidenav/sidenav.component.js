@@ -10,10 +10,13 @@ function SidenavController ($mdMedia, $scope, sidenavFactory) {
 
   vm.showTitle = true;
   vm.isLockedOpen = $mdMedia('gt-sm');
+  vm.toggleLeftMenu = toggleLeftMenu;
 
-  vm.toggleLeftMenu = !$mdMedia('gt-sm')
-    ? sidenavFactory.toggleLeftMenu
-    : false;
+  function toggleLeftMenu (forceClose = false) {
+    if (!$mdMedia('gt-sm')) {
+      sidenavFactory.toggleLeftMenu(forceClose);
+    }
+  }
 
   $scope.$watch(() => sidenavFactory.isSidenavLockedOpen(), () => {
     vm.showTitle = sidenavFactory.isSidenavLockedOpen();

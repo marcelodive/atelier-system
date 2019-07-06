@@ -28,17 +28,17 @@
         </md-input-container>
         <p class="alert-message" ng-show="ctrl.unauthorizedUser">Usuário e/ou senha inválidos</p>
         <div layout="row" layout-align="start center">
-          <md-button
+          <md-button layout layout-align="center center"
             ng-disabled="ctrl.isLoggingIn"
             class="md-raised md-primary"
             type="submit"
             ng-click="ctrl.login()">
-            Entrar
+            <span ng-show="!ctrl.isLoggingIn">Entrar</span>
+            <md-progress-circular
+              ng-show="ctrl.isLoggingIn"
+              md-diameter="20">
+            </md-progress-circular>
           </md-button>
-          <md-progress-circular
-            ng-show="ctrl.isLoggingIn"
-            md-diameter="20">
-          </md-progress-circular>
         </div>
       </form>
     </md-card>

@@ -14,7 +14,7 @@ angular.module('App')
 .config(function($mdThemingProvider) {
   $mdThemingProvider.theme('default')
     .primaryPalette('pink')
-    .accentPalette('brown');
+    .accentPalette('amber');
 })
 
 .config(function ($compileProvider) {

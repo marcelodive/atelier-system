@@ -5,9 +5,10 @@ angular.module('App')
     controllerAs: 'ctrl'
 });
 
-function LoginController (authFactory, $cookies) {
+function LoginController (authFactory, logFactory, $cookies) {
   const vm = this;
   vm.isLoggingIn = false;
+  vm.user = {}
 
   vm.login = login;
 
@@ -15,14 +16,17 @@ function LoginController (authFactory, $cookies) {
     vm.unauthorizedUser = false;
     vm.isLoggingIn = true;
 
-    const credential = {email:vm.user.email, password:vm.user.password}
+    const email = vm.user.email || '';
+    const password = vm.user.password || '';
+
+    const credential = {email, password};
 
     authFactory.login(credential)
       .then(({data: token}) => {
         $cookies.put('token', JSON.stringify(token));
       }).catch((error) => {
         vm.unauthorizedUser = true;
-        console.log(error);
+        logFactory.log(error, 'error')
       }).finally(() => {
         vm.isLoggingIn = false;
       });
