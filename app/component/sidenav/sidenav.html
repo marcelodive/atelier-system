@@ -1,12 +1,12 @@
 <md-sidenav ng-class="ctrl.showTitle ? 'sidenav' : 'sidenav-small'"
-  md-component-id="left-sidenav"
-  md-is-locked-open="ctrl.isLockedOpen">
+  md-is-locked-open="ctrl.isLockedOpen"
+  md-component-id="left-sidenav">
   <md-toolbar class="md-accent md-hue-1 md-toolbar-tools">
     <md-truncate flex>
         Atêlie Luiza Sales
     </md-truncate>
   </md-toolbar>
-  <md-content layout="column" ng-class="ctrl.showTitle ? '' : 'hide-overflow'">
+  <md-content layout="column" class="hide-overflow" ng-click="ctrl.toggleLeftMenu()">
     <sidenav-link goes-to="#!/pedidos" icon="dvr" show-title="ctrl.showTitle" title="Pedidos"></sidenav-link>
     <sidenav-link goes-to="#!/produtos" icon="cake" show-title="ctrl.showTitle" title="Produtos"></sidenav-link>
     <sidenav-link goes-to="#!/clientes" icon="perm_identity" show-title="ctrl.showTitle" title="Clientes"></sidenav-link>
