@@ -11,12 +11,13 @@ angular.module('App')
 
 function AddClientController () {
   const vm = this;
-  vm.client = getEmptyClient();
+  vm.client = {children: [{}]};
 
   vm.cancelAddition = cancelAddition;
+  vm.addChild = addChild;
 
-  function getEmptyClient () {
-    return {children: [{}]};
+  function addChild () {
+    vm.client.children.push({});
   }
 
   function cancelAddition () {

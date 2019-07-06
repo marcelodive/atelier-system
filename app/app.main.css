@@ -22,13 +22,11 @@
 }
 
 /* Animations */
-
-/* fade ng-show & ng-if*/
 .fade, .fade.ng-enter {
     animation: fadeIn 0.5s;
 }
 .fade.ng-hide, .fade.ng-leave {
-    animation: fadeOut 0.5s;
+    animation: fadeOut 0.3s;
 }
 
 .fade-in-up-down.ng-enter, .fade-in-up-down.ng-enter {
@@ -36,4 +34,11 @@
 }
 .fade-in-up-down.ng-leave, .fade-in-up-down {
     animation: fadeInUp 0.5s;
+}
+
+.fade-in-view.ng-enter {
+    animation: fadeInRight 0.5s;
+}
+.fade-in-view.ng-leave {
+    animation: fadeOutUp 0.1s;
 }
