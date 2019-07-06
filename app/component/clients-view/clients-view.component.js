@@ -5,24 +5,22 @@ angular.module('App')
   controllerAs: 'ctrl'
 });
 
-function ClientsViewController (toolbarFactory, $mdDialog) {
+function ClientsViewController (toolbarFactory) {
   const vm = this;
 
-  vm.openAddUserDialog = openAddUserDialog;
   vm.clients = [{}];
 
-  function openAddUserDialog (event) {
-    $mdDialog.show({
-      locals:{clients: vm.clients},
-      templateUrl: './component/clients-view/add-client-dialog.html',
-      parent: angular.element(document.body),
-      targetEvent: event,
-      clickOutsideToClose:true,
-      controller: mdDialogController,
-      controllerAs: 'ctrl',
-      fullscreen: true,
-      clickOutsideToClose: false
-    })
+  vm.triggerAddingUser = triggerAddingUser;
+  vm.cancelAddingUser = cancelAddingUser;
+
+  function triggerAddingUser () {
+    vm.isAddingUser = true
+    toolbarFactory.setToolbarTitle('Adicionar cliente');
+  }
+
+  function cancelAddingUser () {
+    vm.isAddingUser = false;
+    toolbarFactory.setToolbarTitle('Clientes');
   }
 
   function init () {
@@ -30,10 +28,4 @@ function ClientsViewController (toolbarFactory, $mdDialog) {
   }
 
   init();
-}
-
-function mdDialogController (clients) {
-  const vm = this;
-
-  vm.name = clients;
 }

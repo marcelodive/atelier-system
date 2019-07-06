@@ -4,18 +4,22 @@ angular.module('App')
   controller: AddClientController,
   controllerAs: 'ctrl',
   bindings: {
-    editing: '<?'
+    editing: '<?',
+    cancelCallback: '&?'
   }
 });
 
-function AddClientController ($mdDialog) {
+function AddClientController () {
   const vm = this;
-
   vm.client = getEmptyClient();
 
-  vm.$mdDialog = $mdDialog;
+  vm.cancelAddition = cancelAddition;
 
   function getEmptyClient () {
     return {children: [{}]};
+  }
+
+  function cancelAddition () {
+    vm.cancelCallback();
   }
 }

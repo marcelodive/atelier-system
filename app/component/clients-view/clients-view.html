@@ -1,6 +1,13 @@
-<md-card layout-padding>
-  Clientes
+<md-card layout-padding ng-show="!ctrl.isAddingUser">
+  Aqui teremos clientes
 </md-card>
-<md-button class="md-fab md-fab-bottom-right" ng-click="ctrl.openAddUserDialog($event)">
+
+<md-button class="md-fab md-fab-bottom-right"
+  ng-click="ctrl.triggerAddingUser()" ng-show="!ctrl.isAddingUser">
     <md-icon>add</md-icon>
 </md-button>
+
+<add-client
+  cancel-callback="ctrl.cancelAddingUser()"
+  ng-if="ctrl.isAddingUser">
+</add-client>
