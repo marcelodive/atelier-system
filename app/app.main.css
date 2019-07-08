@@ -7,18 +7,42 @@
     overflow: hidden;
 }
 
+sidenav {
+    background-color: white;
+}
+
 .sidenav {
-    height: 100vh;
+    height: 100%;
+    min-height: 100vh;
     max-width: 15em;
 }
 
 .sidenav-small {
-    height: 100vh;
+    height: 100%;
+    min-height: 100vh;
     max-width: 4em;
 }
 
 .main-content {
     width: 100%;
+}
+
+.hint {
+    /* Position the hint */
+    position: absolute;
+    left: 2px;
+    right: auto;
+    bottom: 7px;
+    /* Copy styles from ng-messages */
+    font-size: 12px;
+    line-height: 14px;
+    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+    /* Set our own color */
+    color: grey;
+}
+
+md-datepicker ~ .hint {
+    padding-left: 6em;
 }
 
 /* Animations */
