@@ -5,10 +5,8 @@ angular.module('App')
   controllerAs: 'ctrl'
 });
 
-function ClientsViewController (toolbarFactory) {
+function ClientsViewController (toolbarFactory, clientFactory) {
   const vm = this;
-
-  vm.clients = [{}];
 
   vm.triggerAddingUser = triggerAddingUser;
   vm.cancelAddingUser = cancelAddingUser;
@@ -25,6 +23,11 @@ function ClientsViewController (toolbarFactory) {
 
   function init () {
     toolbarFactory.setToolbarTitle('Clientes');
+
+    clientFactory.getClients().then((data) => {
+      const {data: clients} = data;
+      vm.clients = clients;
+    });
   }
 
   init();

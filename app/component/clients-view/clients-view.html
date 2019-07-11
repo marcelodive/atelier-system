@@ -1,6 +1,8 @@
 <md-card class="fade"
   layout-padding ng-show="!ctrl.isAddingUser">
-  Aqui teremos clientes
+  <div ng-repeat="(key, client) in ctrl.clients">
+    <div>{{key}}{{client}}</div>
+  </div>
 </md-card>
 
 <md-button class="md-fab md-fab-bottom-right fade"
@@ -10,5 +12,6 @@
 
 <add-client
   cancel-callback="ctrl.cancelAddingUser()"
+  clients="ctrl.clients"
   ng-if="ctrl.isAddingUser">
 </add-client>

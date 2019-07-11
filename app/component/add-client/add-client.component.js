@@ -5,11 +5,12 @@ angular.module('App')
   controllerAs: 'ctrl',
   bindings: {
     editing: '<?',
-    cancelCallback: '&?'
+    cancelCallback: '&?',
+    clients: '='
   }
 });
 
-function AddClientController () {
+function AddClientController (clientFactory, childFactory, logFactory) {
   const vm = this;
   vm.client = {children: [{}]};
   vm.today = new Date();
@@ -18,7 +19,7 @@ function AddClientController () {
   vm.addChild = addChild;
   vm.removeChild = removeChild;
   vm.updateChildAge = updateChildAge;
-  vm.saveClient = saveClient;
+  vm.createClient = createClient;
 
   function addChild () {
     vm.client.children.push({});
@@ -32,11 +33,27 @@ function AddClientController () {
     vm.cancelCallback();
   }
 
+  function closeEditing () {
+    vm.cancelCallback();
+  }
+
   function updateChildAge (birthday, child) {
     child.age = moment(vm.today).diff(birthday, 'years');
   }
 
-  function saveClient () {
-    console.log('saved');
+  async function createClient (client) {
+    try {
+      const {data: createdClient} = await clientFactory.createClient(client);
+      client.children.forEach(async (child) => {
+        const {data: createdChild} = await childFactory.createdChild(child);
+        createdClient.children.push(createdChild);
+      });
+      vm.clients.push(createdClient);
+      closeEditing();
+      logFactory.showToaster('Sucesso', `Cliente ${createdClient.name} salvo`, 'success');
+    } catch (error) {
+      logFactory.showToaster('Erro', `Ocorreu um erro ao salvar o cliente, por favor, tente novamente`, 'error');
+      logFactory.log(error, 'error');
+    }
   }
 }

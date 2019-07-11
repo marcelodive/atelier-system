@@ -38,5 +38,13 @@
   "Notification": {
     "dataSource": "db",
     "public": true
+  },
+  "Client": {
+    "dataSource": "db",
+    "public": true
+  },
+  "Child": {
+    "dataSource": "db",
+    "public": true
   }
 }
