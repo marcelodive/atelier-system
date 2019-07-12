@@ -1,7 +1,6 @@
-<md-card class="fade"
-  layout-padding ng-show="!ctrl.isAddingUser">
+<md-card class="fade" layout-padding ng-show="!ctrl.isAddingUser">
   <div ng-repeat="(key, client) in ctrl.clients">
-    <div>{{key}}{{client}}</div>
+    <div>{{ client }}</div>
   </div>
 </md-card>
 

@@ -25,6 +25,13 @@
     }
   },
   "validations": [],
+  "relations": {
+    "children": {
+      "type": "hasMany",
+      "model": "Child",
+      "foreignKey": "client_id"
+    }
+  },
   "acls": [],
   "methods": {}
 }

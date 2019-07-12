@@ -44,9 +44,16 @@ function AddClientController (clientFactory, childFactory, logFactory) {
   async function createClient (client) {
     try {
       const {data: createdClient} = await clientFactory.createClient(client);
+      client.id = createdClient.id;
       client.children.forEach(async (child) => {
-        const {data: createdChild} = await childFactory.createdChild(child);
-        createdClient.children.push(createdChild);
+        child.client_id = client.id;
+        try {
+          const {data: createdChild} = await childFactory.createChild(child);
+          child.id = createdChild.id;
+        } catch (error) {
+          clientFactory.deleteClient(client.id);
+          logFactory.showToaster('Erro', `Ocorreu um erro ao salvar a criança, por favor, tente novamente`, 'error');
+        }
       });
       vm.clients.push(createdClient);
       closeEditing();

@@ -8,8 +8,13 @@ angular.module('App')
     return $http.get(`${constants.API}/Clients`);
   }
 
+  function deleteClient (clientId) {
+    return $http.delete(`${constants.API}/Clients/${clientId}`);
+  }
+
   return {
     createClient: createClient,
-    getClients: getClients
+    getClients: getClients,
+    deleteClient: deleteClient
   }
 });
