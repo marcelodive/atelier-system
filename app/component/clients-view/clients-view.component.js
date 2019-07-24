@@ -9,6 +9,7 @@ function ClientsViewController (toolbarFactory, clientFactory, childFactory) {
   const vm = this;
   vm.clients = [];
   vm.children = [];
+  vm.dtInstance = {};
 
   vm.triggerAddingUser = triggerAddingUser;
   vm.cancelAddingUser = cancelAddingUser;
@@ -33,6 +34,7 @@ function ClientsViewController (toolbarFactory, clientFactory, childFactory) {
         client:client
       })
     });
+    vm.dtInstance.draw();
   }
 
   function init () {
