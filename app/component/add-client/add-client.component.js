@@ -6,7 +6,8 @@ angular.module('App')
   bindings: {
     editing: '<?',
     cancelCallback: '&?',
-    clients: '='
+    clients: '=',
+    children: '='
   }
 });
 
@@ -50,6 +51,7 @@ function AddClientController (clientFactory, childFactory, logFactory) {
         try {
           const {data: createdChild} = await childFactory.createChild(child);
           child.id = createdChild.id;
+          addChildInList(child,client);
         } catch (error) {
           clientFactory.deleteClient(client.id);
           logFactory.showToaster('Erro', `Ocorreu um erro ao salvar a criança, por favor, tente novamente`, 'error');
@@ -62,5 +64,15 @@ function AddClientController (clientFactory, childFactory, logFactory) {
       logFactory.showToaster('Erro', `Ocorreu um erro ao salvar o cliente, por favor, tente novamente`, 'error');
       logFactory.log(error, 'error');
     }
+  }
+
+  function addChildInList(child, client) {
+    vm.children.push({
+      name:child.name,
+      birthday:child.birthday,
+      formatedBirthday:moment(child.birthday).format('DD/MM'),
+      age: moment(new Date()).diff(child.birthday, 'years'),
+      client:client
+    })
   }
 }

@@ -13,6 +13,9 @@ function ToolbarController ($cookies, $location, $scope, $mdMedia, toolbarFactor
   vm.logout = logout;
   vm.toggleLeftMenu = toggleLeftMenu;
 
+  if ($cookies.get('isSidenavOpen') === 'false') {
+    toggleLeftMenu();
+  }
 
   function logout () {
     $cookies.remove('token');

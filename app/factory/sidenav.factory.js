@@ -1,5 +1,5 @@
 angular.module('App')
-.factory('sidenavFactory', ($mdSidenav, $rootScope, $mdMedia) => {
+.factory('sidenavFactory', ($mdSidenav, $rootScope, $mdMedia, $cookies) => {
   const componentId = 'left-sidenav';
 
   $rootScope.isSidenavLockedOpen = $mdMedia('gt-sm');
@@ -11,6 +11,7 @@ angular.module('App')
       $rootScope.isSidenavLockedOpen = !(true && forceClose);
       $mdSidenav(componentId).toggle();
     }
+    $cookies.put('isSidenavOpen', $rootScope.isSidenavLockedOpen);
   }
 
   function forceOpenLeftMenu () {

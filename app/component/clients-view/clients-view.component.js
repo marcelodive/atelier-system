@@ -8,6 +8,7 @@ angular.module('App')
 function ClientsViewController (toolbarFactory, clientFactory, childFactory) {
   const vm = this;
   vm.clients = [];
+  vm.children = [];
 
   vm.triggerAddingUser = triggerAddingUser;
   vm.cancelAddingUser = cancelAddingUser;
@@ -22,6 +23,18 @@ function ClientsViewController (toolbarFactory, clientFactory, childFactory) {
     toolbarFactory.setToolbarTitle('Clientes');
   }
 
+  function addClientChildrenInList (client) {
+    client.children.forEach((child) => {
+      vm.children.push({
+        name:child.name,
+        birthday:child.birthday,
+        formatedBirthday:moment(child.birthday).format('MM/DD'),
+        age: moment(new Date()).diff(child.birthday, 'years'),
+        client:client
+      })
+    });
+  }
+
   function init () {
     toolbarFactory.setToolbarTitle('Clientes');
 
@@ -32,6 +45,7 @@ function ClientsViewController (toolbarFactory, clientFactory, childFactory) {
         childFactory.getChildrenFromClient(client.id).then((childrenData) => {
           const {data: children} = childrenData;
           client.children = children;
+          addClientChildrenInList(client);
         })
       });
     });

@@ -1,7 +1,28 @@
 <md-card class="fade" layout-padding ng-show="!ctrl.isAddingUser">
-  <div ng-repeat="(key, client) in ctrl.clients">
-    <div>{{ client }}</div>
-  </div>
+  <table datatable="ng" class="row-border hover" ng-if="ctrl.children.length">
+    <thead>
+      <tr>
+        <th>Criança</th>
+        <th>Aniversário (mês/dia)</th>
+        <th>Idade</th>
+        <th>Cliente</th>
+        <th>CPF</th>
+        <th>Email</th>
+        <th>Telefone</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="(key, child) in ctrl.children" class="center-text">
+          <td>{{child.name}}</td>
+          <td>{{child.formatedBirthday}}</td>
+          <td>{{child.age}}</td>
+          <td>{{child.client.name}}</td>
+          <td>{{child.client.cpf}}</td>
+          <td>{{child.client.email}}</td>
+          <td>{{child.client.phone}}</td>
+      </tr>
+    </tbody>
+  </table>
 </md-card>
 
 <md-button class="md-fab md-fab-bottom-right fade"
@@ -12,5 +33,6 @@
 <add-client
   cancel-callback="ctrl.cancelAddingUser()"
   clients="ctrl.clients"
+  children="ctrl.children"
   ng-if="ctrl.isAddingUser">
 </add-client>
