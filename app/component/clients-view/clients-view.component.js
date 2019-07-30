@@ -13,6 +13,8 @@ function ClientsViewController (toolbarFactory, clientFactory, childFactory) {
 
   vm.triggerAddingUser = triggerAddingUser;
   vm.cancelAddingUser = cancelAddingUser;
+  vm.editClient = editClient;
+  vm.init = init;
 
   function triggerAddingUser () {
     vm.isAddingUser = true
@@ -22,18 +24,16 @@ function ClientsViewController (toolbarFactory, clientFactory, childFactory) {
   function cancelAddingUser () {
     vm.isAddingUser = false;
     toolbarFactory.setToolbarTitle('Clientes');
+    vm.clientToEdit = null;
+  }
+
+  function editClient (client) {
+    vm.clientToEdit = client;
+    vm.isAddingUser = true;
   }
 
   function addClientChildrenInList (client) {
-    client.children.forEach((child) => {
-      vm.children.push({
-        name:child.name,
-        birthday:child.birthday,
-        formatedBirthday:moment(child.birthday).format('MM/DD'),
-        age: moment(new Date()).diff(child.birthday, 'years'),
-        client:client
-      })
-    });
+    clientFactory.addClientInChildrenList (client, vm.children);
     vm.dtInstance.draw();
   }
 

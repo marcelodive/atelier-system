@@ -10,6 +10,7 @@
         <th>CPF</th>
         <th>Email</th>
         <th>Telefone</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -21,6 +22,11 @@
           <td>{{child.client.cpf}}</td>
           <td>{{child.client.email}}</td>
           <td>{{child.client.phone}}</td>
+          <td>
+            <md-button class="md-icon-button" aria-label="Editar" title="Editar">
+              <md-icon ng-click="ctrl.editClient(child.client)">edit</md-icon>
+            </md-button>
+          </td>
       </tr>
     </tbody>
   </table>
@@ -32,8 +38,11 @@
 </md-button>
 
 <add-client
+  client-to-edit="ctrl.clientToEdit"
   cancel-callback="ctrl.cancelAddingUser()"
   clients="ctrl.clients"
   children="ctrl.children"
-  ng-if="ctrl.isAddingUser">
+  ng-if="ctrl.isAddingUser"
+  init-func="ctrl.init()"
+  dt-instance="ctrl.dtInstance">
 </add-client>
