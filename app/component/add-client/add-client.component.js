@@ -14,7 +14,7 @@ angular.module('App')
 function AddClientController ($scope, clientFactory, childFactory, logFactory) {
   const vm = this;
   vm.isSaving = false;
-  vm.client = {children: [{birthday: moment().toDate()}]};
+  vm.client = {children: [{}]};
   vm.today = new Date();
 
   vm.cancelAddition = cancelAddition;
@@ -24,7 +24,7 @@ function AddClientController ($scope, clientFactory, childFactory, logFactory) {
   vm.createClient = createClient;
 
   function addChild () {
-    vm.client.children.push({birthday: moment().toDate()});
+    vm.client.children.push({});
   }
 
   function removeChild (key) {
