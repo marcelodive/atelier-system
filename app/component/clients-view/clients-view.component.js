@@ -7,11 +7,15 @@ angular.module('App')
 
 function ClientsViewController ($scope, $timeout, toolbarFactory, clientFactory, childFactory) {
   const vm = this;
+
+  let childrenWithoutFilter = null;
+
   vm.isAddingUser = false;
 
   vm.triggerAddingUser = triggerAddingUser;
   vm.cancelAddingUser = cancelAddingUser;
   vm.editClient = editClient;
+  vm.filterChildren = filterChildren;
   vm.init = init;
 
   function triggerAddingUser () {
@@ -29,8 +33,21 @@ function ClientsViewController ($scope, $timeout, toolbarFactory, clientFactory,
     vm.isAddingUser = true;
   }
 
+  function filterChildren (search) {
+    vm.children = (search)
+      ? childrenWithoutFilter.filter((child) => {
+          const hasChild = Object.values(child).filter((childProperty) =>
+            String(childProperty).toLowerCase().includes(search.toLowerCase())).length;
+          const hasClient = Object.values(child.client).filter((clientProperty) =>
+            String(clientProperty).toLowerCase().includes(search.toLowerCase())).length;
+          return (hasChild || hasClient);
+        })
+      : childrenWithoutFilter;
+  }
+
   function addClientChildrenInList (client) {
     clientFactory.addClientInChildrenList (client, vm.children);
+    childrenWithoutFilter = vm.children;
   }
 
   function init () {

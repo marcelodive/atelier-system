@@ -4,5 +4,6 @@ angular.module('App', [
     'ngAnimate',
     'ngMaterial',
     'ngMessages',
-    'toaster'
+    'toaster',
+    'md.data.table'
 ]);

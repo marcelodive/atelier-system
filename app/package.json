@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "angular-material-data-table": "^0.10.10",
     "moment": "^2.24.0"
   }
 }

@@ -1,34 +1,40 @@
 <md-card class="fade" layout-padding ng-show="!ctrl.isAddingUser">
-  <table ng-if="ctrl.children.length">
-    <thead>
-      <tr>
-        <th>Criança</th>
-        <th>Aniversário (mês/dia)</th>
-        <th>Idade</th>
-        <th>Cliente</th>
-        <th>CPF</th>
-        <th>Email</th>
-        <th>Telefone</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr ng-repeat="(key, child) in ctrl.children">
-          <td>{{child.name}}</td>
-          <td>{{child.formatedBirthday}}</td>
-          <td>{{child.age}}</td>
-          <td>{{child.client.name}}</td>
-          <td>{{child.client.cpf}}</td>
-          <td>{{child.client.email}}</td>
-          <td>{{child.client.phone}}</td>
-          <td>
-            <md-button class="md-icon-button" aria-label="Editar" title="Editar">
-              <md-icon ng-click="ctrl.editClient(child.client)">edit</md-icon>
-            </md-button>
-          </td>
-      </tr>
-    </tbody>
-  </table>
+  <span>
+    <md-icon>search</md-icon>
+    <input ng-model="search" type="text" placeholder="Buscar" ng-change="ctrl.filterChildren(search)">
+  </span>
+  <md-table-container>
+    <table ng-if="ctrl.children.length" md-table>
+      <thead md-head>
+        <tr md-row>
+          <th md-column>Criança</th>
+          <th md-column>Aniversário (mês/dia)</th>
+          <th md-column>Idade</th>
+          <th md-column>Cliente</th>
+          <th md-column>CPF</th>
+          <th md-column>Email</th>
+          <th md-column>Telefone</th>
+          <th md-column></th>
+        </tr>
+      </thead>
+      <tbody md-body>
+        <tr md-row ng-repeat="(key, child) in ctrl.children">
+            <td>{{child.name}}</td>
+            <td>{{child.formatedBirthday}}</td>
+            <td>{{child.age}}</td>
+            <td>{{child.client.name}}</td>
+            <td>{{child.client.cpf}}</td>
+            <td>{{child.client.email}}</td>
+            <td>{{child.client.phone}}</td>
+            <td>
+              <md-button class="md-icon-button" aria-label="Editar" title="Editar">
+                <md-icon ng-click="ctrl.editClient(child.client)">edit</md-icon>
+              </md-button>
+            </td>
+        </tr>
+      </tbody>
+    </table>
+  </md-table-container>
 </md-card>
 
 <md-button class="md-fab md-fab-bottom-right fade"
