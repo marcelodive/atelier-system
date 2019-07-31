@@ -4,21 +4,21 @@
     <input ng-model="search" type="text" placeholder="Buscar" ng-change="ctrl.filterChildren(search)">
   </span>
   <md-table-container>
-    <table ng-if="ctrl.children.length" md-table>
-      <thead md-head>
+    <table ng-if="ctrl.children.length" md-table class="greyGridTable">
+      <thead md-head md-order="orderByDt">
         <tr md-row>
-          <th md-column>Criança</th>
-          <th md-column>Aniversário (mês/dia)</th>
-          <th md-column>Idade</th>
-          <th md-column>Cliente</th>
-          <th md-column>CPF</th>
-          <th md-column>Email</th>
-          <th md-column>Telefone</th>
+          <th md-column md-order-by="name">Criança</th>
+          <th md-column md-order-by="formatedBirthday">Aniversário (mês/dia)</th>
+          <th md-column md-order-by="age">Idade</th>
+          <th md-column md-order-by="client.name">Cliente</th>
+          <th md-column md-order-by="client.cpf">CPF</th>
+          <th md-column md-order-by="client.email">Email</th>
+          <th md-column md-order-by="client.phone">Telefone</th>
           <th md-column></th>
         </tr>
       </thead>
       <tbody md-body>
-        <tr md-row ng-repeat="(key, child) in ctrl.children">
+        <tr md-row ng-repeat="(key, child) in ctrl.children | orderBy: orderByDt">
             <td>{{child.name}}</td>
             <td>{{child.formatedBirthday}}</td>
             <td>{{child.age}}</td>
