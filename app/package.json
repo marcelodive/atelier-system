@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "angular-datatables": "0.6.2",
     "moment": "^2.24.0"
   }
 }

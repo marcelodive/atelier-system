@@ -1,6 +1,5 @@
 <md-card class="fade" layout-padding ng-show="!ctrl.isAddingUser">
-  <table datatable="ng" dt-instance="ctrl.dtInstance"
-    class="row-border hover" ng-if="ctrl.children.length">
+  <table class="row-border hover" ng-if="ctrl.children.length">
     <thead>
       <tr>
         <th>Criança</th>
@@ -14,7 +13,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr ng-repeat="(key, child) in ctrl.children" class="center-text">
+      <tr ng-repeat="(key, child) in ctrl.children">
           <td>{{child.name}}</td>
           <td>{{child.formatedBirthday}}</td>
           <td>{{child.age}}</td>
@@ -42,7 +41,5 @@
   cancel-callback="ctrl.cancelAddingUser()"
   clients="ctrl.clients"
   children="ctrl.children"
-  ng-if="ctrl.isAddingUser"
-  init-func="ctrl.init()"
-  dt-instance="ctrl.dtInstance">
+  ng-if="ctrl.isAddingUser">
 </add-client>

@@ -5,11 +5,9 @@ angular.module('App')
   controllerAs: 'ctrl'
 });
 
-function ClientsViewController (toolbarFactory, clientFactory, childFactory) {
+function ClientsViewController ($scope, $timeout, toolbarFactory, clientFactory, childFactory) {
   const vm = this;
-  vm.clients = [];
-  vm.children = [];
-  vm.dtInstance = {};
+  vm.isAddingUser = false;
 
   vm.triggerAddingUser = triggerAddingUser;
   vm.cancelAddingUser = cancelAddingUser;
@@ -24,7 +22,6 @@ function ClientsViewController (toolbarFactory, clientFactory, childFactory) {
   function cancelAddingUser () {
     vm.isAddingUser = false;
     toolbarFactory.setToolbarTitle('Clientes');
-    vm.clientToEdit = null;
   }
 
   function editClient (client) {
@@ -34,11 +31,13 @@ function ClientsViewController (toolbarFactory, clientFactory, childFactory) {
 
   function addClientChildrenInList (client) {
     clientFactory.addClientInChildrenList (client, vm.children);
-    vm.dtInstance.draw();
   }
 
   function init () {
     toolbarFactory.setToolbarTitle('Clientes');
+
+    vm.clients = [];
+    vm.children = [];
 
     clientFactory.getClients().then((clientData) => {
       const {data: clients} = clientData;
@@ -54,4 +53,11 @@ function ClientsViewController (toolbarFactory, clientFactory, childFactory) {
   }
 
   init();
+
+  $scope.$watch(() => vm.isAddingUser, () => {
+    if (vm.clientToEdit && !vm.isAddingUser) {
+      vm.clientToEdit = null;
+      init();
+    }
+  });
 }

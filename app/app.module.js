@@ -4,6 +4,5 @@ angular.module('App', [
     'ngAnimate',
     'ngMaterial',
     'ngMessages',
-    'toaster',
-    'datatables'
+    'toaster'
 ]);

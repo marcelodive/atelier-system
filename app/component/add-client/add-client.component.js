@@ -6,16 +6,15 @@ angular.module('App')
   bindings: {
     clientToEdit: '=?',
     cancelCallback: '&?',
-    initFunc: '&?',
     clients: '=',
-    children: '=',
-    dtInstance: '='
+    children: '='
   }
 });
 
 function AddClientController ($scope, clientFactory, childFactory, logFactory) {
   const vm = this;
-  vm.client = {children: [{}]};
+  vm.isSaving = false;
+  vm.client = {children: [{birthday: moment().toDate()}]};
   vm.today = new Date();
 
   vm.cancelAddition = cancelAddition;
@@ -25,7 +24,7 @@ function AddClientController ($scope, clientFactory, childFactory, logFactory) {
   vm.createClient = createClient;
 
   function addChild () {
-    vm.client.children.push({});
+    vm.client.children.push({birthday: moment().toDate()});
   }
 
   function removeChild (key) {
@@ -36,10 +35,11 @@ function AddClientController ($scope, clientFactory, childFactory, logFactory) {
     if (vm.clientToEdit != null) {
       vm.client = angular.copy(vm.formerClient);
     }
-    vm.cancelCallback();
+    closeEditing();
   }
 
   function closeEditing () {
+    vm.isSaving = false;
     vm.cancelCallback();
   }
 
@@ -52,17 +52,20 @@ function AddClientController ($scope, clientFactory, childFactory, logFactory) {
       await clientFactory.editClient(editedClient);
       vm.children = clientFactory.addClientInChildrenList(editedClient, vm.children, true);
       vm.clients = [...vm.clients.filter((client) => client.id !== editedClient.id), editedClient];
-      vm.initFunc();
     } catch (error) {
       logFactory.showToaster('Erro', `Ocorreu um erro ao editar o cliente, por favor, tente novamente`, 'error');
     }
   }
 
   async function createClient (client) {
+    vm.isSaving = true;
+
     if (vm.clientToEdit != null) {
+
       await editClient(client);
       closeEditing();
       logFactory.showToaster('Sucesso', `Cliente editado com sucesso`, 'success');
+
     } else {
 
       try {
@@ -101,13 +104,15 @@ function AddClientController ($scope, clientFactory, childFactory, logFactory) {
   }
 
   $scope.$watch(() => (vm.clientToEdit != null), () => {
-    vm.formerClient = angular.copy(vm.clientToEdit);
-    vm.client = {
-      ...vm.clientToEdit,
-      cpf: Number(vm.clientToEdit.cpf),
-      children: vm.clientToEdit.children.map((child) => ({
-        ...child, birthday: moment(child.birthday).toDate()
-      }))
-    };
+    if (vm.clientToEdit != null) {
+      vm.formerClient = angular.copy(vm.clientToEdit);
+      vm.client = {
+        ...vm.clientToEdit,
+        cpf: Number(vm.clientToEdit.cpf),
+        children: vm.clientToEdit.children.map((child) => ({
+          ...child, birthday: moment(child.birthday).toDate()
+        }))
+      };
+    }
   });
 }
