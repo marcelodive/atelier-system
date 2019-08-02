@@ -1,0 +1,40 @@
+<md-card layout-padding ng-show="!ctrl.isAddingProduct">
+  <md-input-container class="negative-container-padding">
+    <md-icon>search</md-icon>
+    <input ng-model="search" type="text" placeholder="Buscar" ng-change="ctrl.filterProducts(search)">
+  </md-input-container>
+  <md-table-container>
+    <table ng-if="ctrl.products.length" md-table class="greyGridTable">
+      <thead md-head md-order="orderByDt">
+        <tr md-row>
+          <th class="center-text" md-column md-order-by="name">Nome</th>
+          <th class="center-text" md-column md-order-by="price">Preço (R$)</th>
+          <th class="center-text" md-column></th>
+        </tr>
+      </thead>
+      <tbody md-body>
+        <tr md-row ng-repeat="(key, product) in ctrl.products | orderBy: orderByDt">
+          <td>{{product.name}}</td>
+          <td>{{product.price}}</td>
+          <td>
+            <md-button class="md-icon-button" aria-label="Editar" title="Editar">
+              <md-icon ng-click="ctrl.editProduct(product)">edit</md-icon>
+            </md-button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </md-table-container>
+
+</md-card>
+
+<md-button class="md-fab md-fab-bottom-right fade"
+  ng-click="ctrl.triggerAddingProduct()" ng-show="!ctrl.isAddingProduct">
+    <md-icon>add</md-icon>
+</md-button>
+
+<add-product cancel-callback="ctrl.cancelAddingProduct()"
+  product-to-edit="ctrl.productToEdit"
+  products="ctrl.products"
+  ng-if="ctrl.isAddingProduct">
+</add-product>
