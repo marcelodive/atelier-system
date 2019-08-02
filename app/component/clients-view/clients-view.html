@@ -1,36 +1,36 @@
 <md-card class="fade" layout-padding ng-show="!ctrl.isAddingUser">
-  <span>
+  <md-input-container class="negative-container-padding">
     <md-icon>search</md-icon>
     <input ng-model="search" type="text" placeholder="Buscar" ng-change="ctrl.filterChildren(search)">
-  </span>
+  </md-input-container>
   <md-table-container>
     <table ng-if="ctrl.children.length" md-table class="greyGridTable">
       <thead md-head md-order="orderByDt">
         <tr md-row>
-          <th md-column md-order-by="name">Criança</th>
-          <th md-column md-order-by="formatedBirthday">Aniversário (mês/dia)</th>
-          <th md-column md-order-by="age">Idade</th>
-          <th md-column md-order-by="client.name">Cliente</th>
-          <th md-column md-order-by="client.cpf">CPF</th>
-          <th md-column md-order-by="client.email">Email</th>
-          <th md-column md-order-by="client.phone">Telefone</th>
-          <th md-column></th>
+          <th class="center-text" md-column md-order-by="name">Criança</th>
+          <th class="center-text" md-column md-order-by="formatedBirthday">Aniversário (mês/dia)</th>
+          <th class="center-text" md-column md-order-by="age">Idade</th>
+          <th class="center-text" md-column md-order-by="client.name">Cliente</th>
+          <th class="center-text" md-column md-order-by="client.cpf">CPF</th>
+          <th class="center-text" md-column md-order-by="client.email">Email</th>
+          <th class="center-text" md-column md-order-by="client.phone">Telefone</th>
+          <th class="center-text" md-column></th>
         </tr>
       </thead>
       <tbody md-body>
         <tr md-row ng-repeat="(key, child) in ctrl.children | orderBy: orderByDt">
-            <td>{{child.name}}</td>
-            <td>{{child.formatedBirthday}}</td>
-            <td>{{child.age}}</td>
-            <td>{{child.client.name}}</td>
-            <td>{{child.client.cpf}}</td>
-            <td>{{child.client.email}}</td>
-            <td>{{child.client.phone}}</td>
-            <td>
-              <md-button class="md-icon-button" aria-label="Editar" title="Editar">
-                <md-icon ng-click="ctrl.editClient(child.client)">edit</md-icon>
-              </md-button>
-            </td>
+          <td>{{child.name}}</td>
+          <td>{{child.formatedBirthday}}</td>
+          <td>{{child.age}}</td>
+          <td>{{child.client.name}}</td>
+          <td>{{child.client.cpf}}</td>
+          <td>{{child.client.email}}</td>
+          <td>{{child.client.phone}}</td>
+          <td>
+            <md-button class="md-icon-button" aria-label="Editar" title="Editar">
+              <md-icon ng-click="ctrl.editClient(child.client)">edit</md-icon>
+            </md-button>
+          </td>
         </tr>
       </tbody>
     </table>

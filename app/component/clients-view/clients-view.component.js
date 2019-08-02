@@ -16,7 +16,6 @@ function ClientsViewController ($scope, $timeout, toolbarFactory, clientFactory,
   vm.cancelAddingUser = cancelAddingUser;
   vm.editClient = editClient;
   vm.filterChildren = filterChildren;
-  vm.init = init;
 
   function triggerAddingUser () {
     vm.isAddingUser = true

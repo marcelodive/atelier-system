@@ -46,5 +46,13 @@
   "Child": {
     "dataSource": "db",
     "public": true
+  },
+  "Product": {
+    "dataSource": "db",
+    "public": true
+  },
+  "Kit": {
+    "dataSource": "db",
+    "public": true
   }
 }

@@ -94,7 +94,9 @@
     <span>
       <md-button type="submit" class="md-raised md-accent">
         <span ng-show="!ctrl.isSaving">Salvar</span>
-        <md-progress-circular ng-show="ctrl.isSaving" md-mode="indeterminate"></md-progress-circular>
+        <md-progress-circular ng-show="ctrl.isSaving" md-diameter="20px"
+          md-mode="indeterminate">
+        </md-progress-circular>
       </md-button>
       <md-button class="md-warn" ng-click="ctrl.cancelAddition()">Cancelar</md-button>
     </span>

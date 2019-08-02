@@ -1,112 +1,103 @@
 sidenav {
-    background-color: white;
+  background-color: white;
 }
-
 md-datepicker ~ .hint {
-    padding-left: 6em;
+  padding-left: 6em;
 }
-
 .center-text {
-    text-align: center;
+  text-align: center!important;
 }
-
 .alert-message {
-    color: rgb(221,44,0);
-    font-size: 0.8em
+  color: rgb(221,44,0);
+  font-size: 0.8em
 }
-
 .hide-overflow {
-    overflow: hidden;
+  overflow: hidden;
 }
-
 .sidenav {
-    height: 100%;
-    min-height: 100vh;
-    max-width: 15em;
+  height: 100%;
+  min-height: 100vh;
+  max-width: 15em;
 }
-
 .sidenav-small {
-    height: 100%;
-    min-height: 100vh;
-    max-width: 4em;
+  height: 100%;
+  min-height: 100vh;
+  max-width: 4em;
 }
-
 .main-content {
-    width: 100%;
+  width: 100%;
 }
-
 .hint {
-    /* Position the hint */
-    position: absolute;
-    left: 2px;
-    right: auto;
-    bottom: 7px;
-    /* Copy styles from ng-messages */
-    font-size: 12px;
-    line-height: 14px;
-    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-    /* Set our own color */
-    color: grey;
+  /* Position the hint */
+  position: absolute;
+  left: 2px;
+  right: auto;
+  bottom: 7px;
+  /* Copy styles from ng-messages */
+  font-size: 12px;
+  line-height: 14px;
+  transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+  /* Set our own color */
+  color: grey;
 }
-
+.negative-container-padding {
+  margin-bottom: -30px;
+}
 table.greyGridTable {
-    border: 2px solid #FFFFFF;
-    width: 100%;
-    text-align: center;
-    border-collapse: collapse;
-  }
-  table.greyGridTable td, table.greyGridTable th {
-    border: 1px solid #FFFFFF;
-    padding: 3px 4px;
-  }
-  table.greyGridTable tbody td {
-    font-size: 13px;
-  }
-  table.greyGridTable tr:nth-child(even) {
-    background: #EBEBEB;
-  }
-  table.greyGridTable thead {
-    background: #FFFFFF;
-    border-bottom: 4px solid #333333;
-  }
-  table.greyGridTable thead th {
-    font-size: 15px;
-    font-weight: bold;
-    /* color: #333333; */
-    text-align: center;
-    /* border-left: 2px solid #333333; */
-  }
-  table.greyGridTable thead th:first-child {
-    border-left: none;
-  }
-  table.greyGridTable tfoot {
-    font-size: 14px;
-    font-weight: bold;
-    color: #333333;
-    border-top: 4px solid #333333;
-  }
-  table.greyGridTable tfoot td {
-    font-size: 14px;
-  }
-
+  border: 2px solid #FFFFFF;
+  width: 100%;
+  text-align: center;
+  border-collapse: collapse;
+}
+table.greyGridTable td, table.greyGridTable th {
+  border: 1px solid #FFFFFF;
+  padding: 3px 4px;
+}
+table.greyGridTable tbody td {
+  font-size: 13px;
+}
+table.greyGridTable tr:nth-child(even) {
+  background: #EBEBEB;
+}
+table.greyGridTable thead {
+  background: #FFFFFF;
+  border-bottom: 4px solid #333333;
+}
+table.greyGridTable thead th {
+  font-size: 15px;
+  font-weight: bold;
+  /* color: #333333; */
+  text-align: center;
+  /* border-left: 2px solid #333333; */
+}
+table.greyGridTable thead th:first-child {
+  border-left: none;
+}
+table.greyGridTable tfoot {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333333;
+  border-top: 4px solid #333333;
+}
+table.greyGridTable tfoot td {
+  font-size: 14px;
+}
 /* Animations */
 .fade, .fade.ng-enter {
-    animation: fadeIn 0.5s;
+  animation: fadeIn 0.5s;
 }
 .fade.ng-hide, .fade.ng-leave {
-    animation: fadeOut 0.3s;
+  animation: fadeOut 0.3s;
 }
-
 .fade-in-up-down.ng-enter, .fade-in-up-down.ng-enter {
-    animation: fadeInDown 0.5s;
+  animation: fadeInDown 0.5s;
 }
 .fade-in-up-down.ng-leave, .fade-in-up-down {
-    animation: fadeInUp 0.5s;
+  animation: fadeInUp 0.5s;
 }
-
 .fade-in-view.ng-enter {
-    animation: fadeInRight 0.5s;
+  animation: fadeInRight 0.5s;
 }
 .fade-in-view.ng-leave {
-    animation: fadeOutUp 0.1s;
+  animation: fadeOutUp 0.1s;
 }

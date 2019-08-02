@@ -5,7 +5,7 @@ angular.module('App')
       template: 'Aguarde... <orders-view></orders-view>'
     })
     .when('/produtos', {
-      template: 'Aguarde... <products-view></products-view>'
+      template: '<products-view></products-view>'
     })
     .when('/clientes', {
       template: '<clients-view></clients-view>'
