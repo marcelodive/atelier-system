@@ -1,0 +1,14 @@
+<md-card layout-padding ng-show="!ctrl.isAddingOrder">
+  Hello, orders!
+</md-card>
+
+<md-button class="md-fab md-fab-bottom-right fade"
+  ng-click="ctrl.triggerAddingOrder()" ng-show="!ctrl.isAddingOrder">
+    <md-icon>add</md-icon>
+</md-button>
+
+<add-order cancel-callback="ctrl.cancelAddingOrder()"
+  order-to-edit="ctrl.orderToEdit"
+  orders="ctrl.orders"
+  ng-if="ctrl.isAddingOrder">
+</add-order>

@@ -1,0 +1,65 @@
+<md-card layout-padding class="fade-in-up-down">
+  <form name=orderForm ng-submit="orderForm.$valid && ctrl.createOrder(ctrl.order)" novalidate>
+    <md-subheader>Endereço da festa:</md-subheader>
+    <div layout="row" layout-align-gt-sm="space-around center" layout-wrap>
+        <md-input-container class="md-block" flex-gt-sm="20" flex="100">
+          <label>CEP</label>
+          <input name="cep"
+            ng-keypress="$event.keyCode === 13 && ctrl.buildAddressFromCEP(ctrl.order.cep)"
+            ng-model="ctrl.order.cep"
+            ng-required="true">
+          <md-icon class="md-primary pointer"
+            ng-click="ctrl.buildAddressFromCEP(ctrl.order.cep)">
+            search
+          </md-icon>
+          <div ng-messages="orderForm.cep.$error">
+            <div ng-message="required">É necessário inserir um CEP</div>
+          </div>
+        </md-input-container>
+        <md-input-container class="md-block" flex-gt-sm="65" flex="100">
+          <label>Logradouro</label>
+          <md-icon>streetview</md-icon>
+          <input name="publicPlace" ng-model="ctrl.order.publicPlace" ng-required="true">
+          <div ng-messages="orderForm.publicPlace.$error">
+            <div ng-message="required">É necessário inserir um logradouro</div>
+          </div>
+        </md-input-container>
+        <md-input-container class="md-block" flex-gt-sm="10" flex="100">
+          <label>Nº</label>
+          <md-icon>money</md-icon>
+          <input name="number" ng-model="ctrl.order.number">
+        </md-input-container>
+
+        <md-input-container class="md-block" flex-gt-sm="25" flex="100">
+          <label>Bairro</label>
+          <md-icon>layers</md-icon>
+          <input name="neighborhood" ng-model="ctrl.order.neighborhood" ng-required="true">
+          <div ng-messages="orderForm.neighborhood.$error">
+            <div ng-message="required">É necessário inserir um bairro</div>
+          </div>
+        </md-input-container>
+        <md-input-container class="md-block" flex-gt-sm="25" flex="100">
+          <label>Cidade</label>
+          <md-icon>location_city</md-icon>
+          <input name="city" ng-model="ctrl.order.city" ng-required="true">
+          <div ng-messages="orderForm.city.$error">
+            <div ng-message="required">É necessário inserir uma cidade</div>
+          </div>
+        </md-input-container>
+        <md-input-container class="md-block" flex-gt-sm="15" flex="100">
+          <label>Estado</label>
+          <md-icon>domain</md-icon>
+          <input name="state" ng-model="ctrl.order.state" ng-required="true">
+          <div ng-messages="orderForm.state.$error">
+            <div ng-message="required">É necessário inserir um estado</div>
+          </div>
+        </md-input-container>
+        <md-input-container class="md-block" flex-gt-sm="30" flex="100">
+          <label>Complemento</label>
+          <md-icon>short_text</md-icon>
+          <input name="complement" ng-model="ctrl.order.complement">
+        </md-input-container>
+    </div>
+  </form>
+</md-card>
+
