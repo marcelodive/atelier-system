@@ -2,7 +2,7 @@ angular.module('App')
 .config(function config($routeProvider) {
   $routeProvider
     .when('/pedidos', {
-      template: 'Aguarde... <orders-view></orders-view>'
+      template: '<orders-view></orders-view>'
     })
     .when('/produtos', {
       template: '<products-view></products-view>'

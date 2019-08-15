@@ -27,17 +27,17 @@ md-datepicker ~ .hint {
 .main-content {
   width: 100%;
 }
+.pointer {
+  cursor: pointer;
+}
 .hint {
-  /* Position the hint */
   position: absolute;
   left: 2px;
   right: auto;
   bottom: 7px;
-  /* Copy styles from ng-messages */
   font-size: 12px;
   line-height: 14px;
   transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-  /* Set our own color */
   color: grey;
 }
 .negative-container-padding {
@@ -82,6 +82,7 @@ table.greyGridTable tfoot {
 table.greyGridTable tfoot td {
   font-size: 14px;
 }
+
 /* Animations */
 .fade, .fade.ng-enter {
   animation: fadeIn 0.5s;

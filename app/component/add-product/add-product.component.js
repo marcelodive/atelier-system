@@ -58,7 +58,7 @@ function AddProductController ($scope, logFactory, productFactory) {
         closeEditing();
         logFactory.showToaster('Sucesso', `Produto ${createdProduct.name} salvo`, 'success');
       } catch (error) {
-        logFactory.showToaster('Erro', `Ocorreu um erro ao salvar o producto, por favor, tente novamente`, 'error');
+        logFactory.showToaster('Erro', `Ocorreu um erro ao salvar o produto, por favor, tente novamente`, 'error');
         logFactory.log(error, 'error');
       }
     }

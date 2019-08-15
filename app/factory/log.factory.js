@@ -2,7 +2,7 @@ angular.module('App')
 .factory('logFactory', ($log, toaster) => {
 
   // types: success, error, wait, warning, note
-  function showToaster (title, text = '', type = 'info') {
+  function showToaster (title = '', text = '', type = 'info') {
     toaster.pop(type, title, text);
     log(`${title} | ${text}`, type);
   }
