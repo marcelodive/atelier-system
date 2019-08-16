@@ -4,6 +4,9 @@ sidenav {
 md-datepicker ~ .hint {
   padding-left: 6em;
 }
+md-input-container label {
+	overflow: visible !important;
+}
 .center-text {
   text-align: center!important;
 }

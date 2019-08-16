@@ -1,8 +1,14 @@
 <md-card layout-padding class="fade-in-up-down">
   <form name=orderForm ng-submit="orderForm.$valid && ctrl.createOrder(ctrl.order)" novalidate>
-    <md-subheader>Endereço da festa:</md-subheader>
+    <md-subheader>Cliente:</md-subheader>
     <div layout="row" layout-align-gt-sm="space-around center" layout-wrap>
+      Aqui vai os dados do Cliente
+    </div>
+
+    <md-subheader>Endereço da festa:</md-subheader>
+    <div layout="row" layout-align-gt-sm="space-between center" layout-wrap>
         <md-input-container class="md-block" flex-gt-sm="20" flex="100">
+          <md-icon>location_on</md-icon>
           <label>CEP</label>
           <input name="cep"
             ng-keypress="$event.keyCode === 13 && ctrl.buildAddressFromCEP(ctrl.order.cep)"
@@ -60,6 +66,101 @@
           <input name="complement" ng-model="ctrl.order.complement">
         </md-input-container>
     </div>
+
+    <md-subheader>Detalhes da festa:</md-subheader>
+    <div layout="row" layout-align-gt-sm="space-between center" layout-wrap>
+        <md-input-container class="md-block" flex-gt-sm="60" flex="100">
+          <label>Tema</label>
+          <md-icon>extension</md-icon>
+          <input name="theme" ng-model="ctrl.order.theme" ng-required="true">
+          <div ng-messages="orderForm.theme.$error">
+            <div ng-message="required">É necessário inserir um tema</div>
+          </div>
+        </md-input-container>
+        <md-input-container class="md-block" flex-gt-sm="35" flex="100">
+          <label>Cores</label>
+          <md-icon>color_lens</md-icon>
+          <input name="colors" ng-model="ctrl.order.colors" ng-required="true">
+          <div ng-messages="orderForm.colors.$error">
+            <div ng-message="required">É necessário inserir uma(s) cor(es)</div>
+          </div>
+        </md-input-container>
+
+        <span layout="row" layout-align="center center" flex="40">
+          <md-input-container class="md-block" flex-gt-sm="60" flex="100">
+            <label>Data da festa</label>
+            <md-datepicker ng-model="ctrl.order.partyDay" onkeydown="return false"
+              md-is-open="ctrl.isPartyDayCalendarOpen" ng-click="ctrl.isPartyDayCalendarOpen = true"
+              name="partyDay" ng-placeholder="30/01/2000" md-current-view="year" ng-required="true"">
+            </md-datepicker>
+            <div ng-show="orderForm.partyDay.$untouched" class="hint">Ex.: 30/01/2000</div>
+            <div ng-messages="orderForm.partyDay.$error">
+                <div ng-message-exp="['required','pattern']">É necessário escolher uma data válida</div>
+            </div>
+          </md-input-container>
+          <span layout="row" layout-align="center center" flex-gt-sm="40" flex="100">
+              <md-input-container class="md-block">
+                <label>Horário da festa</label>
+                <md-icon>access_time</md-icon>
+                <input name="partyHour" type="number" min="0" max="23" ng-model="ctrl.order.partyHour"
+                  placeholder="20" ng-required="true">
+                <div ng-messages="orderForm.partyHour.$error">
+                  <div ng-message="required">É necessário inserir um horário</div>
+                </div>
+              </md-input-container>
+              :
+              <md-input-container class="md-block">
+                <label></label>
+                <input type="number" min="0" max="59" ng-model="ctrl.order.partyMinute" placeholder="00">
+              </md-input-container>
+          </span>
+        </span>
+
+        <md-radio-group class="md-block" ng-model="ctrl.order.deliveryBy" flex-gt-sm="20"
+          flex="100" ng-required="true" ng-init="ctrl.order.deliveryBy = 'party'">
+          <md-radio-button value="party">
+            Entrega na festa
+          </md-radio-button>
+          <md-radio-button value="correios">
+            Entrega pelos Correios
+          </md-radio-button>
+          <md-radio-button value="atelier">
+            Entrega no ateliê
+          </md-radio-button>
+        </md-radio-group>
+
+        <span layout="row" layout-align="center center" flex-gt-sm="20" flex="100"
+          ng-if="ctrl.order.deliveryBy == 'party' || ctrl.order.deliveryBy == 'atelier'">
+          <md-input-container class="md-block" flex="60">
+            <label>Horário da entrega</label>
+            <md-icon>access_time</md-icon>
+            <input name="deliveryHour" type="number" min="0" max="23" ng-model="ctrl.order.deliveryHour"
+              placeholder="17" ng-required="true">
+            <div ng-messages="orderForm.deliveryHour.$error">
+              <div ng-message="required">É necessário inserir um horário</div>
+            </div>
+          </md-input-container>
+          :
+          <md-input-container class="md-block" flex="40">
+            <label></label>
+            <input type="number" min="0" max="59" ng-model="ctrl.order.deliveryMinute" placeholder="00">
+          </md-input-container>
+        </span>
+
+        <md-input-container class="md-block" flex-gt-sm="20" flex="100" ng-if="ctrl.order.deliveryBy == 'correios'">
+          <label>Data do envio</label>
+          <md-datepicker ng-model="ctrl.order.deliveryDay" onkeydown="return false"
+            md-is-open="ctrl.isDeliveryDayCalendarOpen" ng-click="ctrl.isDeliveryDayCalendarOpen = true"
+            name="deliveryDay" ng-placeholder="30/01/2000" md-current-view="month" ng-required="true"">
+          </md-datepicker>
+          <div ng-show="orderForm.deliveryDay.$untouched" class="hint">Ex.: 30/01/2000</div>
+          <div ng-messages="orderForm.deliveryDay.$error">
+              <div ng-message-exp="['required','pattern']">É necessário escolher uma data válida</div>
+          </div>
+        </md-input-container>
+
+    </div>
+
   </form>
 </md-card>
 
