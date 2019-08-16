@@ -19,6 +19,11 @@ function AddOrderController ($scope, utilsFactory, logFactory, productFactory) {
   vm.updateAutocompleteProduct = updateAutocompleteProduct;
   vm.addNewProductRow = addNewProductRow;
   vm.updateTotalPrice = updateTotalPrice;
+  vm.removeProduct = removeProduct;
+
+  function removeProduct (key) {
+    vm.order.products.splice(key, 1);
+  }
 
   function updateTotalPrice (product) {
     product.totalPrice = (product.price * product.quantity).toFixed(2);
@@ -39,9 +44,9 @@ function AddOrderController ($scope, utilsFactory, logFactory, productFactory) {
   }
 
   function updateAutocompleteProduct (product) {
-    const selectedItem = product.selectedItem;
-    product.name = selectedItem.name;
-    product.price = selectedItem.price;
+    const autocompleteItem = product.autocompleteItem;
+    product.name = autocompleteItem.name;
+    product.price = autocompleteItem.price;
   }
 
   async function buildAddressFromCEP (cep) {

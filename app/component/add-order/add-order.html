@@ -166,7 +166,7 @@
         <md-input-container class="md-block" flex="50">
           <label>Nome</label>
           <md-icon>redeem</md-icon>
-          <md-autocomplete md-selected-item="product.selectedItem"
+          <md-autocomplete md-selected-item="product.autocompleteItem"
             md-search-text="product.searchText"
             md-items="item in ctrl.getMatchingProducts(product.searchText, ctrl.order.products)"
             md-item-text="item.name" md-clear-button="false" md-min-length="0"
@@ -188,11 +188,12 @@
         </md-input-container>
         <md-input-container class="md-block" flex="10">
           <label>Total (R$)</label>
-          <input min="1" ng-model="product.totalPrice" ng-disabled="true">
+          <input min="1" ng-model="product.totalPrice" onkeydown="return false">
         </md-input-container>
-        <span style="padding-bottom: 1em;" flex="10" ng-if="ctrl.order.products.length > 0"
+        <span style="padding-bottom: 1em;" flex="10"
           title="Deletar produto" >
-          <md-button class="md-block md-warn" ng-click="ctrl.removeProduct(key)">
+          <md-button class="md-block md-warn" ng-click="ctrl.removeProduct(key)"
+            ng-disabled="key === (ctrl.order.products.length - 1)">
             <md-icon>delete</md-icon>
           </md-button>
         </span>
