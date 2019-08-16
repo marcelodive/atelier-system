@@ -14,8 +14,8 @@
         <md-input-container class="md-block" flex-gt-sm="40" flex="100">
           <label>Preço (R$)</label>
           <md-icon>money</md-icon>
-          <input type="string" ng-change="ctrl.updateProductPrice(ctrl.product.price)"
-            name="price" ng-model="ctrl.product.price" ng-required="true" step="any">
+          <input type="string" ng-change="ctrl.formatPrice(ctrl.product.price)"
+            name="price" ng-model="ctrl.product.price" ng-required="true">
           <div ng-messages="productForm.price.$error">
             <div ng-message="required">É necessário inserir um preço</div>
           </div>

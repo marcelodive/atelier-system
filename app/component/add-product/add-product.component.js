@@ -10,7 +10,7 @@ angular.module('App')
   }
 });
 
-function AddProductController ($scope, logFactory, productFactory) {
+function AddProductController ($scope, logFactory, productFactory, utilsFactory) {
   const vm = this;
   vm.isSaving = false;
 
@@ -23,13 +23,11 @@ function AddProductController ($scope, logFactory, productFactory) {
     vm.product.price = Number('0').toFixed(2);
   }
 
-  vm.updateProductPrice = updateProductPrice;
+  vm.formatPrice = formatPrice;
   vm.createProduct = createProduct;
 
-  function updateProductPrice (price) {
-    price = price ? price.replace(/[^0-9]/g,'') : '0';
-    const decimals = price.slice(-2);
-    vm.product.price = Number(price.substring(0,price.length-2).concat('.').concat(decimals)).toFixed(2);
+  function formatPrice (price) {
+    vm.product.price = utilsFactory.formatPrice(price);
   }
 
   function closeEditing () {

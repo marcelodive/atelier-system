@@ -7,6 +7,9 @@ md-datepicker ~ .hint {
 md-input-container label {
 	overflow: visible !important;
 }
+md-autocomplete-wrap {
+  box-shadow: none!important;
+}
 .center-text {
   text-align: center!important;
 }
