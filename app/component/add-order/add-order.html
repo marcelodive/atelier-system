@@ -1,11 +1,21 @@
 <md-card layout-padding class="fade-in-up-down">
   <form name=orderForm ng-submit="orderForm.$valid && ctrl.createOrder(ctrl.order)" novalidate>
-    <md-subheader>Cliente:</md-subheader>
-    <div layout="row" layout-align-gt-sm="space-around center" layout-wrap>
-      Aqui vai os dados do Cliente
+    <md-subheader>Cliente</md-subheader>
+    <div layout="column">
+      <md-input-container class="md-block" flex="50">
+        <label>Nome</label>
+        <md-autocomplete md-selected-item="product.selectedClient"
+          md-search-text="ctrl.clientSearchText"
+          md-items="item in ctrl.getMatchingClients(ctrl.clientSearchText)"
+          md-item-text="item.name" md-clear-button="false" md-min-length="0"
+          placeholder="Ex. Bolo" md-search-text-change="ctrl.addNewProductRow(ctrl.order.products)"
+          md-selected-item-change="ctrl.updateAutocompleteProduct(product);ctrl.addNewProductRow(ctrl.order.products)">
+          <span md-highlight-text="product.searchText">{{item.name}}</span>
+        </md-autocomplete>
+      </md-input-container>
     </div>
 
-    <md-subheader>Endereço da festa:</md-subheader>
+    <md-subheader>Endereço da festa</md-subheader>
     <div layout="row" layout-align-gt-sm="space-between center" layout-wrap>
         <md-input-container class="md-block" flex-gt-sm="20" flex="100">
           <md-icon>location_on</md-icon>
@@ -67,7 +77,7 @@
         </md-input-container>
     </div>
 
-    <md-subheader>Detalhes da festa:</md-subheader>
+    <md-subheader>Detalhes da festa</md-subheader>
     <div layout="row" layout-align-gt-sm="space-between center" layout-wrap>
         <md-input-container class="md-block" flex-gt-sm="60" flex="100">
           <label>Tema</label>
@@ -147,25 +157,43 @@
           </md-input-container>
         </span>
 
-        <md-input-container class="md-block" flex-gt-sm="20" flex="100" ng-if="ctrl.order.deliveryBy == 'correios'">
-          <label>Data do envio</label>
-          <md-datepicker ng-model="ctrl.order.deliveryDay" onkeydown="return false"
-            md-is-open="ctrl.isDeliveryDayCalendarOpen" ng-click="ctrl.isDeliveryDayCalendarOpen = true"
-            name="deliveryDay" ng-placeholder="30/01/2000" md-current-view="month" ng-required="true"">
-          </md-datepicker>
-          <div ng-show="orderForm.deliveryDay.$untouched" class="hint">Ex.: 30/01/2000</div>
-          <div ng-messages="orderForm.deliveryDay.$error">
-              <div ng-message-exp="['required','pattern']">É necessário escolher uma data válida</div>
-          </div>
+        <span layout="column" flex-gt-sm="20" flex="100" ng-if="ctrl.order.deliveryBy == 'correios'">
+          <md-input-container class="md-block remove-margin">
+            <label>Data do envio</label>
+            <md-datepicker ng-model="ctrl.order.deliveryDay" onkeydown="return false"
+              md-is-open="ctrl.isDeliveryDayCalendarOpen" ng-click="ctrl.isDeliveryDayCalendarOpen = true"
+              name="deliveryDay" ng-placeholder="30/01/2000" md-current-view="month" ng-required="true"">
+            </md-datepicker>
+            <div ng-show="orderForm.deliveryDay.$untouched" class="hint">Ex.: 30/01/2000</div>
+            <div ng-messages="orderForm.deliveryDay.$error">
+                <div ng-message-exp="['required','pattern']">É necessário escolher uma data válida</div>
+            </div>
+          </md-input-container>
+          <span layout="row">
+            <md-input-container class="md-block remove-margin" flex="70">
+              <label>Rastreio</label>
+              <input name="trackingCode" ng-model="ctrl.order.trackingCode">
+            </md-input-container>
+            <md-input-container class="md-block remove-margin" flex="30">
+              <label>R$</label>
+              <input type="string"
+                ng-change="ctrl.order.deliveryPrice = ctrl.formatPrice(ctrl.order.deliveryPrice)"
+                ng-model="ctrl.order.deliveryPrice" ng-change="ctrl.updateTotalPrice(product)">
+            </md-input-container>
+          </span>
+        </span>
+        <md-input-container class="md-block" flex="100">
+          <label>Anotações</label>
+          <md-icon>cake</md-icon>
+          <textarea ng-model="ctrl.order.anotations" rows="1" md-select-on-focus></textarea>
         </md-input-container>
     </div>
 
-    <md-subheader>Produtos:</md-subheader>
+    <md-subheader>Produtos</md-subheader>
     <div layout="column">
       <span layout="row" layout-align-gt-sm="space-between center" ng-repeat="(key, product) in ctrl.order.products" flex="100">
         <md-input-container class="md-block" flex="50">
           <label>Nome</label>
-          <md-icon>redeem</md-icon>
           <md-autocomplete md-selected-item="product.autocompleteItem"
             md-search-text="product.searchText"
             md-items="item in ctrl.getMatchingProducts(product.searchText, ctrl.order.products)"
@@ -175,18 +203,17 @@
             <span md-highlight-text="product.searchText">{{item.name}}</span>
           </md-autocomplete>
         </md-input-container>
-        <md-input-container class="md-block" flex="10">
+        <md-input-container class="md-block remove-margin" flex="10">
           <label>Preço (R$)</label>
-          <md-icon>money</md-icon>
           <input type="string" ng-change="product.price = ctrl.formatPrice(product.price)" ng-model="product.price"
             ng-change="ctrl.updateTotalPrice(product);ctrl.addNewProductRow(ctrl.order.products)">
         </md-input-container>
-        <md-input-container class="md-block" flex="10">
+        <md-input-container class="md-block remove-margin" flex="10">
           <label>Quantidade</label>
           <input type="number" min="1" ng-model="product.quantity"
             ng-change="ctrl.updateTotalPrice(product);ctrl.addNewProductRow(ctrl.order.products)">
         </md-input-container>
-        <md-input-container class="md-block" flex="10">
+        <md-input-container class="md-block remove-margin" flex="10">
           <label>Total (R$)</label>
           <input min="1" ng-model="product.totalPrice" onkeydown="return false">
         </md-input-container>
@@ -198,7 +225,83 @@
           </md-button>
         </span>
       </span>
+      <span layout="row" layout-align="space-between center" flex="100">
+          <span layout="column" flex="60">
+            <md-input-container class="md-block remove-margin" flex>
+              <md-checkbox ng-model="ctrl.order.hasDiscount" aria-label="Checkbox 1"
+                ng-change="ctrl.updateTotalProductsPrice()"
+                ng-true-value="1" ng-false-value="0">
+                Desconto
+              </md-checkbox>
+            </md-input-container>
+            <span layout="row" layout-align="space-between center" ng-if="ctrl.order.hasDiscount" flex="30">
+              <md-input-container class="md-block remove-margin" flex="10">
+                <label>Desconto (%)</label>
+                <input type="number" min="1" ng-change="ctrl.updateTotalProductsPrice()"
+                  ng-model="ctrl.order.discount">
+              </md-input-container>
+              <md-input-container class="md-block remove-margin" flex="85">
+                <label>Justificativa</label>
+                <input ng-model="ctrl.order.discountJustification">
+              </md-input-container>
+            </span>
+          </span>
+          <md-input-container class="md-block remove-margin" flex="20">
+            <label>Total Geral (R$)</label>
+            <input min="0" ng-model="ctrl.order.totalProductsPrice" onkeydown="return false">
+          </md-input-container>
+      </span>
     </div>
+
+    <md-subheader>Pagamento</md-subheader>
+    <div layout="row" layout-align-gt-sm="space-between center" layout-wrap>
+        <md-input-container class="md-block" flex-gt-sm="70" flex="100">
+          <label>Forma de pagamento</label>
+          <md-icon>account_balance_wallet</md-icon>
+          <input name="PaymentMethod" ng-model="ctrl.order.PaymentMethod" ng-required="true">
+          <div ng-messages="orderForm.PaymentMethod.$error">
+            <div ng-message="required">É necessário inserir uma forma de pagamento</div>
+          </div>
+        </md-input-container>
+        <md-input-container class="md-block" flex-gt-sm="25" flex="100">
+          <label>Nº parcelas</label>
+          <input type="number" name="numInstallments"
+            ng-change="ctrl.fillInstallmentsWithPrice(ctrl.order.numInstallments)"
+            ng-model="ctrl.order.numInstallments" min="1" ng-required="true">
+          <div ng-messages="orderForm.numInstallments.$error">
+            <div ng-message="required">É necessário inserir o nº de parcelas</div>
+          </div>
+        </md-input-container>
+    </div>
+    <div layout="row" layout-align-gt-sm="start center" ng-if="ctrl.order.numInstallments" layout-wrap>
+        <span layout="row" ng-repeat="x in [].constructor(ctrl.order.numInstallments) track by $index" flex-gt-sm="50" flex="100">
+          <md-input-container class="md-block" flex="50">
+            <label>Parcela {{$index + 1}}</label>
+            <md-datepicker ng-model="ctrl.order.paymentDay[$index]" onkeydown="return false"
+              md-is-open="ctrl.isPaymentDayCalendarOpen[$index]"
+              ng-click="ctrl.isPaymentDayCalendarOpen[$index] = true"
+              name="paymentDay" ng-placeholder="30/01/2000" md-current-view="month" ng-required="true"">
+            </md-datepicker>
+            <div ng-show="orderForm.paymentDay.$untouched" class="hint">Ex.: 30/01/2000</div>
+            <div ng-messages="orderForm.paymentDay.$error">
+                <div ng-message-exp="['required','pattern']">É necessário escolher uma data válida</div>
+            </div>
+          </md-input-container>
+          <md-input-container class="md-block" flex="15">
+            <label>R$</label>
+            <input type="string"
+              ng-change="ctrl.order.installments[$index].price = ctrl.formatPrice(ctrl.order.installments[$index].price);
+                ctrl.updateTotalInstallmentPrice()"
+              ng-model="ctrl.order.installments[$index].price">
+          </md-input-container>
+        </span>
+    </div>
+    <span layout="row" layout-align="end center" flex="100">
+        <md-input-container class="md-block remove-margin" flex="20">
+          <label>Total Parcelado (R$)</label>
+          <input min="0" ng-model="ctrl.order.totalInstallmentPrice" onkeydown="return false">
+        </md-input-container>
+    </span>
 
   </form>
 </md-card>

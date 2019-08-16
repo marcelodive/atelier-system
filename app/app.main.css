@@ -1,3 +1,4 @@
+/* Tags */
 sidenav {
   background-color: white;
 }
@@ -10,31 +11,17 @@ md-input-container label {
 md-autocomplete-wrap {
   box-shadow: none!important;
 }
-.center-text {
-  text-align: center!important;
-}
+
+/* Classes */
 .alert-message {
   color: rgb(221,44,0);
   font-size: 0.8em
 }
+.center-text {
+  text-align: center!important;
+}
 .hide-overflow {
   overflow: hidden;
-}
-.sidenav {
-  height: 100%;
-  min-height: 100vh;
-  max-width: 15em;
-}
-.sidenav-small {
-  height: 100%;
-  min-height: 100vh;
-  max-width: 4em;
-}
-.main-content {
-  width: 100%;
-}
-.pointer {
-  cursor: pointer;
 }
 .hint {
   position: absolute;
@@ -46,9 +33,30 @@ md-autocomplete-wrap {
   transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
   color: grey;
 }
+.main-content {
+  width: 100%;
+}
 .negative-container-padding {
   margin-bottom: -30px;
 }
+.pointer {
+  cursor: pointer;
+}
+.remove-margin {
+  margin: 0px!important;
+}
+.sidenav {
+  height: 100%;
+  min-height: 100vh;
+  max-width: 15em;
+}
+.sidenav-small {
+  height: 100%;
+  min-height: 100vh;
+  max-width: 4em;
+}
+
+/* Table */
 table.greyGridTable {
   border: 2px solid #FFFFFF;
   width: 100%;

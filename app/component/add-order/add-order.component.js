@@ -10,7 +10,7 @@ angular.module('App')
   }
 });
 
-function AddOrderController ($scope, utilsFactory, logFactory, productFactory) {
+function AddOrderController ($scope, utilsFactory, logFactory, productFactory, clientFactory) {
   const vm = this;
 
   vm.buildAddressFromCEP = buildAddressFromCEP;
@@ -20,13 +20,55 @@ function AddOrderController ($scope, utilsFactory, logFactory, productFactory) {
   vm.addNewProductRow = addNewProductRow;
   vm.updateTotalPrice = updateTotalPrice;
   vm.removeProduct = removeProduct;
+  vm.fillInstallmentsWithPrice = fillInstallmentsWithPrice;
+  vm.updateTotalInstallmentPrice = updateTotalInstallmentPrice;
+  vm.updateTotalProductsPrice = updateTotalProductsPrice;
+  vm.getMatchingClients = getMatchingClients;
+
+  function getMatchingClients (searchText) {
+    const productsName = addedProducts.map((product) => product.name);
+    const productsNotInList = vm.products.filter((product) => !productsName.includes(product.name));
+    return productsNotInList.filter((product) =>
+      product.name.toLowerCase().includes(searchText.toLowerCase()));
+  }
+
+  function updateTotalInstallmentPrice () {
+    vm.order.totalInstallmentPrice = vm.order.installments.reduce((totalPrice, installment) =>
+      installment.price ? (totalPrice + Number(installment.price)) : totalPrice, 0).toFixed(2);
+  }
+
+  function fillInstallmentsWithPrice (numInstallments) {
+    vm.order.installments = [];
+    for (let i = 0; i < numInstallments; i++) {
+      vm.order.installments[i] = vm.order.installments[i] || {};
+      vm.order.installments[i].price = utilsFactory.formatPrice((vm.order.totalProductsPrice/numInstallments).toFixed(2));
+    }
+    updateTotalInstallmentPrice();
+  }
+
+  function updateTotalProductsPrice () {
+    const totalProductsPrice = vm.order.products.reduce((totalPrice, product) =>
+      product.totalPrice ? (totalPrice + Number(product.totalPrice)) : totalPrice, 0);
+
+    const totalProductsPriceWithDiscount = (vm.order.hasDiscount && vm.order.discount)
+      ? totalProductsPrice * (1 - vm.order.discount/100)
+      : totalProductsPrice;
+
+    vm.order.totalProductsPrice = totalProductsPriceWithDiscount.toFixed(2);
+
+    if (vm.order.installments) {
+      fillInstallmentsWithPrice (vm.order.installments.length)
+    }
+  }
 
   function removeProduct (key) {
     vm.order.products.splice(key, 1);
+    updateTotalProductsPrice();
   }
 
   function updateTotalPrice (product) {
     product.totalPrice = (product.price * product.quantity).toFixed(2);
+    updateTotalProductsPrice();
   }
 
   function addNewProductRow (products) {
@@ -68,6 +110,9 @@ function AddOrderController ($scope, utilsFactory, logFactory, productFactory) {
     vm.order = {products: [{}]};
     const {data: products} = await productFactory.getProducts();
     vm.products = products;
+
+    const {data: clients} = await clientFactory.getClients();
+    vm.clients = clients;
   }
 
   init();
