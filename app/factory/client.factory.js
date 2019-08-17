@@ -8,6 +8,10 @@ angular.module('App')
     return $http.get(`${constants.API}/Clients`);
   }
 
+  function getClientsWithChildren () {
+    return $http.get(`${constants.API}/Clients?filter[include]=children`);
+  }
+
   function deleteClient (clientId) {
     return $http.delete(`${constants.API}/Clients/${clientId}`);
   }
@@ -26,7 +30,7 @@ angular.module('App')
       childrenList.push({
         name:child.name,
         birthday:child.birthday,
-        formatedBirthday:moment(child.birthday).format('MM/DD'),
+        formattedBirthday:moment(child.birthday).format('MM/DD'),
         age: moment(new Date()).diff(child.birthday, 'years'),
         client:client
       })
@@ -40,6 +44,7 @@ angular.module('App')
     getClients: getClients,
     deleteClient: deleteClient,
     editClient: editClient,
-    addClientInChildrenList: addClientInChildrenList
+    addClientInChildrenList: addClientInChildrenList,
+    getClientsWithChildren: getClientsWithChildren
   }
 });

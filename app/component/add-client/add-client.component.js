@@ -97,7 +97,7 @@ function AddClientController ($scope, clientFactory, childFactory, logFactory) {
     vm.children.push({
       name:child.name,
       birthday:child.birthday,
-      formatedBirthday:moment(child.birthday).format('DD/MM'),
+      formattedBirthday:moment(child.birthday).format('DD/MM'),
       age: moment(new Date()).diff(child.birthday, 'years'),
       client:client
     })

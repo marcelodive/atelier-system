@@ -2,17 +2,39 @@
   <form name=orderForm ng-submit="orderForm.$valid && ctrl.createOrder(ctrl.order)" novalidate>
     <md-subheader>Cliente</md-subheader>
     <div layout="column">
-      <md-input-container class="md-block" flex="50">
+      <md-input-container class="md-block remove-bottom-margin" flex="50">
         <label>Nome</label>
-        <md-autocomplete md-selected-item="product.selectedClient"
+        <md-autocomplete md-selected-item="ctrl.selectedChild" name="client"
           md-search-text="ctrl.clientSearchText"
-          md-items="item in ctrl.getMatchingClients(ctrl.clientSearchText)"
-          md-item-text="item.name" md-clear-button="false" md-min-length="0"
-          placeholder="Ex. Bolo" md-search-text-change="ctrl.addNewProductRow(ctrl.order.products)"
-          md-selected-item-change="ctrl.updateAutocompleteProduct(product);ctrl.addNewProductRow(ctrl.order.products)">
-          <span md-highlight-text="product.searchText">{{item.name}}</span>
+          md-items="child in ctrl.getMatchingClients(ctrl.clientSearchText)"
+          md-item-text="child.client.name"
+          md-clear-button="false" md-min-length="0"
+          placeholder="Ex. Fulano de Tal" ng-required="true"
+          md-selected-item-change="ctrl.updateClientForm(ctrl.selectedChild)">
+          <span md-highlight-text="ctrl.clientSearchText">
+            NOME: {{child.client.name}} ({{child.client.cpf}}) | EMAIL: {{child.client.name}} | CRIANÇA: {{child.name}}
+          </span>
         </md-autocomplete>
+        <div ng-messages="orderForm.client.$error">
+          <div ng-message="required">É necessário escolher um cliente</div>
+        </div>
       </md-input-container>
+
+      <span ng-if="ctrl.selectedChild" layout="row"
+        layout-align="center start"
+        layout-padding layout-wrap>
+        <span layout="row" flex="100">
+          <span flex><strong>CPF</strong>: {{ctrl.selectedChild.client.cpf}}</span>
+          <span flex><strong>Email</strong>: {{ctrl.selectedChild.client.email}}</span>
+          <span flex><strong>Telefone</strong>: {{ctrl.selectedChild.client.phone}}</span>
+        </span>
+        <span layout="row" flex="100">
+          <span flex><strong>Nome da criança</strong>: {{ctrl.selectedChild.name}}</span>
+          <span flex><strong>Aniversário</strong>: {{ctrl.selectedChild.formattedBirthday}}</span>
+          <span flex><strong>Idade atual</strong>: {{ctrl.selectedChild.age}} {{ctrl.selectedChild.age > 1 ? 'anos' : 'ano'}}</span>
+        </span>
+      </span>
+
     </div>
 
     <md-subheader>Endereço da festa</md-subheader>

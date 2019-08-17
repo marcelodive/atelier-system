@@ -8,7 +8,7 @@
       <thead md-head md-order="orderByDt">
         <tr md-row>
           <th class="center-text" md-column md-order-by="name">Criança</th>
-          <th class="center-text" md-column md-order-by="formatedBirthday">Aniversário (mês/dia)</th>
+          <th class="center-text" md-column md-order-by="formattedBirthday">Aniversário (mês/dia)</th>
           <th class="center-text" md-column md-order-by="age">Idade</th>
           <th class="center-text" md-column md-order-by="client.name">Cliente</th>
           <th class="center-text" md-column md-order-by="client.cpf">CPF</th>
@@ -20,7 +20,7 @@
       <tbody md-body>
         <tr md-row ng-repeat="(key, child) in ctrl.children | orderBy: orderByDt">
           <td>{{child.name}}</td>
-          <td>{{child.formatedBirthday}}</td>
+          <td>{{child.formattedBirthday}}</td>
           <td>{{child.age}}</td>
           <td>{{child.client.name}}</td>
           <td>{{child.client.cpf}}</td>

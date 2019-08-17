@@ -45,6 +45,9 @@ md-autocomplete-wrap {
 .remove-margin {
   margin: 0px!important;
 }
+.remove-bottom-margin {
+  margin-bottom: 0px!important;
+}
 .sidenav {
   height: 100%;
   min-height: 100vh;

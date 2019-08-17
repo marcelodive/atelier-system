@@ -24,12 +24,22 @@ function AddOrderController ($scope, utilsFactory, logFactory, productFactory, c
   vm.updateTotalInstallmentPrice = updateTotalInstallmentPrice;
   vm.updateTotalProductsPrice = updateTotalProductsPrice;
   vm.getMatchingClients = getMatchingClients;
+  vm.updateClientForm = updateClientForm;
+
+  function updateClientForm () {
+
+  }
 
   function getMatchingClients (searchText) {
-    const productsName = addedProducts.map((product) => product.name);
-    const productsNotInList = vm.products.filter((product) => !productsName.includes(product.name));
-    return productsNotInList.filter((product) =>
-      product.name.toLowerCase().includes(searchText.toLowerCase()));
+    searchText = searchText.toLowerCase();
+    return vm.childrenWithClient.filter((child) => {
+      const client = child.client;
+      return (
+        child.name.toLowerCase().includes(searchText) || client.name.toLowerCase().includes(searchText) ||
+        client.email.toLowerCase().includes(searchText) || client.cpf.toLowerCase().includes(searchText) ||
+        client.phone.toLowerCase().includes(searchText)
+      );
+    });
   }
 
   function updateTotalInstallmentPrice () {
@@ -106,13 +116,29 @@ function AddOrderController ($scope, utilsFactory, logFactory, productFactory, c
     }
   }
 
+  function buildChildListFromClient (clientsWithChildren) {
+    let childrenWithClient = [];
+
+    clientsWithChildren.forEach(clientWithChildren => {
+      clientWithChildren.children.forEach(child => {
+        child.formattedBirthday = moment(child.birthday).format('DD/MM');
+        child.age = moment(new Date()).diff(child.birthday, 'years');
+        childWithClient = {...child, client: clientWithChildren};
+        childrenWithClient.push(childWithClient);
+      });
+    });
+
+    return childrenWithClient;
+  }
+
   async function init () {
     vm.order = {products: [{}]};
     const {data: products} = await productFactory.getProducts();
     vm.products = products;
 
-    const {data: clients} = await clientFactory.getClients();
-    vm.clients = clients;
+    const {data: clientsWithChildren} = await clientFactory.getClientsWithChildren();
+    vm.clientsWithChildren = clientsWithChildren;
+    vm.childrenWithClient = buildChildListFromClient(clientsWithChildren);
   }
 
   init();
