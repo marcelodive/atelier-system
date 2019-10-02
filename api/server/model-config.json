@@ -54,5 +54,17 @@
   "Kit": {
     "dataSource": "db",
     "public": true
+  },
+  "Order": {
+    "dataSource": "db",
+    "public": true
+  },
+  "Installment": {
+    "dataSource": "db",
+    "public": true
+  },
+  "OrderProduct": {
+    "dataSource": "db",
+    "public": true
   }
 }

@@ -12,7 +12,8 @@
       "required": true
     },
     "price": {
-      "type": "number"
+      "type": "number",
+      "dataType": "decimal"
     }
   },
   "validations": [],

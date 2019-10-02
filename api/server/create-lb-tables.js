@@ -10,7 +10,10 @@ var lbTables = [
   // 'Role',
   // 'Notification',
   // 'Product',
-  // 'Kit'
+  // 'Kit',
+  // 'Installment',
+  // 'OrderProduct',
+  // 'Order'
 ];
 ds.automigrate(lbTables, function(er) {
   if (er) throw er;

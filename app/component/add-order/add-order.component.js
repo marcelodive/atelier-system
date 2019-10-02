@@ -10,7 +10,7 @@ angular.module('App')
   }
 });
 
-function AddOrderController ($scope, utilsFactory, logFactory, productFactory, clientFactory) {
+function AddOrderController ($scope, utilsFactory, logFactory, productFactory, clientFactory, orderFactory) {
   const vm = this;
 
   vm.buildAddressFromCEP = buildAddressFromCEP;
@@ -25,6 +25,12 @@ function AddOrderController ($scope, utilsFactory, logFactory, productFactory, c
   vm.updateTotalProductsPrice = updateTotalProductsPrice;
   vm.getMatchingClients = getMatchingClients;
   vm.updateClientForm = updateClientForm;
+  vm.createOrder = createOrder;
+
+  function createOrder (order) {
+    console.log(order);
+    orderFactory.createOrder(order);
+  }
 
   function updateClientForm () {
 
@@ -43,7 +49,7 @@ function AddOrderController ($scope, utilsFactory, logFactory, productFactory, c
   }
 
   function updateTotalInstallmentPrice () {
-    vm.order.totalInstallmentPrice = vm.order.installments.reduce((totalPrice, installment) =>
+    vm.order.total_installment_price = vm.order.installments.reduce((totalPrice, installment) =>
       installment.price ? (totalPrice + Number(installment.price)) : totalPrice, 0).toFixed(2);
   }
 
@@ -51,7 +57,7 @@ function AddOrderController ($scope, utilsFactory, logFactory, productFactory, c
     vm.order.installments = [];
     for (let i = 0; i < numInstallments; i++) {
       vm.order.installments[i] = vm.order.installments[i] || {};
-      vm.order.installments[i].price = utilsFactory.formatPrice((vm.order.totalProductsPrice/numInstallments).toFixed(2));
+      vm.order.installments[i].price = utilsFactory.formatPrice((vm.order.total_products_price/numInstallments).toFixed(2));
     }
     updateTotalInstallmentPrice();
   }
@@ -60,11 +66,11 @@ function AddOrderController ($scope, utilsFactory, logFactory, productFactory, c
     const totalProductsPrice = vm.order.products.reduce((totalPrice, product) =>
       product.totalPrice ? (totalPrice + Number(product.totalPrice)) : totalPrice, 0);
 
-    const totalProductsPriceWithDiscount = (vm.order.hasDiscount && vm.order.discount)
+    const totalProductsPriceWithDiscount = (vm.order.has_discount && vm.order.discount)
       ? totalProductsPrice * (1 - vm.order.discount/100)
       : totalProductsPrice;
 
-    vm.order.totalProductsPrice = totalProductsPriceWithDiscount.toFixed(2);
+    vm.order.total_products_price = totalProductsPriceWithDiscount.toFixed(2);
 
     if (vm.order.installments) {
       fillInstallmentsWithPrice (vm.order.installments.length)
@@ -107,7 +113,7 @@ function AddOrderController ($scope, utilsFactory, logFactory, productFactory, c
       vm.order.cep = address.cep;
       vm.order.neighborhood = address.bairro;
       vm.order.city = address.localidade;
-      vm.order.publicPlace = address.logradouro;
+      vm.order.public_place = address.logradouro;
       vm.order.state = address.uf;
     } catch (erro) {
       logFactory.showToaster('', `Este CEP não existe`, 'warn');

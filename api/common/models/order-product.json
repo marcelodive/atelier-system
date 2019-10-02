@@ -1,18 +1,22 @@
 {
-  "name": "Product",
-  "plural": "Products",
+  "name": "OrderProduct",
+  "plural": "OrderProducts",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
+    "order_id": {
+      "type": "number",
+      "required": true
+    },
     "name": {
       "type": "string",
       "required": true
     },
     "price": {
-      "type": "string",
+      "type": "number",
       "dataType": "decimal",
       "required": true
     }
