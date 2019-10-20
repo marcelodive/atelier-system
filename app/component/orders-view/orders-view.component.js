@@ -18,8 +18,9 @@ function OrdersViewController (orderFactory) {
     loadOrders();
   }
 
-  function loadOrders () {
-    vm.orders = orderFactory.loadOrders();
+  async function loadOrders () {
+    const {data:orders} = await orderFactory.loadOrders();
+    vm.orders = orders;
   }
 
   function triggerAddingOrder () {

@@ -1,6 +1,37 @@
-<md-card layout-padding ng-show="!ctrl.isAddingOrder">
-  Hello, orders!
-</md-card>
+<div layout="column" layout-padding ng-show="!ctrl.isAddingOrder">
+
+  <md-card ng-repeat="order in ctrl.orders">
+    <div layout="row" layout-padding layout-wrap>
+      <div>
+        Cliente: {{ order.child.client.name }}. Email: {{ order.child.client.email }}. Telefone: {{ order.child.client.phone }}<br>
+        Criança: {{ order.child.name }}. Idade: {{ order.child.birthday }}.
+      </div>
+      <div>
+        Entrega:
+        <span ng-if="order.delivery_by !== 'atelier'">
+          Entrega no ateliê no dia {{ order.delivery_day }} às {{ order.delivery_hour }} horas.
+        </span>
+        <span ng-if="order.delivery_by !== 'party'">
+          Entrega na festa no dia {{ order.delivery_day }} às {{ order.delivery_hour }} horas.
+        </span>
+        <span ng-if="order.delivery_by === 'correios'">
+          Envio pelos Correios no dia {{ order.delivery_day }}.
+        </span>
+      </div>
+      <div>
+        Informações da festa:
+        Data da festa: {{ order.party_day }} às {{ order.party_hour }}.
+        <span>
+          Endereço:<br>
+          {{ order.public_place }}, {{ order.public_place_number }}<br>
+          {{ order.neighborhood }} - {{order.city}}/{{order.state}}<br>
+          {{ order.complement }}
+        </span>
+      </div>
+    </div>
+  </md-card>
+
+</div>
 
 <md-button class="md-fab md-fab-bottom-right fade"
   ng-click="ctrl.triggerAddingOrder()" ng-show="!ctrl.isAddingOrder">
