@@ -28,12 +28,16 @@ function AddOrderController ($scope, utilsFactory, logFactory, productFactory, c
   vm.createOrder = createOrder;
 
   function createOrder (order) {
-    console.log(order);
-    orderFactory.createOrder(order);
+    try {
+      orderFactory.createOrder(order);
+    } catch (error) {
+      logFactory.showToaster('Erro', `Ocorreu um erro ao salvar o pedido, por favor, tente novamente`, 'error');
+      logFactory.log(error, 'error');
+    }
   }
 
-  function updateClientForm () {
-
+  function updateClientForm (selectedChild) {
+    vm.order.child_id = selectedChild.id;
   }
 
   function getMatchingClients (searchText) {
@@ -148,4 +152,4 @@ function AddOrderController ($scope, utilsFactory, logFactory, productFactory, c
   }
 
   init();
- }
+}

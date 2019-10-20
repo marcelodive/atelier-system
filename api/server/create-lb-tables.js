@@ -13,6 +13,7 @@ var lbTables = [
   // 'Kit',
   // 'Installment',
   // 'OrderProduct',
+  // 'Child',
   // 'Order'
 ];
 ds.automigrate(lbTables, function(er) {

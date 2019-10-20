@@ -1,3 +1,5 @@
+// I don't think this function is ever used
+
 'use strict';
 
 module.exports = function(app) {

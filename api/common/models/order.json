@@ -100,7 +100,23 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "orderProducts": {
+      "type": "hasMany",
+      "model": "OrderProduct",
+      "foreignKey": "order_id"
+    },
+    "installments": {
+      "type": "hasMany",
+      "model": "Installment",
+      "foreignKey": "order_id"
+    },
+    "child": {
+      "type": "belongsTo",
+      "model": "Child",
+      "foreignKey": "child_id"
+    }
+  },
   "acls": [],
   "methods": {}
 }

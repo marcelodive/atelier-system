@@ -11,13 +11,13 @@ module.exports = function(Order) {
     order.cep = Number(order.cep.replace('-', ''));
     const savedOrder = await Order.upsert(order);
 
-    savedOrder.installments.forEach((installment, index) => {
+    order.installments.forEach((installment, index) => {
       installment.order_id = savedOrder.id;
       installment.payment_day = savedOrder.paymentDay[index];
       Installment.upsert(installment);
     });
 
-    savedOrder.products.forEach((product) => {
+    order.products.forEach((product) => {
       product.order_id = savedOrder.id;
       product.name = product.searchText;
       OrderProduct.upsert(product);

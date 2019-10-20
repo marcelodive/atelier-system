@@ -13,8 +13,8 @@
     },
     "price": {
       "type": "string",
-      "dataType": "decimal",
-      "required": true
+      "required": true,
+      "dataType": "decimal"
     }
   },
   "validations": [],
