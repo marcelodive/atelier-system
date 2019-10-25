@@ -19,6 +19,10 @@
       "type": "number",
       "required": true,
       "dataType": "decimal"
+    },
+    "quantity": {
+      "type": "number",
+      "required": true
     }
   },
   "validations": [],

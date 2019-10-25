@@ -1,22 +1,21 @@
+<style>
+  .md-chips{
+    box-shadow: 0 0px !important;
+  }
+</style>
+
 <div layout="column" layout-padding ng-show="!ctrl.isAddingOrder" style="max-height: calc(100vh - 64px)">
   <md-content>
     <section>
       <md-subheader><b>Entrega: 31/03/2015</b> (3 dias)</md-subheader>
       <md-card ng-repeat="order in ctrl.orders track by $index">
-        <div layout="row" layout-padding layout-wrap>
-          <div layout="row" layout-align="space-between center" layout-fill>
+        <div layout="row" layout-padding layout-fill layout-wrap
+          ng-if="!ctrl.isShowingDetails()">
+          <div layout="column" layout-align="space-between start" flex="100" flex-gt-sm="33">
             <span>
               <span title="{{ order.child.name }}"><b>Criança</b>: {{ ctrl.reduceName(order.child.name) }}</span> <br>
               <span title="{{ order.child.client.name }}"><b>Responsável</b>: {{ ctrl.reduceName(order.child.client.name) }} ({{ order.child.client.phone }})</span>
             </span>
-            <md-chips>
-              <md-chip>{{ order.status || 'status'}}</md-chip>
-            </md-chips>
-          </div>
-          <div ng-if="order.showDetails">
-
-          </div>
-          <div layout="row" layout-align="space-between center" layout-fill>
             <span ng-if="order.delivery_by === 'atelier'">
               <md-icon>cake</md-icon>Entrega no <b>ateliê</b> às {{ order.delivery_hour }} horas.
             </span>
@@ -26,13 +25,129 @@
             <span ng-if="order.delivery_by === 'correios'">
               <md-icon>local_shipping</md-icon> Envio pelos <b>Correios</b> para {{ order.city }}.
             </span>
+          </div>
+          <div layout="column" layout-align="end center" flex="100" flex-gt-sm="33">
             <span layout="row" layout-align="center center">
               <md-icon title="{{order.email_status}}">email</md-icon>
               <md-icon title="{{order.payment_status}}">attach_money</md-icon>
             </span>
-            <md-button class="md-raised" ng-click="">
-              <md-icon>edit</md-icon>Editar
+          </div>
+          <div layout="column" layout-align="space-between end" flex="100" flex-gt-sm="33">
+            <md-chips>
+              <md-chip>{{ order.status || 'status'}}</md-chip>
+            </md-chips>
+            <md-button ng-click="order.showDetails = true">
+              <md-icon>remove_red_eye</md-icon> Detalhes
             </md-button>
+          </div>
+        </div>
+
+        <div layout="column" layout-padding ng-if="order.showDetails">
+          <span><b>Criança</b></span>
+          <span>Nome: {{order.child.name}}</span>
+          <span>Nascimento: {{order.child.birthday}} (y anos)</span>
+
+          <md-divider></md-divider>
+
+          <span><b>Responsável</b></span>
+          <span>Nome: {{order.child.client.name}}</span>
+          <span>CPF: {{order.child.client.cpf}}</span>
+          <span>Contatos: {{order.child.client.phone}} | {{order.child.client.email}}</span>
+
+          <md-divider></md-divider>
+
+          <span ng-if="order.delivery_by === 'atelier'">
+            <md-icon>cake</md-icon>Entrega no <b>ateliê</b> às {{ order.delivery_hour }} horas
+            <span ng-show="order.delivery_minute">e {{ order.delivery_minute }} minutos</span>.
+          </span>
+          <span ng-if="order.delivery_by === 'party'">
+            <md-icon>directions</md-icon> Entrega na <b>festa</b> às {{ order.delivery_hour }} horas
+            <span ng-show="order.delivery_minute">e {{ order.delivery_minute }} minutos</span>
+              no endereço:
+          </span>
+          <span ng-if="order.delivery_by === 'correios'">
+            <md-icon>local_shipping</md-icon> Envio pelos <b>Correios</b> para:
+          </span>
+          <span ng-if="order.delivery_by !== 'atelier'" layout="column">
+            <span>
+              {{order.public_place}},
+              <span ng-show="order.complement"> nº {{order.public_place_number}},</span>
+              {{order.neighborhood}}, {{order.city}}/{{order.state}}. <br ng-if="order.complement">
+              <span ng-if="order.complement">Compl.: {{order.complement}}</span>
+            </span>
+          </span>
+
+          <md-divider></md-divider>
+
+          <span>Tema da festa: {{order.theme}}</span>
+          <span>Cores: {{order.colors}}</span>
+          <span>Anotações: {{order.anotations}}</span>
+
+          <md-divider></md-divider>
+
+          <span><b>Produtos</b></span>
+          <md-table-container>
+            <table md-table class="greyGridTable">
+              <thead md-head>
+                <tr md-row>
+                  <th class="center-text" md-column>Nome</th>
+                  <th class="center-text" md-column>Preço (R$)</th>
+                  <th class="center-text" md-column>Quantidade</th>
+                  <th class="center-text" md-column>Total</th>
+                </tr>
+              </thead>
+              <tbody md-body>
+                <tr md-row ng-repeat="(key, product) in order.orderProducts">
+                  <td>{{product.name}}</td>
+                  <td>R${{ctrl.formatPrice(product.price)}}</td>
+                  <td>{{product.quantity}}</td>
+                  <td>R${{ctrl.formatPrice(product.quantity * product.price)}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </md-table-container>
+          <div layout="row" layout-align="space-between center">
+            <span ng-show="order.discount">
+              Desconto: {{order.discount}}% ({{order.discount_justification}}).
+            </span>
+            <span>Preço total<span ng-show="order.discount"> com desconto</span>: R${{order.total_products_price}}</span>
+          </div>
+
+          <md-divider></md-divider>
+
+          <span><b>Pagamento</b></span>
+          <span>
+            <span>Forma de pagamento: {{order.payment_method}}</span> em {{order.num_installments}}
+              parcela<span ng-show="order.num_installments > 1">s</span>.
+          </span>
+          <div layout="row" layout-align="space-around center">
+            <span ng-repeat="installment in order.installments"
+              layout="column" class=""
+              layout-align="space-between center">
+              <span><b>Parcela {{$index + 1}}</b></span>
+              <span>{{ctrl.formatDate(installment.payment_day)}}</span>
+              <span>R${{ctrl.formatPrice(installment.price)}}</span>
+              <span ng-show="!installment.paid">
+                <span ng-show="ctrl.daysLeft(installment.payment_day) > 1">
+                  Vence em {{ctrl.daysLeft(installment.payment_day)}} dias.
+                </span>
+                <span ng-show="ctrl.daysLeft(installment.payment_day) === 0">
+                  Vence hoje!
+                </span>
+                <span ng-show="(ctrl.daysLeft(installment.payment_day) < 0)">
+                  <md-icon class="md-primary">warning</md-icon> Atrasada
+                </span>
+              </span>
+              <md-switch
+                ng-model="installment.paid"
+                ng-change="ctrl.changeInstallmentPaidStatus(installment)">
+                Parcela quitada
+              </md-switch>
+            </span>
+          </div>
+          <div layout="row" layout-align="space-between center">
+            <md-button ng-click="order.showDetails = false">Fechar</md-button>
+            <span>Preço total das parcelas: R${{order.total_installment_price}}</span>
           </div>
         </div>
       </md-card>

@@ -5,7 +5,7 @@ angular.module('App')
   controllerAs: 'ctrl'
 });
 
-function OrdersViewController (orderFactory) {
+function OrdersViewController (orderFactory, utilsFactory) {
   const vm = this;
 
   vm.isAddingOrder = false;
@@ -15,13 +15,31 @@ function OrdersViewController (orderFactory) {
   vm.cancelAddingOrder = cancelAddingOrder;
   vm.reduceName = reduceName;
   vm.formatDate = formatDate;
+  vm.formatPrice = utilsFactory.formatPrice;
+  vm.daysLeft = daysLeft;
+  vm.changeInstallmentPaidStatus = changeInstallmentPaidStatus;
+  vm.isShowingDetails = isShowingDetails;
 
   function init () {
     loadOrders();
   }
 
+  function isShowingDetails () {
+    return vm.orders.reduce((acc, order) => acc || order.showDetails, false);
+  }
+
+  async function changeInstallmentPaidStatus (installment) {
+    const {data: updatedInstallment} = await orderFactory.changeInstallmentPaidStatus(installment);
+    installment = updatedInstallment;
+  }
+
   function formatDate (date) {
     return moment.utc(date).format('DD/MM/YYYY');
+  }
+
+  function daysLeft (date) {
+    const today = moment();
+    return moment.utc(date).diff(today, 'days');
   }
 
   function reduceName (name) {
@@ -44,7 +62,6 @@ function OrdersViewController (orderFactory) {
   async function loadOrders () {
     const {data:orders} = await orderFactory.loadOrders();
     vm.orders = orders;
-    vm.orders = [...orders, ...orders, ...orders]
   }
 
   function triggerAddingOrder () {

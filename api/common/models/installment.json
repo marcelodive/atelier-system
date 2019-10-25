@@ -19,6 +19,11 @@
       "type": "number",
       "required": true,
       "dataType": "decimal"
+    },
+    "paid": {
+      "type": "boolean",
+      "required": false,
+      "default": false
     }
   },
   "validations": [],

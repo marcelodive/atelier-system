@@ -8,8 +8,13 @@ angular.module('App')
     return $http.post(`${constants.API}/Orders/saveOrder`, {order});
   }
 
+  function changeInstallmentPaidStatus (installment) {
+    return $http.put(`${constants.API}/Installments/${installment.id}`, installment);
+  }
+
   return {
     createOrder: createOrder,
-    loadOrders: loadOrders
+    loadOrders: loadOrders,
+    changeInstallmentPaidStatus: changeInstallmentPaidStatus
   }
 });
