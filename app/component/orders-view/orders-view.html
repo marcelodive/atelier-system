@@ -1,36 +1,43 @@
-<div layout="column" layout-padding ng-show="!ctrl.isAddingOrder">
+<div layout="column" layout-padding ng-show="!ctrl.isAddingOrder" style="max-height: calc(100vh - 64px)">
+  <md-content>
+    <section>
+      <md-subheader><b>Entrega: 31/03/2015</b> (3 dias)</md-subheader>
+      <md-card ng-repeat="order in ctrl.orders track by $index">
+        <div layout="row" layout-padding layout-wrap>
+          <div layout="row" layout-align="space-between center" layout-fill>
+            <span>
+              <span title="{{ order.child.name }}"><b>Criança</b>: {{ ctrl.reduceName(order.child.name) }}</span> <br>
+              <span title="{{ order.child.client.name }}"><b>Responsável</b>: {{ ctrl.reduceName(order.child.client.name) }} ({{ order.child.client.phone }})</span>
+            </span>
+            <md-chips>
+              <md-chip>{{ order.status || 'status'}}</md-chip>
+            </md-chips>
+          </div>
+          <div ng-if="order.showDetails">
 
-  <md-card ng-repeat="order in ctrl.orders">
-    <div layout="row" layout-padding layout-wrap>
-      <div>
-        Cliente: {{ order.child.client.name }}. Email: {{ order.child.client.email }}. Telefone: {{ order.child.client.phone }}<br>
-        Criança: {{ order.child.name }}. Idade: {{ order.child.birthday }}.
-      </div>
-      <div>
-        Entrega:
-        <span ng-if="order.delivery_by !== 'atelier'">
-          Entrega no ateliê no dia {{ order.delivery_day }} às {{ order.delivery_hour }} horas.
-        </span>
-        <span ng-if="order.delivery_by !== 'party'">
-          Entrega na festa no dia {{ order.delivery_day }} às {{ order.delivery_hour }} horas.
-        </span>
-        <span ng-if="order.delivery_by === 'correios'">
-          Envio pelos Correios no dia {{ order.delivery_day }}.
-        </span>
-      </div>
-      <div>
-        Informações da festa:
-        Data da festa: {{ order.party_day }} às {{ order.party_hour }}.
-        <span>
-          Endereço:<br>
-          {{ order.public_place }}, {{ order.public_place_number }}<br>
-          {{ order.neighborhood }} - {{order.city}}/{{order.state}}<br>
-          {{ order.complement }}
-        </span>
-      </div>
-    </div>
-  </md-card>
-
+          </div>
+          <div layout="row" layout-align="space-between center" layout-fill>
+            <span ng-if="order.delivery_by === 'atelier'">
+              <md-icon>cake</md-icon>Entrega no <b>ateliê</b> às {{ order.delivery_hour }} horas.
+            </span>
+            <span ng-if="order.delivery_by === 'party'">
+              <md-icon>directions</md-icon> Entrega na <b>festa</b> às {{ order.delivery_hour }} horas.
+            </span>
+            <span ng-if="order.delivery_by === 'correios'">
+              <md-icon>local_shipping</md-icon> Envio pelos <b>Correios</b> para {{ order.city }}.
+            </span>
+            <span layout="row" layout-align="center center">
+              <md-icon title="{{order.email_status}}">email</md-icon>
+              <md-icon title="{{order.payment_status}}">attach_money</md-icon>
+            </span>
+            <md-button class="md-raised" ng-click="">
+              <md-icon>edit</md-icon>Editar
+            </md-button>
+          </div>
+        </div>
+      </md-card>
+    </section>
+  </md-content>
 </div>
 
 <md-button class="md-fab md-fab-bottom-right fade"
