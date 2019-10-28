@@ -55,7 +55,7 @@ function AddProductController ($scope, $timeout, logFactory, productFactory, uti
       vm.products = [...vm.products.filter((product) => product.id !== editedProduct.id), editedProduct];
       closeEditing();
     } catch (error) {
-      logFactory.showToaster('Erro', `Ocorreu um erro ao editar o producto, por favor, tente novamente`, 'error');
+      logFactory.showToaster('Erro', `Ocorreu um erro ao editar o produto, por favor, tente novamente`, 'error');
     }
   }
 

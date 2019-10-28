@@ -31,7 +31,8 @@ function AddOrderController ($scope, $timeout, utilsFactory, logFactory, product
 
   async function createOrder (order) {
     try {
-      await orderFactory.createOrder(order);
+      const newOrder = await orderFactory.createOrder(order);
+      vm.orders.push(newOrder);
       logFactory.showToaster('Sucesso!', `Pedido salvo com sucesso`, 'success');
       vm.cancelCallback();
     } catch (error) {
@@ -96,8 +97,9 @@ function AddOrderController ($scope, $timeout, utilsFactory, logFactory, product
   }
 
   function addNewProductRow (products) {
-    const lastItem = products[products.length - 1];
-    if (lastItem.name && lastItem.price && lastItem.quantity) {
+    const mustAddNewRow = products.every((product) => !!product.name);
+
+    if (mustAddNewRow) {
       products.push({});
     }
   }
