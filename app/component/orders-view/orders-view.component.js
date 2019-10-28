@@ -5,7 +5,7 @@ angular.module('App')
   controllerAs: 'ctrl'
 });
 
-function OrdersViewController (orderFactory, utilsFactory) {
+function OrdersViewController (orderFactory, utilsFactory, $timeout) {
   const vm = this;
 
   vm.isAddingOrder = false;
@@ -19,9 +19,17 @@ function OrdersViewController (orderFactory, utilsFactory) {
   vm.daysLeft = daysLeft;
   vm.changeInstallmentPaidStatus = changeInstallmentPaidStatus;
   vm.isShowingDetails = isShowingDetails;
+  vm.editOrder = editOrder;
 
   function init () {
     loadOrders();
+  }
+
+  function editOrder (order) {
+    order.showDetails = false;
+    vm.orderToEdit = order;
+
+    $timeout(() => vm.isAddingOrder = true);
   }
 
   function isShowingDetails () {

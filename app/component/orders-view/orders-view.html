@@ -9,9 +9,9 @@
     <section>
       <md-subheader><b>Entrega: 31/03/2015</b> (3 dias)</md-subheader>
       <md-card ng-repeat="order in ctrl.orders track by $index">
-        <div layout="row" layout-padding layout-fill layout-wrap
+        <div layout="row" layout-padding layout-fill layout-wrap layout-align="space-between"
           ng-if="!ctrl.isShowingDetails()">
-          <div layout="column" layout-align="space-between start" flex="100" flex-gt-sm="33">
+          <div layout="column" layout-align="space-between start" flex="100" flex-gt-sm="40">
             <span>
               <span title="{{ order.child.name }}"><b>Criança</b>: {{ ctrl.reduceName(order.child.name) }}</span> <br>
               <span title="{{ order.child.client.name }}"><b>Responsável</b>: {{ ctrl.reduceName(order.child.client.name) }} ({{ order.child.client.phone }})</span>
@@ -26,13 +26,13 @@
               <md-icon>local_shipping</md-icon> Envio pelos <b>Correios</b> para {{ order.city }}.
             </span>
           </div>
-          <div layout="column" layout-align="end center" flex="100" flex-gt-sm="33">
+          <div layout="column" layout-align="end center" flex="100" flex-gt-sm="15">
             <span layout="row" layout-align="center center">
               <md-icon title="{{order.email_status}}">email</md-icon>
               <md-icon title="{{order.payment_status}}">attach_money</md-icon>
             </span>
           </div>
-          <div layout="column" layout-align="space-between end" flex="100" flex-gt-sm="33">
+          <div layout="column" layout-align="space-between end" flex="100" flex-gt-sm="40">
             <md-chips>
               <md-chip>{{ order.status || 'status'}}</md-chip>
             </md-chips>
@@ -43,49 +43,52 @@
         </div>
 
         <div layout="column" layout-padding ng-if="order.showDetails">
-          <span><b>Criança</b></span>
-          <span>Nome: {{order.child.name}}</span>
-          <span>Nascimento: {{order.child.birthday}} (y anos)</span>
+          <div layout="row">
+            <span flex="50">
+              <b>Criança</b>: {{order.child.name}} <br>
+              <b>Nascimento:</b> {{order.child.birthday}} (y anos)
+            </span>
+
+            <span flex="50">
+              <b>Responsável</b>: {{order.child.client.name}} <br>
+              <b>CPF</b>: {{order.child.client.cpf}} <br>
+              <b>Contatos</b>: {{order.child.client.phone}} | {{order.child.client.email}}
+            </span>
+          </div>
 
           <md-divider></md-divider>
 
-          <span><b>Responsável</b></span>
-          <span>Nome: {{order.child.client.name}}</span>
-          <span>CPF: {{order.child.client.cpf}}</span>
-          <span>Contatos: {{order.child.client.phone}} | {{order.child.client.email}}</span>
-
-          <md-divider></md-divider>
-
-          <span ng-if="order.delivery_by === 'atelier'">
-            <md-icon>cake</md-icon>Entrega no <b>ateliê</b> às {{ order.delivery_hour }} horas
-            <span ng-show="order.delivery_minute">e {{ order.delivery_minute }} minutos</span>.
-          </span>
-          <span ng-if="order.delivery_by === 'party'">
-            <md-icon>directions</md-icon> Entrega na <b>festa</b> às {{ order.delivery_hour }} horas
-            <span ng-show="order.delivery_minute">e {{ order.delivery_minute }} minutos</span>
-              no endereço:
-          </span>
-          <span ng-if="order.delivery_by === 'correios'">
-            <md-icon>local_shipping</md-icon> Envio pelos <b>Correios</b> para:
-          </span>
-          <span ng-if="order.delivery_by !== 'atelier'" layout="column">
-            <span>
-              {{order.public_place}},
-              <span ng-show="order.complement"> nº {{order.public_place_number}},</span>
-              {{order.neighborhood}}, {{order.city}}/{{order.state}}. <br ng-if="order.complement">
-              <span ng-if="order.complement">Compl.: {{order.complement}}</span>
+          <span layout="row">
+            <span ng-if="order.delivery_by === 'atelier'">
+              <md-icon>cake</md-icon>Entrega no <b>ateliê</b> às <b>{{ order.delivery_hour }} horas
+              <span ng-show="order.delivery_minute">e {{ order.delivery_minute }} minutos</span></b>.
+            </span>
+            <span ng-if="order.delivery_by === 'party'" flex="50">
+              <md-icon>directions</md-icon> Entrega na <b>festa</b> às <b>{{ order.delivery_hour }} horas
+              <span ng-show="order.delivery_minute">e {{ order.delivery_minute }} minutos</span></b>
+                no endereço:
+            </span>
+            <span ng-if="order.delivery_by === 'correios'" flex="50">
+              <md-icon>local_shipping</md-icon> Envio pelos <b>Correios</b> para:
+            </span>
+            <span ng-if="order.delivery_by !== 'atelier'" flex="50">
+              <span>
+                {{order.public_place}},
+                <span ng-show="order.complement"> nº {{order.public_place_number}},</span>
+                {{order.neighborhood}}, {{order.city}}/{{order.state}}.
+                <span ng-if="order.complement">({{order.complement}})</span>
+              </span>
             </span>
           </span>
 
           <md-divider></md-divider>
 
-          <span>Tema da festa: {{order.theme}}</span>
-          <span>Cores: {{order.colors}}</span>
-          <span>Anotações: {{order.anotations}}</span>
+          <span>
+            <b>Tema da festa</b>: {{order.theme}} <br>
+            <b>Cores</b>: {{order.colors}} <br>
+            <b>Anotações</b>: {{order.anotations}} <br>
+          </span>
 
-          <md-divider></md-divider>
-
-          <span><b>Produtos</b></span>
           <md-table-container>
             <table md-table class="greyGridTable">
               <thead md-head>
@@ -108,16 +111,16 @@
           </md-table-container>
           <div layout="row" layout-align="space-between center">
             <span ng-show="order.discount">
-              Desconto: {{order.discount}}% ({{order.discount_justification}}).
+              <b>Desconto</b>: {{order.discount}}% ({{order.discount_justification}}).
             </span>
-            <span>Preço total<span ng-show="order.discount"> com desconto</span>: R${{order.total_products_price}}</span>
+            <span ng-show="!order.discount"></span>
+            <span><b>Preço total<span ng-show="order.discount"> com desconto</span></b>: R${{order.total_products_price}}</span>
           </div>
 
           <md-divider></md-divider>
 
-          <span><b>Pagamento</b></span>
           <span>
-            <span>Forma de pagamento: {{order.payment_method}}</span> em {{order.num_installments}}
+            <span><b>Forma de pagamento</b>: {{order.payment_method}}</span> em {{order.num_installments}}
               parcela<span ng-show="order.num_installments > 1">s</span>.
           </span>
           <div layout="row" layout-align="space-around center">
@@ -146,8 +149,19 @@
             </span>
           </div>
           <div layout="row" layout-align="space-between center">
-            <md-button ng-click="order.showDetails = false">Fechar</md-button>
-            <span>Preço total das parcelas: R${{order.total_installment_price}}</span>
+                <span></span>
+                <span><b>Preço total das parcelas</b>: R${{order.total_installment_price}}</span>
+          </div>
+
+          <div layout="row" layout-align="space-between center">
+            <span>
+              <md-button ng-click="order.showDetails = false" class="md-primary md-raised">
+                Voltar
+              </md-button>
+              <md-button ng-click="ctrl.editOrder(order)" class="md-raised">
+                <md-icon>edit</md-icon>Editar
+              </md-button>
+            </span>
           </div>
         </div>
       </md-card>

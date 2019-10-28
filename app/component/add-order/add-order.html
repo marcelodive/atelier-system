@@ -240,6 +240,7 @@
             <span md-highlight-text="product.searchText">{{item.name}} (R$ {{item.price}})</span>
           </md-autocomplete>
         </md-input-container>
+        {{}}
         <md-input-container class="md-block remove-margin" flex="10">
           <label>Preço (R$)</label>
           <input type="string" ng-change="product.price = ctrl.formatPrice(product.price)" ng-model="product.price"
@@ -311,7 +312,7 @@
         </md-input-container>
     </div>
     <div layout="row" layout-align-gt-sm="start center" ng-if="ctrl.order.num_installments" layout-wrap>
-        <span layout="row" ng-repeat="x in [].constructor(ctrl.order.num_installments) track by $index" flex-gt-sm="50" flex="100">
+        <span layout="row" ng-repeat="_ in [].constructor(ctrl.order.num_installments) track by $index" flex-gt-sm="50" flex="100">
           <md-input-container class="md-block" flex="50">
             <label>Parcela {{$index + 1}}</label>
             <md-datepicker ng-model="ctrl.order.paymentDay[$index]" onkeydown="return false"

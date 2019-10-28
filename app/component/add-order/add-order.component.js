@@ -10,7 +10,7 @@ angular.module('App')
   }
 });
 
-function AddOrderController ($scope, utilsFactory, logFactory, productFactory, clientFactory, orderFactory) {
+function AddOrderController ($scope, $timeout, utilsFactory, logFactory, productFactory, clientFactory, orderFactory) {
   const vm = this;
 
   vm.buildAddressFromCEP = buildAddressFromCEP;
@@ -27,9 +27,13 @@ function AddOrderController ($scope, utilsFactory, logFactory, productFactory, c
   vm.updateClientForm = updateClientForm;
   vm.createOrder = createOrder;
 
-  function createOrder (order) {
+  init();
+
+  async function createOrder (order) {
     try {
-      orderFactory.createOrder(order);
+      await orderFactory.createOrder(order);
+      logFactory.showToaster('Sucesso!', `Pedido salvo com sucesso`, 'success');
+      vm.cancelCallback();
     } catch (error) {
       logFactory.showToaster('Erro', `Ocorreu um erro ao salvar o pedido, por favor, tente novamente`, 'error');
       logFactory.log(error, 'error');
@@ -149,7 +153,28 @@ function AddOrderController ($scope, utilsFactory, logFactory, productFactory, c
     const {data: clientsWithChildren} = await clientFactory.getClientsWithChildren();
     vm.clientsWithChildren = clientsWithChildren;
     vm.childrenWithClient = buildChildListFromClient(clientsWithChildren);
+
+    if (vm.orderToEdit) {
+      $timeout(() => buildOrderToEdit());
+    }
   }
 
-  init();
+  function buildOrderToEdit () {
+    vm.order = angular.copy(vm.orderToEdit);
+
+    vm.selectedChild = angular.copy(vm.orderToEdit.child);
+    vm.order.products = vm.orderToEdit.orderProducts.map((product => {
+      product.autocompleteItem = angular.copy(product);
+      return product;
+    }));
+    vm.order.products.forEach((product) => updateTotalPrice(product));
+    addNewProductRow(vm.order.products);
+
+    vm.order.installments.forEach((installment) => {
+      installment.paymentDay = installment.payment_day;
+    });
+
+    vm.order.has_discount = vm.orderToEdit.has_discount ? 1 : 0;
+    vm.order.paymentDay = vm.orderToEdit.installments.map((installment) => installment.payment_day)
+  }
 }

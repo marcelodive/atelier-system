@@ -1,35 +1,39 @@
 <md-card layout-padding class="fade-in-up-down">
-  <form name=productForm ng-submit="productForm.$valid && ctrl.createProduct(ctrl.product)" novalidate>
+  <form name=productForm ng-submit="ctrl.createProduct(ctrl.productsToAdd)" novalidate>
     <md-subheader>Dados do produto:</md-subheader>
-    <div layout="row" layout-align-gt-sm="space-around center" layout-wrap>
+    <div layout="row" ng-repeat="product in ctrl.productsToAdd"
+      layout-align-gt-sm="space-around center" layout-wrap>
         <md-input-container class="md-block" flex-gt-sm="40" flex="100">
           <label>Nome</label>
           <md-icon>redeem</md-icon>
-          <input name="name" ng-model="ctrl.product.name" ng-required="true">
-          <div ng-messages="productForm.name.$error">
+          <input name="name" ng-change="ctrl.addNewProductRow()"
+            ng-model="product.name" ng-required="true">
+          <!-- <div ng-messages="productForm.name.$error">
             <div ng-message="required">É necessário inserir um nome</div>
-          </div>
+          </div> -->
         </md-input-container>
 
         <md-input-container class="md-block" flex-gt-sm="40" flex="100">
           <label>Preço (R$)</label>
           <md-icon>money</md-icon>
-          <input type="string" ng-change="ctrl.formatPrice(ctrl.product.price)"
-            name="price" ng-model="ctrl.product.price" ng-required="true">
-          <div ng-messages="productForm.price.$error">
+          <input type="string" ng-change="ctrl.formatPrice(product); ctrl.addNewProductRow()"
+            name="price" ng-model="product.price" ng-required="true">
+          <!-- <div ng-messages="productForm.price.$error">
             <div ng-message="required">É necessário inserir um preço</div>
-          </div>
+          </div> -->
         </md-input-container>
     </div>
 
-    <span>
-      <md-button type="submit" class="md-raised md-accent">
-        <span ng-show="!ctrl.isSaving">Salvar</span>
-        <md-progress-circular ng-show="ctrl.isSaving" md-diameter="20px"
-          md-mode="indeterminate">
-        </md-progress-circular>
-      </md-button>
-      <md-button class="md-warn" ng-click="ctrl.closeEditing()">Cancelar</md-button>
+    <span layout="row" layout-align="space-between center">
+      <span>
+        <md-button type="submit" class="md-raised md-accent">
+          <span ng-show="!ctrl.isSaving">Salvar</span>
+          <md-progress-circular ng-show="ctrl.isSaving" md-diameter="20px"
+            md-mode="indeterminate">
+          </md-progress-circular>
+        </md-button>
+        <md-button class="md-warn" ng-click="ctrl.closeEditing()">Cancelar</md-button>
+      </span>
     </span>
   </form>
 

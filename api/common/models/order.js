@@ -8,7 +8,9 @@ module.exports = function(Order) {
     const OrderProduct = app.models.OrderProduct;
     const Product = app.models.Product;
 
-    order.cep = Number(order.cep.replace('-', ''));
+    console.log(order.cep);
+
+    order.cep = Number(String(order.cep).replace('-', ''));
     const savedOrder = await Order.upsert(order);
 
     order.installments.forEach((installment, index) => {
