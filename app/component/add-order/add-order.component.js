@@ -31,9 +31,14 @@ function AddOrderController ($scope, $timeout, utilsFactory, logFactory, product
 
   async function createOrder (order) {
     try {
+      vm.isSaving = true;
       const newOrder = await orderFactory.createOrder(order);
+      if (vm.orderToEdit) {
+        vm.orders = vm.orders.filter((order) => order.id !== newOrder.id);
+      }
       vm.orders.push(newOrder);
       logFactory.showToaster('Sucesso!', `Pedido salvo com sucesso`, 'success');
+      vm.isSaving = false;
       vm.cancelCallback();
     } catch (error) {
       logFactory.showToaster('Erro', `Ocorreu um erro ao salvar o pedido, por favor, tente novamente`, 'error');
@@ -165,6 +170,9 @@ function AddOrderController ($scope, $timeout, utilsFactory, logFactory, product
     vm.order = angular.copy(vm.orderToEdit);
 
     vm.selectedChild = angular.copy(vm.orderToEdit.child);
+    vm.selectedChild.formattedBirthday = utilsFactory.formatBirthday(vm.selectedChild.birthday);
+    const today = new Date();
+    vm.selectedChild.age = moment(today).diff(vm.selectedChild.birthday, 'years');
     vm.order.products = vm.orderToEdit.orderProducts.map((product => {
       product.autocompleteItem = angular.copy(product);
       return product;

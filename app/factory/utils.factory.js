@@ -11,8 +11,13 @@ angular.module('App')
     return $http.get(`https://viacep.com.br/ws/${cepOnlyWithNumbers}/json/`);
   }
 
+  function formatBirthday (birthday) {
+    return moment(birthday).format('DD/MM/YYYY')
+  }
+
   return {
     formatPrice: formatPrice,
-    getAddress: getAddress
+    getAddress: getAddress,
+    formatBirthday: formatBirthday
   }
 });

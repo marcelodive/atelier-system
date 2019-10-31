@@ -34,7 +34,9 @@
           </div>
           <div layout="column" layout-align="space-between end" flex="100" flex-gt-sm="40">
             <md-chips>
-              <md-chip>{{ order.status || 'status'}}</md-chip>
+              <md-chip style="background-color: {{ ctrl.getOrderStatus(order).color }}; color: white">
+                {{ ctrl.getOrderStatus(order).status }}
+              </md-chip>
             </md-chips>
             <md-button ng-click="order.showDetails = true">
               <md-icon>remove_red_eye</md-icon> Detalhes
@@ -46,7 +48,8 @@
           <div layout="row">
             <span flex="50">
               <b>Criança</b>: {{order.child.name}} <br>
-              <b>Nascimento:</b> {{order.child.birthday}} (y anos)
+              <b>Nascimento:</b> {{ctrl.formatBirthday(order.child.birthday)}}
+                <span>({{ctrl.childAge(order.child.birthday)}})</span>
             </span>
 
             <span flex="50">

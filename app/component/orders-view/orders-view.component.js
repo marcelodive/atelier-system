@@ -20,9 +20,53 @@ function OrdersViewController (orderFactory, utilsFactory, $timeout) {
   vm.changeInstallmentPaidStatus = changeInstallmentPaidStatus;
   vm.isShowingDetails = isShowingDetails;
   vm.editOrder = editOrder;
+  vm.childAge = childAge;
+  vm.formatBirthday = utilsFactory.formatBirthday;
+  vm.getOrderStatus = getOrderStatus;
 
   function init () {
     loadOrders();
+  }
+
+  function getOrderStatus (order) {
+    const sentOrDelivered = (order.delivery_by === 'Correios') ? 'Pedido enviado' : 'Pedido entregue';
+    const orderStatuses = {
+      paymentDelayed: {status: 'Recebimento atrasado', color: 'darkorange'},
+      sent: {status: sentOrDelivered, color: 'blue'},
+      paid: {status: 'Pedido quitado', color: 'green'},
+      orderDelayed: {status: 'Pedido atrasado', color: 'orangered'}
+    };
+
+    const isSomeInstalmentDelayed = order.installments
+      .some((installment) => isInstallmentDelayed(installment));
+
+    const today = new Date();
+    if (isSomeInstalmentDelayed) {
+      return orderStatuses.paymentDelayed;
+    } else if (order.installments.every((installment) => installment.paid)) {
+      return orderStatuses.paid;
+    } else if (order.delivered) {
+      return orderStatuses.sent;
+    } else if (moment(order.delivery_day).diff(today, 'days') < 0) {
+      return orderStatuses.orderDelayed;
+    } else {
+      const paidInstallments = order.installments.reduce((count, installment) => count + (installment.paid), 0);
+      return {
+        status: `${paidInstallments}/${order.installments.length} parcelas pagas`,
+        color: 'grey'
+      };
+    }
+  }
+
+  function isInstallmentDelayed (installment) {
+    const today = new Date();
+    return moment(installment.payment_day).diff(today, 'days') < 0;
+  }
+
+  function childAge (birthday) {
+    const today = new Date();
+    const age = moment(today).diff(birthday, 'years');
+    return `${age} ${(age > 1) ? 'anos' : 'ano'}`;
   }
 
   function editOrder (order) {

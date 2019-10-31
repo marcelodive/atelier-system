@@ -97,6 +97,10 @@
     "total_installment_price": {
       "type": "number",
       "dataType": "decimal"
+    },
+    "delivered": {
+      "type": "boolean",
+      "default": false
     }
   },
   "validations": [],

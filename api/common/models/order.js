@@ -7,11 +7,10 @@ module.exports = function(Order) {
     const Installment = app.models.Installment;
     const OrderProduct = app.models.OrderProduct;
     const Product = app.models.Product;
-
-    console.log(order.cep);
-
     order.cep = Number(String(order.cep).replace('-', ''));
     const savedOrder = await Order.upsert(order);
+
+    Installment.destroyAll({order_id:savedOrder.id});
 
     order.installments.forEach((installment, index) => {
       installment.order_id = savedOrder.id;
@@ -19,16 +18,18 @@ module.exports = function(Order) {
       Installment.upsert(installment);
     });
 
-    order.products.forEach((product) => {
-      product.order_id = savedOrder.id;
-      product.name = product.searchText;
-      OrderProduct.upsert(product);
+    order.products.filter((product) => product.name)
+      .forEach((product) => {
+        product.order_id = savedOrder.id;
+        product.name = product.searchText;
 
-      const productToUpdateOrAdd = (product.autocompleteItem)
-        ? product.autocompleteItem
-        : product;
-      Product.upsert(productToUpdateOrAdd);
-    });
+        OrderProduct.upsert(product);
+
+        const productToUpdateOrAdd = (product.autocompleteItem)
+          ? product.autocompleteItem
+          : product;
+        Product.upsert(productToUpdateOrAdd);
+      });
 
     return savedOrder;
   }
