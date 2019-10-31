@@ -23,9 +23,15 @@ function OrdersViewController (orderFactory, utilsFactory, $timeout) {
   vm.childAge = childAge;
   vm.formatBirthday = utilsFactory.formatBirthday;
   vm.getOrderStatus = getOrderStatus;
+  vm.changeDeliveredStatus = changeDeliveredStatus;
 
   function init () {
     loadOrders();
+  }
+
+  async function changeDeliveredStatus (order) {
+    const {data: updatedOrder} = await orderFactory.changeDeliveredStatus(order);
+    order.delivered = updatedOrder.delivered;
   }
 
   function getOrderStatus (order) {
@@ -43,10 +49,10 @@ function OrdersViewController (orderFactory, utilsFactory, $timeout) {
     const today = new Date();
     if (isSomeInstalmentDelayed) {
       return orderStatuses.paymentDelayed;
-    } else if (order.installments.every((installment) => installment.paid)) {
-      return orderStatuses.paid;
     } else if (order.delivered) {
       return orderStatuses.sent;
+    } else if (order.installments.every((installment) => installment.paid)) {
+      return orderStatuses.paid;
     } else if (moment(order.delivery_day).diff(today, 'days') < 0) {
       return orderStatuses.orderDelayed;
     } else {
@@ -60,7 +66,7 @@ function OrdersViewController (orderFactory, utilsFactory, $timeout) {
 
   function isInstallmentDelayed (installment) {
     const today = new Date();
-    return moment(installment.payment_day).diff(today, 'days') < 0;
+    return (installment.paid) ? false : (moment(installment.payment_day).diff(today, 'days') < 0);
   }
 
   function childAge (birthday) {

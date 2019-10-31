@@ -62,17 +62,24 @@
           <md-divider></md-divider>
 
           <span layout="row">
-            <span ng-if="order.delivery_by === 'atelier'">
-              <md-icon>cake</md-icon>Entrega no <b>ateliê</b> às <b>{{ order.delivery_hour }} horas
-              <span ng-show="order.delivery_minute">e {{ order.delivery_minute }} minutos</span></b>.
-            </span>
-            <span ng-if="order.delivery_by === 'party'" flex="50">
-              <md-icon>directions</md-icon> Entrega na <b>festa</b> às <b>{{ order.delivery_hour }} horas
-              <span ng-show="order.delivery_minute">e {{ order.delivery_minute }} minutos</span></b>
-                no endereço:
-            </span>
-            <span ng-if="order.delivery_by === 'correios'" flex="50">
-              <md-icon>local_shipping</md-icon> Envio pelos <b>Correios</b> para:
+            <span layout="column" flex="50">
+              <span ng-if="order.delivery_by === 'atelier'">
+                <md-icon>cake</md-icon>Entrega no <b>ateliê</b> às <b>{{ order.delivery_hour }} horas
+                <span ng-show="order.delivery_minute">e {{ order.delivery_minute }} minutos</span></b>.
+              </span>
+              <span ng-if="order.delivery_by === 'party'" >
+                <md-icon>directions</md-icon> Entrega na <b>festa</b> às <b>{{ order.delivery_hour }} horas
+                <span ng-show="order.delivery_minute">e {{ order.delivery_minute }} minutos</span></b>
+                  no endereço:
+              </span>
+              <span ng-if="order.delivery_by === 'correios'">
+                <md-icon>local_shipping</md-icon> Envio pelos <b>Correios</b> para:
+              </span>
+              <md-switch
+                ng-model="order.delivered"
+                ng-change="ctrl.changeDeliveredStatus(order)">
+                Pedido enviado/entregue
+              </md-switch>
             </span>
             <span ng-if="order.delivery_by !== 'atelier'" flex="50">
               <span>
