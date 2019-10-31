@@ -110,7 +110,9 @@ function AddClientController ($scope, clientFactory, childFactory, logFactory) {
         ...vm.clientToEdit,
         cpf: Number(vm.clientToEdit.cpf),
         children: vm.clientToEdit.children.map((child) => ({
-          ...child, birthday: moment(child.birthday).toDate()
+          ...child,
+          birthday: moment(child.birthday).toDate(),
+          age: moment(vm.today).diff(child.birthday, 'years')
         }))
       };
     }

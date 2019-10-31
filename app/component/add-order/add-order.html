@@ -243,8 +243,10 @@
         {{}}
         <md-input-container class="md-block remove-margin" flex="10">
           <label>Preço (R$)</label>
-          <input type="string" ng-change="product.price = ctrl.formatPrice(product.price)" ng-model="product.price"
-            ng-change="ctrl.updateTotalPrice(product);ctrl.addNewProductRow(ctrl.order.products)">
+          <input type="string"
+            ng-change="product.price = ctrl.formatPrice(product.price);
+              ctrl.updateTotalPrice(product); ctrl.addNewProductRow(ctrl.order.products)"
+            ng-model="product.price">
         </md-input-container>
         <md-input-container class="md-block remove-margin" flex="10">
           <label>Quantidade</label>
