@@ -1,0 +1,39 @@
+{
+  "name": "Installment",
+  "plural": "Installments",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "order_id": {
+      "type": "number",
+      "required": true
+    },
+    "payment_day": {
+      "type": "date",
+      "required": true
+    },
+    "price": {
+      "type": "number",
+      "required": true,
+      "dataType": "decimal"
+    },
+    "paid": {
+      "type": "boolean",
+      "required": false,
+      "default": false
+    }
+  },
+  "validations": [],
+  "relations": {
+    "order": {
+      "type": "belongsTo",
+      "model": "Order",
+      "foreignKey": "order_id"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

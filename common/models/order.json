@@ -1,0 +1,126 @@
+{
+  "name": "Order",
+  "plural": "Orders",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "cep": {
+      "type": "number",
+      "required": true
+    },
+    "public_place": {
+      "type": "string",
+      "required": true
+    },
+    "public_place_number": {
+      "type": "number"
+    },
+    "neighborhood": {
+      "type": "string",
+      "required": true
+    },
+    "city": {
+      "type": "string",
+      "required": true
+    },
+    "state": {
+      "type": "string",
+      "required": true
+    },
+    "complement": {
+      "type": "string"
+    },
+    "theme": {
+      "type": "string",
+      "required": true
+    },
+    "colors": {
+      "type": "string",
+      "required": true
+    },
+    "party_day": {
+      "type": "date",
+      "required": true
+    },
+    "party_hour": {
+      "type": "number"
+    },
+    "party_minute": {
+      "type": "number"
+    },
+    "delivery_by": {
+      "type": "string",
+      "required": true
+    },
+    "delivery_hour": {
+      "type": "number"
+    },
+    "delivery_minute": {
+      "type": "number"
+    },
+    "delivery_day": {
+      "type": "date",
+      "required": true
+    },
+    "tracking_code": {
+      "type": "string"
+    },
+    "delivery_price": {
+      "type": "number",
+      "dataType": "decimal"
+    },
+    "anotations": {
+      "type": "string"
+    },
+    "has_discount": {
+      "type": "boolean"
+    },
+    "discount": {
+      "type": "number"
+    },
+    "discount_justification": {
+      "type": "string"
+    },
+    "total_products_price": {
+      "type": "number",
+      "dataType": "decimal"
+    },
+    "payment_method": {
+      "type": "string"
+    },
+    "num_installments": {
+      "type": "number"
+    },
+    "total_installment_price": {
+      "type": "number",
+      "dataType": "decimal"
+    },
+    "delivered": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "validations": [],
+  "relations": {
+    "orderProducts": {
+      "type": "hasMany",
+      "model": "OrderProduct",
+      "foreignKey": "order_id"
+    },
+    "installments": {
+      "type": "hasMany",
+      "model": "Installment",
+      "foreignKey": "order_id"
+    },
+    "child": {
+      "type": "belongsTo",
+      "model": "Child",
+      "foreignKey": "child_id"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
