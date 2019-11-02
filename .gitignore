@@ -16,3 +16,5 @@
 .strong-pm
 coverage
 node_modules
+server/config.json
+server/datasources.json
