@@ -7,7 +7,7 @@
   },
   "scripts": {
     "lint": "eslint . --fix --ignore-path .gitignore",
-    "start": "node .",
+    "start": "echo 'hi' && npm install && node .",
     "start-dev": "nodemon .",
     "posttest": "npm run lint && npm audit"
   },
