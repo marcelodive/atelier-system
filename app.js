@@ -1,3 +1,5 @@
+// Useless file, but I will stay with this for reference
+
 const fs = require('fs');
 const configPath = './server/config.json';
 const configFile = require(configPath);
