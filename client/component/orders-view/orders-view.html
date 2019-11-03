@@ -4,9 +4,24 @@
   }
 </style>
 
-<div layout="column" layout-padding ng-show="!ctrl.isAddingOrder" style="max-height: calc(100vh - 64px)">
+<div layout="column" ng-show="!ctrl.isAddingOrder" style="max-height: calc(100vh - 64px)">
   <md-content>
-    <section ng-repeat="orderDate in ctrl.orderDates">
+
+    <div layout="row" layout-align="center center" layout-fill>
+      Mostrar pedidos de
+      <md-datepicker ng-model="ctrl.ordersStartAt" onkeydown="return false"
+        ng-placeholder="30/01/2000" md-current-view="day"
+        ng-change="ctrl.updateOrderDates(ctrl.ordersStartAt, ctrl.ordersEndsAt)">
+      </md-datepicker>
+      &nbsp;até
+      <md-datepicker ng-model="ctrl.ordersEndsAt" onkeydown="return false"
+        ng-placeholder="30/01/2000" md-current-view="day"
+        ng-change="ctrl.updateOrderDates(ctrl.ordersStartAt, ctrl.ordersEndsAt)">
+      </md-datepicker>
+    </div>
+
+
+    <section ng-repeat="orderDate in ctrl.filteredOrderDates">
       <md-subheader><b>Entrega: {{ctrl.formatDate(orderDate)}}</b>
         ({{ctrl.getDaysToDelivery(orderDate)}})
       </md-subheader>

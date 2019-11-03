@@ -11,10 +11,10 @@ angular.module('App')
         template: '<clients-view></clients-view>',
       })
       .when('/notificacoes', {
-        template: 'Aguarde... <notifications-view></notifications-view>',
+        template: ' Em construção... <notifications-view></notifications-view>',
       })
       .when('/configuracoes', {
-        template: 'Aguarde... <configurations-view></configurations-view>',
+        template: ' Em construção... <configurations-view></configurations-view>',
       })
       .otherwise('index.html');
   });

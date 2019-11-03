@@ -9,6 +9,8 @@ function OrdersViewController(orderFactory, utilsFactory, $timeout, emailStatuse
   const vm = this;
 
   vm.isAddingOrder = false;
+  vm.ordersStartAt = moment().utc().startOf('week');
+  vm.ordersEndsAt = moment().utc().endOf('week');
 
   vm.loadOrders = loadOrders;
   vm.triggerAddingOrder = triggerAddingOrder;
@@ -27,11 +29,20 @@ function OrdersViewController(orderFactory, utilsFactory, $timeout, emailStatuse
   vm.getEmailStatus = getEmailStatus;
   vm.getOrdersByDate = getOrdersByDate;
   vm.getDaysToDelivery = getDaysToDelivery;
+  vm.updateOrderDates = updateOrderDates;
 
   const today = new Date();
 
   function init() {
     loadOrders();
+  }
+
+  function updateOrderDates (startDate, endDate) {
+    vm.filteredOrderDates = vm.orderDates.filter((date) => {
+      const afterStartDate = moment(startDate).diff(date, 'days');
+      const beforeEndDate = moment(endDate).diff(date, 'days');
+      return (afterStartDate <= 0 && beforeEndDate >= 0);
+    });
   }
 
   function getDaysToDelivery (orderDate) {
@@ -141,6 +152,7 @@ function OrdersViewController(orderFactory, utilsFactory, $timeout, emailStatuse
     const {data: orders} = await orderFactory.loadOrders();
     vm.orders = orders;
     vm.orderDates = [...new Set(orders.map((order) => order.delivery_day))];
+    updateOrderDates(vm.ordersStartAt, vm.ordersEndsAt);
   }
 
   function triggerAddingOrder() {
