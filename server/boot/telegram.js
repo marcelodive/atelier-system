@@ -11,7 +11,7 @@ function startTelegramBot () {
   const telegramConfig = JSON.parse(telegramConfigFile);
 
   telegramConfig.users.forEach((user) => {
-    bot.sendMessage(msg.chat.id, 'Sistema iniciado com sucesso');
+    bot.sendMessage(user, 'Sistema iniciado com sucesso');
   });
 
   bot.on('message', (msg) => {
