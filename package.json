@@ -7,7 +7,7 @@
   },
   "scripts": {
     "lint": "eslint . --fix --ignore-path .gitignore",
-    "start": "npm install && rsync -ah ./node_modules/ ./client/node_modules/ && node .",
+    "start": "npm install && cd client && npm install && cd '..' && node .",
     "start-dev": "nodemon .",
     "posttest": "npm run lint && npm audit"
   },
