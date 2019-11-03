@@ -7,7 +7,7 @@
   },
   "scripts": {
     "lint": "eslint . --fix --ignore-path .gitignore",
-    "start": "npm install && node .",
+    "start": "npm install && rsync -ah ./node_modules/ ./client/node_modules/ && node .",
     "start-dev": "nodemon .",
     "posttest": "npm run lint && npm audit"
   },
@@ -20,9 +20,7 @@
     "loopback-component-explorer": "^6.2.0",
     "loopback-connector-mysql": "^5.4.1",
     "serve-favicon": "^2.0.1",
-    "strong-error-handler": "^3.0.0",
-    "angular-material-data-table": "^0.10.10",
-    "moment": "^2.24.0"
+    "strong-error-handler": "^3.0.0"
   },
   "devDependencies": {
     "eslint": "^6.6.0",
