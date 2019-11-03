@@ -5,7 +5,7 @@ angular.module('App')
     controllerAs: 'ctrl',
   });
 
-function OrdersViewController(orderFactory, utilsFactory, $timeout) {
+function OrdersViewController(orderFactory, utilsFactory, $timeout, emailStatuses) {
   const vm = this;
 
   vm.isAddingOrder = false;
@@ -24,9 +24,35 @@ function OrdersViewController(orderFactory, utilsFactory, $timeout) {
   vm.formatBirthday = utilsFactory.formatBirthday;
   vm.getOrderStatus = getOrderStatus;
   vm.changeDeliveredStatus = changeDeliveredStatus;
+  vm.getEmailStatus = getEmailStatus;
+  vm.getOrdersByDate = getOrdersByDate;
+  vm.getDaysToDelivery = getDaysToDelivery;
+
+  const today = new Date();
 
   function init() {
     loadOrders();
+  }
+
+  function getDaysToDelivery (orderDate) {
+    const daysToDelivery = moment(orderDate).diff(today, 'days');
+    if (daysToDelivery === 0) {
+      return 'Entregas para hoje';
+    } else if (daysToDelivery === 1) {
+      return 'Entregas para amanhã';
+    } else {
+      return `Entregas em ${daysToDelivery} dias`;
+    }
+  }
+
+  function getOrdersByDate (orderDate) {
+    return vm.orders.filter((order) =>
+      order.delivery_day.substring(0,10) === orderDate.substring(0,10));
+  }
+
+  function getEmailStatus (emailStatus) {
+    emailStatus = emailStatus || 0;
+    return emailStatuses[emailStatus];
   }
 
   async function changeDeliveredStatus(order) {
@@ -46,7 +72,6 @@ function OrdersViewController(orderFactory, utilsFactory, $timeout) {
     const isSomeInstalmentDelayed = order.installments
       .some((installment) => isInstallmentDelayed(installment));
 
-    const today = new Date();
     if (isSomeInstalmentDelayed) {
       return orderStatuses.paymentDelayed;
     } if (order.delivered) {
@@ -64,12 +89,10 @@ function OrdersViewController(orderFactory, utilsFactory, $timeout) {
   }
 
   function isInstallmentDelayed(installment) {
-    const today = new Date();
     return (installment.paid) ? false : (moment(installment.payment_day).diff(today, 'days') < 0);
   }
 
   function childAge(birthday) {
-    const today = new Date();
     const age = moment(today).diff(birthday, 'years');
     return `${age} ${(age > 1) ? 'anos' : 'ano'}`;
   }
@@ -95,7 +118,6 @@ function OrdersViewController(orderFactory, utilsFactory, $timeout) {
   }
 
   function daysLeft(date) {
-    const today = moment();
     return moment.utc(date).diff(today, 'days');
   }
 
@@ -118,6 +140,7 @@ function OrdersViewController(orderFactory, utilsFactory, $timeout) {
   async function loadOrders() {
     const {data: orders} = await orderFactory.loadOrders();
     vm.orders = orders;
+    vm.orderDates = [...new Set(orders.map((order) => order.delivery_day))];
   }
 
   function triggerAddingOrder() {

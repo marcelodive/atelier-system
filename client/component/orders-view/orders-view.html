@@ -6,9 +6,11 @@
 
 <div layout="column" layout-padding ng-show="!ctrl.isAddingOrder" style="max-height: calc(100vh - 64px)">
   <md-content>
-    <section>
-      <md-subheader><b>Entrega: 31/03/2015</b> (3 dias)</md-subheader>
-      <md-card ng-repeat="order in ctrl.orders track by $index">
+    <section ng-repeat="orderDate in ctrl.orderDates">
+      <md-subheader><b>Entrega: {{ctrl.formatDate(orderDate)}}</b>
+        ({{ctrl.getDaysToDelivery(orderDate)}})
+      </md-subheader>
+      <md-card ng-repeat="order in ctrl.getOrdersByDate(orderDate) track by $index">
         <div layout="row" layout-padding layout-fill layout-wrap layout-align="space-between"
           ng-if="!ctrl.isShowingDetails()">
           <div layout="column" layout-align="space-between start" flex="100" flex-gt-sm="40">
@@ -27,9 +29,9 @@
             </span>
           </div>
           <div layout="column" layout-align="end center" flex="100" flex-gt-sm="15">
-            <span layout="row" layout-align="center center">
-              <md-icon title="{{order.email_status}}">email</md-icon>
-              <md-icon title="{{order.payment_status}}">attach_money</md-icon>
+            <span layout="column" layout-align="center center">
+              <md-icon>email</md-icon>
+              <span>{{ctrl.getEmailStatus(order.email_status)}}</span>
             </span>
           </div>
           <div layout="column" layout-align="space-between end" flex="100" flex-gt-sm="40">

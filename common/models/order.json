@@ -101,6 +101,9 @@
     "delivered": {
       "type": "boolean",
       "default": false
+    },
+    "email_status": {
+      "type": "number"
     }
   },
   "validations": [],
