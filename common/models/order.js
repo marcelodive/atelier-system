@@ -6,11 +6,12 @@ module.exports = function(Order) {
   Order.saveOrder = async(order) => {
     order.cep = Number(String(order.cep).replace('-', ''));
     const savedOrder = await Order.upsert(order);
+    order.id = savedOrder.id;
 
     saveOrderInstallments(order);
     saveOrderProducts(order);
 
-    sendConfirmationEmailToCliente(order);
+    // sendConfirmationEmailToCliente(order);
 
     return savedOrder;
   };
@@ -18,10 +19,10 @@ module.exports = function(Order) {
   function saveOrderInstallments (order) {
     const {Installment} = app.models;
 
-    Installment.destroyAll({order_id: savedOrder.id});
+    Installment.destroyAll({order_id: order.id});
     order.installments.forEach((installment, index) => {
-      installment.order_id = savedOrder.id;
-      installment.payment_day = savedOrder.paymentDay[index];
+      installment.order_id = order.id;
+      installment.payment_day = order.paymentDay[index];
       Installment.upsert(installment);
     });
   }
@@ -32,7 +33,7 @@ module.exports = function(Order) {
 
     order.products.filter((product) => product.name)
       .forEach((product) => {
-        product.order_id = savedOrder.id;
+        product.order_id = order.id;
         product.name = product.searchText;
         OrderProduct.upsert(product);
 

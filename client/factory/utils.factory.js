@@ -1,9 +1,13 @@
 angular.module('App')
   .factory('utilsFactory', ($http) => {
     function formatPrice(price) {
-      price = price ? String(price).replace(/[^0-9]/g, '') : '0';
-      const decimals = '0'.concat(price).slice(-2); // this '0' avoid '2' becoming '20', for example
-      return Number(price.substring(0, price.length - 2).concat('.').concat(decimals)).toFixed(2);
+      if (typeof price === 'string' || price instanceof String) {
+        price = price ? String(price).replace(/[^0-9]/g, '') : '0';
+        const decimals = '0'.concat(price).slice(-2); // this '0' avoid '2' becoming '20', for example
+        return Number(price.substring(0, price.length - 2).concat('.').concat(decimals)).toFixed(2)
+      } else {
+        return price.toFixed(2);
+      }
     }
 
     function getAddress(cep) {

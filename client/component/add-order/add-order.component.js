@@ -37,6 +37,7 @@ function AddOrderController($scope, $timeout, utilsFactory, logFactory, productF
         vm.orders = vm.orders.filter((order) => order.id !== newOrder.id);
       }
       vm.orders.push(newOrder);
+      vm.orderToEdit = null;
       logFactory.showToaster('Sucesso!', 'Pedido salvo com sucesso', 'success');
       vm.isSaving = false;
       vm.cancelCallback();

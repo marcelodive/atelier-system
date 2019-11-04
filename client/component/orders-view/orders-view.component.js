@@ -161,6 +161,7 @@ function OrdersViewController(orderFactory, utilsFactory, $timeout, emailStatuse
 
   function cancelAddingOrder() {
     vm.isAddingOrder = false;
+    vm.orderToEdit = null;
   }
 
   init();
