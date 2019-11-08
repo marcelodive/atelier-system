@@ -18,6 +18,7 @@
         "sourceType": "module"
     },
     "rules": {
+        "space-before-function-paren": ["error", "always"],
         "camelcase": ["error", { "properties": "never" }],
         "max-len": ["error", { "code": 120 }]
     }

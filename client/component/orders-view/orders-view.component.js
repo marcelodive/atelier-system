@@ -5,7 +5,7 @@ angular.module('App')
     controllerAs: 'ctrl',
   });
 
-function OrdersViewController(orderFactory, utilsFactory, $timeout, emailStatuses) {
+function OrdersViewController (orderFactory, utilsFactory, $timeout, emailStatuses) {
   const vm = this;
 
   vm.isAddingOrder = false;
@@ -33,7 +33,7 @@ function OrdersViewController(orderFactory, utilsFactory, $timeout, emailStatuse
 
   const today = new Date();
 
-  function init() {
+  function init () {
     loadOrders();
   }
 
@@ -58,7 +58,7 @@ function OrdersViewController(orderFactory, utilsFactory, $timeout, emailStatuse
 
   function getOrdersByDate (orderDate) {
     return vm.orders.filter((order) =>
-      order.delivery_day.substring(0,10) === orderDate.substring(0,10));
+      order.delivery_day.substring(0, 10) === orderDate.substring(0, 10));
   }
 
   function getEmailStatus (emailStatus) {
@@ -66,12 +66,12 @@ function OrdersViewController(orderFactory, utilsFactory, $timeout, emailStatuse
     return emailStatuses[emailStatus];
   }
 
-  async function changeDeliveredStatus(order) {
+  async function changeDeliveredStatus (order) {
     const {data: updatedOrder} = await orderFactory.changeDeliveredStatus(order);
     order.delivered = updatedOrder.delivered;
   }
 
-  function getOrderStatus(order) {
+  function getOrderStatus (order) {
     const sentOrDelivered = (order.delivery_by === 'Correios') ? 'Pedido enviado' : 'Pedido entregue';
     const orderStatuses = {
       paymentDelayed: {status: 'Recebimento atrasado', color: 'darkorange'},
@@ -99,40 +99,40 @@ function OrdersViewController(orderFactory, utilsFactory, $timeout, emailStatuse
     };
   }
 
-  function isInstallmentDelayed(installment) {
+  function isInstallmentDelayed (installment) {
     return (installment.paid) ? false : (moment(installment.payment_day).diff(today, 'days') < 0);
   }
 
-  function childAge(birthday) {
+  function childAge (birthday) {
     const age = moment(today).diff(birthday, 'years');
     return `${age} ${(age > 1) ? 'anos' : 'ano'}`;
   }
 
-  function editOrder(order) {
+  function editOrder (order) {
     order.showDetails = false;
     vm.orderToEdit = order;
 
     $timeout(() => vm.isAddingOrder = true);
   }
 
-  function isShowingDetails() {
+  function isShowingDetails () {
     return vm.orders.reduce((acc, order) => acc || order.showDetails, false);
   }
 
-  async function changeInstallmentPaidStatus(installment) {
+  async function changeInstallmentPaidStatus (installment) {
     const {data: updatedInstallment} = await orderFactory.changeInstallmentPaidStatus(installment);
     installment = updatedInstallment;
   }
 
-  function formatDate(date) {
+  function formatDate (date) {
     return moment.utc(date).format('DD/MM/YYYY');
   }
 
-  function daysLeft(date) {
+  function daysLeft (date) {
     return moment.utc(date).diff(today, 'days');
   }
 
-  function reduceName(name) {
+  function reduceName (name) {
     const splitedName = name.split(' ');
     if (splitedName.length <= 2) {
       return name;
@@ -148,18 +148,18 @@ function OrdersViewController(orderFactory, utilsFactory, $timeout, emailStatuse
     return `${firstName} ${middleNamesWithDot} ${surName}`;
   }
 
-  async function loadOrders() {
+  async function loadOrders () {
     const {data: orders} = await orderFactory.loadOrders();
     vm.orders = orders;
     vm.orderDates = [...new Set(orders.map((order) => order.delivery_day))];
     updateOrderDates(vm.ordersStartAt, vm.ordersEndsAt);
   }
 
-  function triggerAddingOrder() {
+  function triggerAddingOrder () {
     vm.isAddingOrder = true;
   }
 
-  function cancelAddingOrder() {
+  function cancelAddingOrder () {
     vm.isAddingOrder = false;
     vm.orderToEdit = null;
   }
