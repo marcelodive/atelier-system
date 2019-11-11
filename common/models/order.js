@@ -1,6 +1,5 @@
-
 const app = require('../../server/server');
-const sendmail = require('sendmail')();
+const templates = require('../templates/templates');
 
 module.exports = function (Order) {
   Order.saveOrder = async (order) => {
@@ -42,44 +41,46 @@ module.exports = function (Order) {
       });
   }
 
-  Order.sendConfirmationEmailToCliente = (order) => {
+  Order.sendConfirmationEmailToCliente = (orderId) => {
     const nodemailer = require('nodemailer');
 
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: 'pedidos.luizasales@gmail.com',
-        pass: '6p&mG3Aj*XYt',
-      },
-    });
+    Order.findById(orderId,
+      {'include': ['orderProducts', 'installments', {'child': 'client'}]})
+      .then((order) => {
+        const auth = {
+          type: 'oauth2',
+          user: 'pedidos.luizasales@gmail.com',
+          clientId: '90795499536-7ktvll2ik7gf9f32imp74521925b3242.apps.googleusercontent.com',
+          clientSecret: 'OFNTTBDIS79mRYGU_zsrOvWd',
+          refreshToken: '1//04efnWSui0mx6CgYIARAAGAQSNwF-L9Irtqzl_1ewkuvxT04xnpe9LYMhLSrylkh1zHXRGxZXJ2SZVLWnjqeB4Vxq9gRxfsE2fQs',
+          pass: '6p&mG3Aj*XYt',
+        };
 
-    const mailOptions = {
-      from: 'pedidos.luizasales@gmail.com',
-      to: [order.child.client.email], // Adicionar atelieluizafs@hotmail.com
-      subject: '[Ateliê Luiza Sales] Confirmação do pedido',
-      html: buildHtmlEmail(order),
-    };
+        const transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: auth,
+        });
 
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        return 'Erro: Email não pode ser enviado | ' + error;
-      } else {
-        return 'Sucesso: Email enviado | ' + info.response;
-      }
-    });
+        const mailOptions = {
+          from: 'pedidos.luizasales@gmail.com',
+          to: [order.child.client.email], // Adicionar atelieluizafs@hotmail.com
+          subject: '[Ateliê Luiza Sales] Confirmação do pedido',
+          html: '<p>oi</p>', // buildHtmlEmail(order),
+        };
+
+        transporter.sendMail(mailOptions, function (error, info) {
+          if (error) {
+            return 'Erro: Email não pode ser enviado | ' + error;
+          } else {
+            return 'Sucesso: Email enviado | ' + info.response;
+          }
+        });
+      })
+      .catch(error => error);
   };
 
   function buildHtmlEmail (order) {
-    return `
-      <p>Olá, Fulano!</p>
-
-      <p>Por favor, confira se as informações do seu pedido estão corretas: </p>
-
-      <p><b>Endereço</b>: ${order.public_place}, ${order.public_place_number } (${order.complement }).
-              ${order.neighborhood}, ${order.city}/${order.state}. </p>
-      <p><b></b></p>
-      <p><b></b></p>
-    `;
+    return templates.buildMailOrder(order);
   }
 
   Order.remoteMethod('saveOrder', {
@@ -88,7 +89,7 @@ module.exports = function (Order) {
   });
 
   Order.remoteMethod('sendConfirmationEmailToCliente', {
-    accepts: {arg: 'order', type: 'Object'},
+    accepts: {arg: 'orderId', type: 'number'},
     returns: {arg: 'status', type: 'string'},
   });
 };

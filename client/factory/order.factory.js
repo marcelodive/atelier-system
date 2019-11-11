@@ -1,20 +1,24 @@
 angular.module('App')
   .factory('orderFactory', ($http, constants) => {
-    function loadOrders() {
+    function loadOrders () {
       const filter = '{"include":["orderProducts","installments",{"child":"client"}]}';
       return $http.get(`${constants.API}/Orders?filter=${filter}`);
     }
 
-    function createOrder(order) {
+    function createOrder (order) {
       return $http.post(`${constants.API}/Orders/saveOrder`, {order});
     }
 
-    function changeInstallmentPaidStatus(installment) {
+    function changeInstallmentPaidStatus (installment) {
       return $http.put(`${constants.API}/Installments/${installment.id}`, installment);
     }
 
-    function changeDeliveredStatus(order) {
+    function changeDeliveredStatus (order) {
       return $http.patch(`${constants.API}/Orders/${order.id}`, {delivered: order.delivered});
+    }
+
+    function sendConfirmationEmail (orderId) {
+      return $http.post(`${constants.API}/Orders/sendConfirmationEmailToCliente`, {orderId});
     }
 
     return {
@@ -22,5 +26,6 @@ angular.module('App')
       loadOrders,
       changeInstallmentPaidStatus,
       changeDeliveredStatus,
+      sendConfirmationEmail,
     };
   });

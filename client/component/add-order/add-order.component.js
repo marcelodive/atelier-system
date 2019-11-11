@@ -10,7 +10,7 @@ angular.module('App')
     },
   });
 
-function AddOrderController($scope, $timeout, utilsFactory, logFactory, productFactory, clientFactory, orderFactory) {
+function AddOrderController ($scope, $timeout, utilsFactory, logFactory, productFactory, clientFactory, orderFactory) {
   const vm = this;
 
   vm.buildAddressFromCEP = buildAddressFromCEP;
@@ -29,16 +29,26 @@ function AddOrderController($scope, $timeout, utilsFactory, logFactory, productF
 
   init();
 
-  async function createOrder(order) {
+  async function createOrder (order) {
+    console.log(order);
     try {
       vm.isSaving = true;
-      const newOrder = await orderFactory.createOrder(order);
+      const {data: {order: newOrder}} = await orderFactory.createOrder(order);
       if (vm.orderToEdit) {
         vm.orders = vm.orders.filter((order) => order.id !== newOrder.id);
       }
       vm.orders.push(newOrder);
       vm.orderToEdit = null;
       logFactory.showToaster('Sucesso!', 'Pedido salvo com sucesso', 'success');
+
+      orderFactory.sendConfirmationEmail(newOrder.id)
+        .then((response) => {
+          logFactory.showToaster('Sucesso!', 'Email enviado com sucesso', 'success');
+        }).catch((error) => {
+          logFactory.showToaster('Erro!', 'Não foi possível enviar email', 'error');
+          logFactory.log(error, 'error');
+        });
+
       vm.isSaving = false;
       vm.cancelCallback();
     } catch (error) {
@@ -47,11 +57,11 @@ function AddOrderController($scope, $timeout, utilsFactory, logFactory, productF
     }
   }
 
-  function updateClientForm(selectedChild) {
+  function updateClientForm (selectedChild) {
     vm.order.child_id = selectedChild.id;
   }
 
-  function getMatchingClients(searchText) {
+  function getMatchingClients (searchText) {
     searchText = searchText.toLowerCase();
     return vm.childrenWithClient.filter((child) => {
       const {client} = child;
@@ -63,14 +73,14 @@ function AddOrderController($scope, $timeout, utilsFactory, logFactory, productF
     });
   }
 
-  function updateTotalInstallmentPrice() {
+  function updateTotalInstallmentPrice () {
     vm.order.total_installment_price = vm.order.installments
       .reduce((totalPrice, installment) =>
         (installment.price ? (totalPrice + Number(installment.price)) : totalPrice), 0)
       .toFixed(2);
   }
 
-  function fillInstallmentsWithPrice(numInstallments) {
+  function fillInstallmentsWithPrice (numInstallments) {
     vm.order.installments = [];
     for (let i = 0; i < numInstallments; i++) {
       vm.order.installments[i] = vm.order.installments[i] || {};
@@ -80,7 +90,7 @@ function AddOrderController($scope, $timeout, utilsFactory, logFactory, productF
     updateTotalInstallmentPrice();
   }
 
-  function updateTotalProductsPrice() {
+  function updateTotalProductsPrice () {
     const totalProductsPrice = vm.order.products.reduce((totalPrice, product) =>
       (product.totalPrice ? (totalPrice + Number(product.totalPrice)) : totalPrice), 0);
 
@@ -95,17 +105,17 @@ function AddOrderController($scope, $timeout, utilsFactory, logFactory, productF
     }
   }
 
-  function removeProduct(key) {
+  function removeProduct (key) {
     vm.order.products.splice(key, 1);
     updateTotalProductsPrice();
   }
 
-  function updateTotalPrice(product) {
+  function updateTotalPrice (product) {
     product.totalPrice = (product.price * product.quantity).toFixed(2);
     updateTotalProductsPrice();
   }
 
-  function addNewProductRow(products) {
+  function addNewProductRow (products) {
     const mustAddNewRow = products.every((product) => !!product.name);
 
     if (mustAddNewRow) {
@@ -113,19 +123,19 @@ function AddOrderController($scope, $timeout, utilsFactory, logFactory, productF
     }
   }
 
-  function getMatchingProducts(searchText, addedProducts) {
+  function getMatchingProducts (searchText, addedProducts) {
     const productsName = addedProducts.map((product) => product.name);
     const productsNotInList = vm.products.filter((product) => !productsName.includes(product.name));
     return productsNotInList.filter((product) => product.name.toLowerCase().includes(searchText.toLowerCase()));
   }
 
-  function updateAutocompleteProduct(product) {
+  function updateAutocompleteProduct (product) {
     const {autocompleteItem} = product;
     product.name = autocompleteItem.name;
     product.price = autocompleteItem.price;
   }
 
-  async function buildAddressFromCEP(cep) {
+  async function buildAddressFromCEP (cep) {
     try {
       const {data: address} = await utilsFactory.getAddress(cep);
       vm.order.cep = address.cep;
@@ -140,7 +150,7 @@ function AddOrderController($scope, $timeout, utilsFactory, logFactory, productF
     }
   }
 
-  function buildChildListFromClient(clientsWithChildren) {
+  function buildChildListFromClient (clientsWithChildren) {
     const childrenWithClient = [];
 
     clientsWithChildren.forEach((clientWithChildren) => {
@@ -155,7 +165,7 @@ function AddOrderController($scope, $timeout, utilsFactory, logFactory, productF
     return childrenWithClient;
   }
 
-  async function init() {
+  async function init () {
     vm.order = {products: [{}]};
     const {data: products} = await productFactory.getProducts();
     vm.products = products;
@@ -169,7 +179,7 @@ function AddOrderController($scope, $timeout, utilsFactory, logFactory, productF
     }
   }
 
-  function buildOrderToEdit() {
+  function buildOrderToEdit () {
     vm.order = angular.copy(vm.orderToEdit);
 
     vm.selectedChild = angular.copy(vm.orderToEdit.child);
