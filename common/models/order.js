@@ -1,5 +1,7 @@
 const app = require('../../server/server');
-const templates = require('../templates/templates');
+const templates = require('../templates');
+const sgMail = require('@sendgrid/mail');
+const emailStatuses = require('../constants').emailStatuses;
 
 module.exports = function (Order) {
   Order.saveOrder = async (order) => {
@@ -41,14 +43,11 @@ module.exports = function (Order) {
       });
   }
 
-  Order.sendEmail = async (orderId) => {
-    const sgMail = require('@sendgrid/mail');
-
+  Order.sendEmail = (orderId, cb) => {
     Order.findById(orderId,
       {'include': ['orderProducts', 'installments', {'child': 'client'}]})
-      .then(async (order) => {
+      .then((order) => {
         order = JSON.parse(JSON.stringify(order));
-
         sgMail.setApiKey('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');
         const msg = {
           // eslint-disable-next-line max-len
@@ -58,8 +57,11 @@ module.exports = function (Order) {
           html: buildHtmlEmail(order),
         };
         sgMail.send(msg);
+        order.email_status = emailStatuses.sent;
+        Order.upsert(order);
+        cb(null, true);
       })
-      .catch(error => error);
+      .catch((error) => { console.log(error); cb(null, false); });
   };
 
   function buildHtmlEmail (order) {
@@ -73,6 +75,6 @@ module.exports = function (Order) {
 
   Order.remoteMethod('sendEmail', {
     accepts: {arg: 'orderId', type: 'number'},
-    returns: {arg: 'orderId', type: 'number'},
+    returns: {arg: 'success', type: 'Boolean'},
   });
 };
