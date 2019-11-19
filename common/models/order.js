@@ -41,42 +41,25 @@ module.exports = function (Order) {
       });
   }
 
-  Order.sendConfirmationEmailToCliente = (orderId) => {
-    const nodemailer = require('nodemailer');
+  Order.sendEmail = async (orderId) => {
+    const sgMail = require('@sendgrid/mail');
 
     Order.findById(orderId,
       {'include': ['orderProducts', 'installments', {'child': 'client'}]})
       .then(async (order) => {
-        const transporter = nodemailer.createTransport({
-          service: 'zoho',
-          auth: {
-            user: 'luiza.sales@zoho.com',
-            pass: '6p&mG3Aj*XYt',
-          },
-        });
-
         order = JSON.parse(JSON.stringify(order));
 
-        const mailOptions = {
-          from: 'luiza.sales@zoho.com',
-          to: [order.child.client.email], // Adicionar atelieluizafs@hotmail.com
+        sgMail.setApiKey('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');
+        const msg = {
+          // eslint-disable-next-line max-len
+          to: [order.child.client.email], // Adicionar atelieluizafs@hotmail.com: Automatically BCC an address for every e-mail sent. (https://app.sendgrid.com/settings/mail_settings)
+          from: 'atelieluizafs@hotmail.com',
           subject: '[Ateliê Luiza Sales] Confirmação do pedido',
           html: buildHtmlEmail(order),
         };
-
-        console.log(buildHtmlEmail(order));
-
-        return;
-
-        transporter.sendMail(mailOptions, function (error, info) {
-          if (error) {
-            return 'Erro: Email não pode ser enviado | ' + error;
-          } else {
-            return 'Sucesso: Email enviado | ' + info.response;
-          }
-        });
+        sgMail.send(msg);
       })
-      .catch(error => console.log(error));
+      .catch(error => error);
   };
 
   function buildHtmlEmail (order) {
@@ -88,7 +71,7 @@ module.exports = function (Order) {
     returns: {arg: 'order', type: 'Object'},
   });
 
-  Order.remoteMethod('sendConfirmationEmailToCliente', {
+  Order.remoteMethod('sendEmail', {
     accepts: {arg: 'orderId', type: 'number'},
     returns: {arg: 'orderId', type: 'number'},
   });
