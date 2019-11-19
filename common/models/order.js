@@ -46,27 +46,27 @@ module.exports = function (Order) {
 
     Order.findById(orderId,
       {'include': ['orderProducts', 'installments', {'child': 'client'}]})
-      .then((order) => {
-        const auth = {
-          type: 'oauth2',
-          user: 'pedidos.luizasales@gmail.com',
-          clientId: '90795499536-7ktvll2ik7gf9f32imp74521925b3242.apps.googleusercontent.com',
-          clientSecret: 'OFNTTBDIS79mRYGU_zsrOvWd',
-          refreshToken: '1//04efnWSui0mx6CgYIARAAGAQSNwF-L9Irtqzl_1ewkuvxT04xnpe9LYMhLSrylkh1zHXRGxZXJ2SZVLWnjqeB4Vxq9gRxfsE2fQs',
-          pass: '6p&mG3Aj*XYt',
-        };
-
+      .then(async (order) => {
         const transporter = nodemailer.createTransport({
-          service: 'gmail',
-          auth: auth,
+          service: 'zoho',
+          auth: {
+            user: 'luiza.sales@zoho.com',
+            pass: '6p&mG3Aj*XYt',
+          },
         });
 
+        order = JSON.parse(JSON.stringify(order));
+
         const mailOptions = {
-          from: 'pedidos.luizasales@gmail.com',
+          from: 'luiza.sales@zoho.com',
           to: [order.child.client.email], // Adicionar atelieluizafs@hotmail.com
           subject: '[Ateliê Luiza Sales] Confirmação do pedido',
-          html: '<p>oi</p>', // buildHtmlEmail(order),
+          html: buildHtmlEmail(order),
         };
+
+        console.log(buildHtmlEmail(order));
+
+        return;
 
         transporter.sendMail(mailOptions, function (error, info) {
           if (error) {
@@ -76,7 +76,7 @@ module.exports = function (Order) {
           }
         });
       })
-      .catch(error => error);
+      .catch(error => console.log(error));
   };
 
   function buildHtmlEmail (order) {
@@ -90,6 +90,6 @@ module.exports = function (Order) {
 
   Order.remoteMethod('sendConfirmationEmailToCliente', {
     accepts: {arg: 'orderId', type: 'number'},
-    returns: {arg: 'status', type: 'string'},
+    returns: {arg: 'orderId', type: 'number'},
   });
 };
