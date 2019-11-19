@@ -44,8 +44,10 @@
             </span>
           </div>
           <div layout="column" layout-align="end center" flex="100" flex-gt-sm="15">
-            <span layout="column" layout-align="center center">
-              <md-icon>email</md-icon>
+            <span layout="column" layout-align="center center" class="center-text">
+              <md-icon ng-class="{'email-not-sent': order.email_status == 0,
+                'email-accepted': order.email_status == 2,
+                'email-denied': order.email_status == 3}">email</md-icon>
               <span>{{ctrl.getEmailStatus(order.email_status)}}</span>
             </span>
           </div>

@@ -59,6 +59,16 @@ md-autocomplete-wrap {
   max-width: 4em;
 }
 
+.email-not-sent {
+  color: orange;
+}
+.email-accepted {
+  color: green;
+}
+.email-denied {
+  color: red;
+}
+
 /* Table */
 table.greyGridTable {
   border: 2px solid #FFFFFF;
