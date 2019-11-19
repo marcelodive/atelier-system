@@ -1,5 +1,5 @@
 <style>
-  .md-chips{
+  .md-chips {
     box-shadow: 0 0px !important;
   }
 </style>
@@ -8,16 +8,19 @@
   <md-content>
 
     <div layout="row" layout-align="center center" layout-fill>
-      Mostrar pedidos de
-      <md-datepicker ng-model="ctrl.ordersStartAt" onkeydown="return false"
-        ng-placeholder="30/01/2000" md-current-view="day"
-        ng-change="ctrl.updateOrderDates(ctrl.ordersStartAt, ctrl.ordersEndsAt)">
-      </md-datepicker>
-      &nbsp;até
-      <md-datepicker ng-model="ctrl.ordersEndsAt" onkeydown="return false"
-        ng-placeholder="30/01/2000" md-current-view="day"
-        ng-change="ctrl.updateOrderDates(ctrl.ordersStartAt, ctrl.ordersEndsAt)">
-      </md-datepicker>
+      <span>
+        Mostrar pedidos de
+        <md-datepicker ng-model="ctrl.ordersStartAt" onkeydown="return false" ng-placeholder="30/01/2000"
+          md-current-view="day" ng-change="ctrl.updateOrderDates(ctrl.ordersStartAt, ctrl.ordersEndsAt)">
+        </md-datepicker>
+        &nbsp;até
+        <md-datepicker ng-model="ctrl.ordersEndsAt" onkeydown="return false" ng-placeholder="30/01/2000"
+          md-current-view="day" ng-change="ctrl.updateOrderDates(ctrl.ordersStartAt, ctrl.ordersEndsAt)">
+        </md-datepicker>
+        <md-button style="margin-left: 20px">
+          <md-icon ng-click="ctrl.printOrders()" title="Imprimir">print</md-icon>
+        </md-button>
+      </span>
     </div>
 
 
@@ -31,7 +34,8 @@
           <div layout="column" layout-align="space-between start" flex="100" flex-gt-sm="40">
             <span>
               <span title="{{ order.child.name }}"><b>Criança</b>: {{ ctrl.reduceName(order.child.name) }}</span> <br>
-              <span title="{{ order.child.client.name }}"><b>Responsável</b>: {{ ctrl.reduceName(order.child.client.name) }} ({{ order.child.client.phone }})</span>
+              <span title="{{ order.child.client.name }}"><b>Responsável</b>:
+                {{ ctrl.reduceName(order.child.client.name) }} ({{ order.child.client.phone }})</span>
             </span>
             <span ng-if="order.delivery_by === 'atelier'">
               <md-icon>cake</md-icon>Entrega no <b>ateliê</b> às {{ order.delivery_hour }} horas.
@@ -68,7 +72,7 @@
             <span flex="50">
               <b>Criança</b>: {{order.child.name}} <br>
               <b>Nascimento:</b> {{ctrl.formatBirthday(order.child.birthday)}}
-                <span>({{ctrl.childAge(order.child.birthday)}})</span>
+              <span>({{ctrl.childAge(order.child.birthday)}})</span>
             </span>
 
             <span flex="50">
@@ -84,19 +88,17 @@
             <span layout="column" flex="50">
               <span ng-if="order.delivery_by === 'atelier'">
                 <md-icon>cake</md-icon>Entrega no <b>ateliê</b> às <b>{{ order.delivery_hour }} horas
-                <span ng-show="order.delivery_minute">e {{ order.delivery_minute }} minutos</span></b>.
+                  <span ng-show="order.delivery_minute">e {{ order.delivery_minute }} minutos</span></b>.
               </span>
-              <span ng-if="order.delivery_by === 'party'" >
+              <span ng-if="order.delivery_by === 'party'">
                 <md-icon>directions</md-icon> Entrega na <b>festa</b> às <b>{{ order.delivery_hour }} horas
-                <span ng-show="order.delivery_minute">e {{ order.delivery_minute }} minutos</span></b>
-                  no endereço:
+                  <span ng-show="order.delivery_minute">e {{ order.delivery_minute }} minutos</span></b>
+                no endereço:
               </span>
               <span ng-if="order.delivery_by === 'correios'">
                 <md-icon>local_shipping</md-icon> Envio pelos <b>Correios</b> para:
               </span>
-              <md-switch
-                ng-model="order.delivered"
-                ng-change="ctrl.changeDeliveredStatus(order)">
+              <md-switch ng-model="order.delivered" ng-change="ctrl.changeDeliveredStatus(order)">
                 Pedido enviado/entregue
               </md-switch>
             </span>
@@ -143,18 +145,18 @@
               <b>Desconto</b>: {{order.discount}}% ({{order.discount_justification}}).
             </span>
             <span ng-show="!order.discount"></span>
-            <span><b>Preço total<span ng-show="order.discount"> com desconto</span></b>: R${{order.total_products_price}}</span>
+            <span><b>Preço total<span ng-show="order.discount"> com desconto</span></b>:
+              R${{order.total_products_price}}</span>
           </div>
 
           <md-divider></md-divider>
 
           <span>
             <span><b>Forma de pagamento</b>: {{order.payment_method}}</span> em {{order.num_installments}}
-              parcela<span ng-show="order.num_installments > 1">s</span>.
+            parcela<span ng-show="order.num_installments > 1">s</span>.
           </span>
           <div layout="row" layout-align="space-around center">
-            <span ng-repeat="installment in order.installments"
-              layout="column" class=""
+            <span ng-repeat="installment in order.installments" layout="column" class=""
               layout-align="space-between center">
               <span><b>Parcela {{$index + 1}}</b></span>
               <span>{{ctrl.formatDate(installment.payment_day)}}</span>
@@ -170,16 +172,14 @@
                   <md-icon class="md-primary">warning</md-icon> Atrasada
                 </span>
               </span>
-              <md-switch
-                ng-model="installment.paid"
-                ng-change="ctrl.changeInstallmentPaidStatus(installment)">
+              <md-switch ng-model="installment.paid" ng-change="ctrl.changeInstallmentPaidStatus(installment)">
                 Parcela quitada
               </md-switch>
             </span>
           </div>
           <div layout="row" layout-align="space-between center">
-                <span></span>
-                <span><b>Preço total das parcelas</b>: R${{order.total_installment_price}}</span>
+            <span></span>
+            <span><b>Preço total das parcelas</b>: R${{order.total_installment_price}}</span>
           </div>
 
           <div layout="row" layout-align="space-between center">
@@ -195,16 +195,56 @@
         </div>
       </md-card>
     </section>
+
+    <span id="for-print" ng-if="ctrl.isPrinting">
+
+      <section ng-repeat="orderDate in ctrl.filteredOrderDates">
+        <md-subheader><b>Entrega: {{ctrl.formatDate(orderDate)}}</b>
+          ({{ctrl.getDaysToDelivery(orderDate)}})
+        </md-subheader>
+        <md-card ng-repeat="order in ctrl.getOrdersByDate(orderDate) track by $index">
+          <div>
+            <div >
+              <span>
+                <b>Criança</b>: {{order.child.name}} <br>
+                <b>Nascimento:</b> {{ctrl.formatBirthday(order.child.birthday)}}
+                <span>({{ctrl.childAge(order.child.birthday)}})</span>
+              </span>
+              <br>
+              <span>
+                <b>Responsável</b>: {{order.child.client.name}}
+              </span>
+            </div>
+
+            <span>
+              <b>Tema da festa</b>: {{order.theme}} <br>
+              <b>Cores</b>: {{order.colors}} <br>
+              <b>Anotações</b>: {{order.anotations}} <br>
+            </span>
+
+            <p><b>Quantidade - Nome</b></p>
+            <ul>
+              <li ng-repeat="(key, product) in order.orderProducts">
+                {{product.quantity}} - {{product.name}}
+              </li>
+            </ul>
+          </div>
+          <span>___________________________________________________________</span>
+          <br>
+        </md-card>
+        <br>
+      </section>
+
+    </span>
+
+
   </md-content>
 </div>
 
-<md-button class="md-fab md-fab-bottom-right fade"
-  ng-click="ctrl.triggerAddingOrder()" ng-show="!ctrl.isAddingOrder">
-    <md-icon>add</md-icon>
+<md-button class="md-fab md-fab-bottom-right fade" ng-click="ctrl.triggerAddingOrder()" ng-show="!ctrl.isAddingOrder">
+  <md-icon>add</md-icon>
 </md-button>
 
-<add-order cancel-callback="ctrl.cancelAddingOrder()"
-  order-to-edit="ctrl.orderToEdit"
-  orders="ctrl.orders"
+<add-order cancel-callback="ctrl.cancelAddingOrder()" order-to-edit="ctrl.orderToEdit" orders="ctrl.orders"
   ng-if="ctrl.isAddingOrder">
 </add-order>

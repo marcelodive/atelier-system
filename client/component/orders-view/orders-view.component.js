@@ -30,11 +30,32 @@ function OrdersViewController (orderFactory, utilsFactory, $timeout, emailStatus
   vm.getOrdersByDate = getOrdersByDate;
   vm.getDaysToDelivery = getDaysToDelivery;
   vm.updateOrderDates = updateOrderDates;
+  vm.printOrders = printOrders;
 
   const today = new Date();
 
   function init () {
     loadOrders();
+  }
+
+  function printOrders () {
+    vm.isPrinting = true;
+
+    $timeout(() => {
+      // eslint-disable-next-line no-undef
+      const doc = new jsPDF();
+      const specialElementHandlers = {
+        '#for-print': (element, renderer) => {
+          return true;
+        },
+      };
+      doc.fromHTML(angular.element('#for-print').html(), 15, 15, {
+        'width': 190,
+        'elementHandlers': specialElementHandlers,
+      });
+      doc.save('pedidos.pdf');
+      vm.isPrinting = false;
+    }, 1000);
   }
 
   function updateOrderDates (startDate, endDate) {
