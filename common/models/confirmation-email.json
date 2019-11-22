@@ -1,0 +1,27 @@
+{
+  "name": "ConfirmationEmail",
+  "plural": "ConfirmationEmails",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "order_id": {
+      "type": "number",
+      "required": true
+    },
+    "timestamp": {
+      "type": "number",
+      "required": true
+    },
+    "html": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
