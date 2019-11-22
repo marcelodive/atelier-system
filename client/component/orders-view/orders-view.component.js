@@ -5,7 +5,7 @@ angular.module('App')
     controllerAs: 'ctrl',
   });
 
-function OrdersViewController (orderFactory, utilsFactory, $timeout, emailStatuses) {
+function OrdersViewController (orderFactory, utilsFactory, logFactory, $timeout, emailStatuses) {
   const vm = this;
 
   vm.isAddingOrder = false;
@@ -40,21 +40,22 @@ function OrdersViewController (orderFactory, utilsFactory, $timeout, emailStatus
 
   function printOrders () {
     vm.isPrinting = true;
+    const options = {
+      margin: 10,
+      filename: 'pedidos.pdf',
+      html2canvas: {scale: 2},
+      jsPDF: {format: 'a3'},
+    };
 
-    $timeout(() => {
+    $timeout(async () => {
+      try {
       // eslint-disable-next-line no-undef
-      const doc = new jsPDF();
-      const specialElementHandlers = {
-        '#for-print': (element, renderer) => {
-          return true;
-        },
-      };
-      doc.fromHTML(angular.element('#for-print').html(), 15, 15, {
-        'width': 190,
-        'elementHandlers': specialElementHandlers,
-      });
-      doc.save('pedidos.pdf');
-      vm.isPrinting = false;
+        await html2pdf(document.getElementById('for-print'), options);
+      } catch (error) {
+        logFactory.showToaster('Erro', 'Não foi possível imprimir os pedidos', 'error');
+      } finally {
+        vm.isPrinting = false;
+      }
     }, 1000);
   }
 
@@ -69,11 +70,11 @@ function OrdersViewController (orderFactory, utilsFactory, $timeout, emailStatus
   function getDaysToDelivery (orderDate) {
     const daysToDelivery = moment(orderDate).diff(today, 'days');
     if (daysToDelivery === 0) {
-      return 'Entregas para hoje';
+      return 'Entrega para hoje';
     } else if (daysToDelivery === 1) {
-      return 'Entregas para amanhã';
+      return 'Entrega para amanhã';
     } else {
-      return `Entregas em ${daysToDelivery} dias`;
+      return `Entrega em ${daysToDelivery} dias`;
     }
   }
 
@@ -170,10 +171,17 @@ function OrdersViewController (orderFactory, utilsFactory, $timeout, emailStatus
   }
 
   async function loadOrders () {
-    const {data: orders} = await orderFactory.loadOrders();
-    vm.orders = orders;
-    vm.orderDates = [...new Set(orders.map((order) => order.delivery_day))];
-    updateOrderDates(vm.ordersStartAt, vm.ordersEndsAt);
+    vm.loadingOrders = true;
+    try {
+      const {data: orders} = await orderFactory.loadOrders();
+      vm.orders = orders;
+      vm.orderDates = [...new Set(orders.map((order) => order.delivery_day))];
+      updateOrderDates(vm.ordersStartAt, vm.ordersEndsAt);
+    } catch (error) {
+      logFactory.showToaster('Erro', 'Não foi possível carregar os pedidos', 'error');
+    } finally {
+      vm.loadingOrders = false;
+    }
   }
 
   function triggerAddingOrder () {

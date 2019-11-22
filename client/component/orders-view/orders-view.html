@@ -23,6 +23,10 @@
       </span>
     </div>
 
+    <div ng-if="ctrl.loadingOrders" layout="row" layout-align="center center" layout-fill>
+      <br><br>
+      Carregando pedidos...
+    </div>
 
     <section ng-repeat="orderDate in ctrl.filteredOrderDates">
       <md-subheader><b>Entrega: {{ctrl.formatDate(orderDate)}}</b>
@@ -196,48 +200,15 @@
       </md-card>
     </section>
 
-    <span id="for-print" ng-if="ctrl.isPrinting">
+    <div layout="row" layout-align="center center" layout-fill
+      ng-if="!ctrl.loadingOrders && !ctrl.filteredOrderDates.length">
+      <br><br>
+      Não há pedidos para este intervalo.
+    </div>
 
-      <section ng-repeat="orderDate in ctrl.filteredOrderDates">
-        <md-subheader><b>Entrega: {{ctrl.formatDate(orderDate)}}</b>
-          ({{ctrl.getDaysToDelivery(orderDate)}})
-        </md-subheader>
-        <md-card ng-repeat="order in ctrl.getOrdersByDate(orderDate) track by $index">
-          <div>
-            <div >
-              <span>
-                <b>Criança</b>: {{order.child.name}} <br>
-                <b>Nascimento:</b> {{ctrl.formatBirthday(order.child.birthday)}}
-                <span>({{ctrl.childAge(order.child.birthday)}})</span>
-              </span>
-              <br>
-              <span>
-                <b>Responsável</b>: {{order.child.client.name}}
-              </span>
-            </div>
-
-            <span>
-              <b>Tema da festa</b>: {{order.theme}} <br>
-              <b>Cores</b>: {{order.colors}} <br>
-              <b>Anotações</b>: {{order.anotations}} <br>
-            </span>
-
-            <p><b>Quantidade - Nome</b></p>
-            <ul>
-              <li ng-repeat="(key, product) in order.orderProducts">
-                {{product.quantity}} - {{product.name}}
-              </li>
-            </ul>
-          </div>
-          <span>___________________________________________________________</span>
-          <br>
-        </md-card>
-        <br>
-      </section>
-
-    </span>
-
-
+    <ng-include style="position: absolute; left: -9999px;"
+      src="'./component/orders-view/orders-print.html'">
+    </ng-include>
   </md-content>
 </div>
 
