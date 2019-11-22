@@ -15,6 +15,7 @@ const lbTables = [
   // 'OrderProduct',
   // 'Child',
   // 'Order'
+  // 'ConfirmationEmail'
 ];
 ds.automigrate(lbTables, (er) => {
   if (er) throw er;

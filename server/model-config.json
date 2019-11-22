@@ -66,5 +66,9 @@
   "OrderProduct": {
     "dataSource": "db",
     "public": true
+  },
+  "ConfirmationEmail": {
+    "dataSource": "db",
+    "public": true
   }
 }

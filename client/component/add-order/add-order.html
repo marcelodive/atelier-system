@@ -1,4 +1,8 @@
-<md-card layout-padding class="fade-in-up-down">
+<div ng-if="ctrl.loadingOrder" layout="row" layout-align="center center">
+  <br><br>
+  Carregando...
+</div >
+<md-card layout-padding class="fade-in-up-down" ng-if="!ctrl.loadingOrder">
   <form name=orderForm ng-submit="orderForm.$valid && ctrl.createOrder(ctrl.order)" novalidate>
     <md-subheader>Cliente</md-subheader>
     <div layout="column">

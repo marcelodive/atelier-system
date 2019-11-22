@@ -1,6 +1,6 @@
 const moment = require('moment');
 
-function buildMailOrder (order) {
+function buildMailOrder (order, timestamp) {
   let emailOrder = `
     <div>Olá, ${order.child.client.name}, por favor, confira o pedido abaixo:</div>
     <br>
@@ -131,7 +131,7 @@ function buildMailOrder (order) {
     <br>
     <span><b>Este pedido está correto?</b></span>
     <br><br>
-    <a href="https://www.google.com/" target="_blank"
+    <a href="https://www.google.com/accept/${timestamp}" target="_blank"
       style="text-decoration: none;
       background-color: #EEEEEE;
       color: #333333;
@@ -144,7 +144,7 @@ function buildMailOrder (order) {
       SIM
     </a>
 
-    <a href="https://www.google.com/" target="_blank"
+    <a href="https://www.google.com/reject/${timestamp}" target="_blank"
       style="text-decoration: none;
       background-color: #EEEEEE;
       color: #333333;

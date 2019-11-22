@@ -18,7 +18,7 @@ angular.module('App')
     }
 
     function sendConfirmationEmail (orderId) {
-      return $http.post(`${constants.API}/Orders/sendConfirmationEmailToCliente`, {orderId});
+      return $http.post(`${constants.API}/Orders/sendEmail`, {orderId});
     }
 
     return {

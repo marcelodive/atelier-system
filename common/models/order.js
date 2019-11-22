@@ -48,14 +48,8 @@ module.exports = function (Order) {
       {'include': ['orderProducts', 'installments', {'child': 'client'}]})
       .then((order) => {
         order = JSON.parse(JSON.stringify(order));
+        const msg = buildMessage(order);
         sgMail.setApiKey('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');
-        const msg = {
-          // eslint-disable-next-line max-len
-          to: [order.child.client.email], // Adicionar atelieluizafs@hotmail.com: Automatically BCC an address for every e-mail sent. (https://app.sendgrid.com/settings/mail_settings)
-          from: 'atelieluizafs@hotmail.com',
-          subject: '[Ateliê Luiza Sales] Confirmação do pedido',
-          html: buildHtmlEmail(order),
-        };
         sgMail.send(msg);
         order.email_status = emailStatuses.sent;
         Order.upsert(order);
@@ -64,9 +58,50 @@ module.exports = function (Order) {
       .catch((error) => { console.log(error); cb(null, false); });
   };
 
-  function buildHtmlEmail (order) {
-    return templates.buildMailOrder(order);
+  function buildMessage (order) {
+    const timestamp = Date.now();
+    const emailMessage = buildHtmlEmail(order, timestamp);
+
+    saveConfirmationEmail(emailMessage, order, timestamp);
+
+    const emailObject = {
+      // eslint-disable-next-line max-len
+      to: [order.child.client.email], // Adicionar atelieluizafs@hotmail.com: Automatically BCC an address for every e-mail sent. (https://app.sendgrid.com/settings/mail_settings)
+      from: 'atelieluizafs@hotmail.com',
+      subject: '[Ateliê Luiza Sales] Confirmação do pedido',
+      html: emailMessage,
+    };
+
+    return emailObject;
   }
+
+  function buildHtmlEmail (order, timestamp) {
+    return templates.buildMailOrder(order, timestamp);
+  }
+
+  function saveConfirmationEmail (emailMessage, order, timestamp) {
+    const {ConfirmationEmail} = app.models;
+
+    ConfirmationEmail.create({
+      order_id: order.id,
+      timestamp: timestamp,
+      html: emailMessage,
+    });
+  }
+
+  Order.acceptOrder = (emailData, cb) => {
+    Order.findById(emailData.orderId).then((order) => {
+      order.email_status = emailStatuses.accepted;
+      Order.upsert(order);
+    });
+  };
+
+  Order.rejectOrder = (emailData, cb) => {
+    Order.findById(emailData.orderId).then((order) => {
+      order.email_status = emailStatuses.accepted;
+      Order.upsert(order);
+    });
+  };
 
   Order.remoteMethod('saveOrder', {
     accepts: {arg: 'order', type: 'Object'},
@@ -76,5 +111,13 @@ module.exports = function (Order) {
   Order.remoteMethod('sendEmail', {
     accepts: {arg: 'orderId', type: 'number'},
     returns: {arg: 'success', type: 'Boolean'},
+  });
+
+  Order.remoteMethod('acceptOrder', {
+    accepts: {arg: 'emailData', type: 'Object'},
+  });
+
+  Order.remoteMethod('rejectOrder', {
+    accepts: {arg: 'emailData', type: 'Object'},
   });
 };

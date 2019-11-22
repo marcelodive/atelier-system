@@ -166,16 +166,23 @@ function AddOrderController ($scope, $timeout, utilsFactory, logFactory, product
   }
 
   async function init () {
-    vm.order = {products: [{}]};
-    const {data: products} = await productFactory.getProducts();
-    vm.products = products;
+    vm.loadingOrder = true;
+    try {
+      vm.order = {products: [{}]};
+      const {data: products} = await productFactory.getProducts();
+      vm.products = products;
 
-    const {data: clientsWithChildren} = await clientFactory.getClientsWithChildren();
-    vm.clientsWithChildren = clientsWithChildren;
-    vm.childrenWithClient = buildChildListFromClient(clientsWithChildren);
+      const {data: clientsWithChildren} = await clientFactory.getClientsWithChildren();
+      vm.clientsWithChildren = clientsWithChildren;
+      vm.childrenWithClient = buildChildListFromClient(clientsWithChildren);
 
-    if (vm.orderToEdit) {
-      $timeout(() => buildOrderToEdit());
+      if (vm.orderToEdit) {
+        $timeout(() => buildOrderToEdit());
+      }
+    } catch (error) {
+      logFactory.showToaster('Erro', 'Ocorreu um erro ao carregar', 'error');
+    } finally {
+      vm.loadingOrder = false;
     }
   }
 
