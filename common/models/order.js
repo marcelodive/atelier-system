@@ -68,7 +68,7 @@ module.exports = function (Order) {
       // eslint-disable-next-line max-len
       to: [order.child.client.email], // Adicionar atelieluizafs@hotmail.com: Automatically BCC an address for every e-mail sent. (https://app.sendgrid.com/settings/mail_settings)
       from: 'atelieluizafs@hotmail.com',
-      subject: '[Ateliê Luiza Sales] Confirmação do pedido',
+      subject: '[Luiza Sales Ateliê] Confirmação do pedido',
       html: emailMessage,
     };
 

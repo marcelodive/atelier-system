@@ -26,8 +26,20 @@ function AddOrderController ($scope, $timeout, utilsFactory, logFactory, product
   vm.getMatchingClients = getMatchingClients;
   vm.updateClientForm = updateClientForm;
   vm.createOrder = createOrder;
+  vm.updateCashDiscountAndTotalPrice = updateCashDiscountAndTotalPrice;
+  vm.updatePercentageDiscountAndTotalPrice = updatePercentageDiscountAndTotalPrice;
 
   init();
+
+  function updateCashDiscountAndTotalPrice () {
+    vm.order.discountInCash = parseFloat(((vm.order.discount * getTotalProductsPrice()) / 100).toFixed(2));
+    vm.updateTotalProductsPrice('percentage');
+  }
+
+  function updatePercentageDiscountAndTotalPrice () {
+    vm.order.discount = parseFloat(((vm.order.discountInCash / getTotalProductsPrice()) * 100).toFixed(2));
+    vm.updateTotalProductsPrice('cash');
+  }
 
   async function createOrder (order) {
     console.log(order);
@@ -90,19 +102,30 @@ function AddOrderController ($scope, $timeout, utilsFactory, logFactory, product
     updateTotalInstallmentPrice();
   }
 
-  function updateTotalProductsPrice () {
-    const totalProductsPrice = vm.order.products.reduce((totalPrice, product) =>
-      (product.totalPrice ? (totalPrice + Number(product.totalPrice)) : totalPrice), 0);
+  function updateTotalProductsPrice (discountMode) {
+    const totalProductsPrice = getTotalProductsPrice();
+    let totalProductsPriceWithDiscount;
 
-    const totalProductsPriceWithDiscount = (vm.order.has_discount && vm.order.discount) ?
-      totalProductsPrice * (1 - vm.order.discount / 100) :
-      totalProductsPrice;
+    if (discountMode === 'cash') {
+      totalProductsPriceWithDiscount = (vm.order.has_discount && vm.order.discountInCash) ?
+        totalProductsPrice - vm.order.discountInCash :
+        totalProductsPrice;
+    } else {
+      totalProductsPriceWithDiscount = (vm.order.has_discount && vm.order.discount) ?
+        totalProductsPrice * (1 - vm.order.discount / 100) :
+        totalProductsPrice;
+    }
 
     vm.order.total_products_price = totalProductsPriceWithDiscount.toFixed(2);
 
     if (vm.order.installments) {
       fillInstallmentsWithPrice(vm.order.installments.length);
     }
+  }
+
+  function getTotalProductsPrice () {
+    return vm.order.products.reduce((totalPrice, product) =>
+      (product.totalPrice ? (totalPrice + Number(product.totalPrice)) : totalPrice), 0);
   }
 
   function removeProduct (key) {
@@ -206,5 +229,9 @@ function AddOrderController ($scope, $timeout, utilsFactory, logFactory, product
 
     vm.order.has_discount = vm.orderToEdit.has_discount ? 1 : 0;
     vm.order.paymentDay = vm.orderToEdit.installments.map((installment) => installment.payment_day);
+
+    if (vm.order.has_discount) {
+      vm.order.discountInCash = parseFloat(((vm.order.discount * getTotalProductsPrice()) / 100).toFixed(2));
+    }
   }
 }

@@ -5,7 +5,7 @@
 </style>
 
 <div layout="column" ng-show="!ctrl.isAddingOrder" style="max-height: calc(100vh - 64px)">
-  <md-content>
+  <md-content ng-if="ctrl.orders">
 
     <div layout="row" layout-align="center center" layout-fill>
       <span>
@@ -23,9 +23,9 @@
       </span>
     </div>
 
-    <div ng-if="ctrl.loadingOrders" layout="row" layout-align="center center" layout-fill>
+    <div ng-if="ctrl.loadingOrdersMessages" layout="row" layout-align="center center" layout-fill>
       <br><br>
-      Carregando pedidos...
+      {{ ctrl.loadingOrdersMessages }}...
     </div>
 
     <section ng-repeat="orderDate in ctrl.filteredOrderDates">
@@ -201,7 +201,7 @@
     </section>
 
     <div layout="row" layout-align="center center" layout-fill
-      ng-if="!ctrl.loadingOrders && !ctrl.filteredOrderDates.length">
+      ng-if="!ctrl.filteredOrderDates.length">
       <br><br>
       Não há pedidos para este intervalo.
     </div>
@@ -209,6 +209,12 @@
     <ng-include style="position: absolute; left: -9999px;"
       src="'./component/orders-view/orders-print.html'">
     </ng-include>
+  </md-content>
+  <md-content ng-if="!ctrl.orders">
+    <div layout="row" layout-align="center center" layout-fill>
+      <br><br>
+      Carregando pedidos...
+    </div>
   </md-content>
 </div>
 

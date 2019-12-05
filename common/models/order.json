@@ -79,7 +79,8 @@
       "type": "boolean"
     },
     "discount": {
-      "type": "number"
+      "type": "number",
+      "dataType": "decimal"
     },
     "discount_justification": {
       "type": "string"

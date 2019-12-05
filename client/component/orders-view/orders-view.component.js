@@ -5,7 +5,7 @@ angular.module('App')
     controllerAs: 'ctrl',
   });
 
-function OrdersViewController (orderFactory, utilsFactory, logFactory, $timeout, emailStatuses) {
+function OrdersViewController (orderFactory, utilsFactory, logFactory, $timeout, $scope, emailStatuses) {
   const vm = this;
 
   vm.isAddingOrder = false;
@@ -60,9 +60,12 @@ function OrdersViewController (orderFactory, utilsFactory, logFactory, $timeout,
   }
 
   function updateOrderDates (startDate, endDate) {
+    vm.loadingOrdersMessage = 'Renderizando pedidos';
+    const momentStartDate = moment(startDate);
+    const momentEndDate = moment(endDate);
     vm.filteredOrderDates = vm.orderDates.filter((date) => {
-      const afterStartDate = moment(startDate).diff(date, 'days');
-      const beforeEndDate = moment(endDate).diff(date, 'days');
+      const afterStartDate = momentStartDate.diff(date, 'days');
+      const beforeEndDate = momentEndDate.diff(date, 'days');
       return (afterStartDate <= 0 && beforeEndDate >= 0);
     });
   }
@@ -171,16 +174,18 @@ function OrdersViewController (orderFactory, utilsFactory, logFactory, $timeout,
   }
 
   async function loadOrders () {
-    vm.loadingOrders = true;
+    vm.loadingOrdersMessage = 'Carregando pedidos';
     try {
-      const {data: orders} = await orderFactory.loadOrders();
-      vm.orders = orders;
-      vm.orderDates = [...new Set(orders.map((order) => order.delivery_day))];
-      updateOrderDates(vm.ordersStartAt, vm.ordersEndsAt);
+      orderFactory.loadOrders().then(({data: orders}) => {
+        vm.orders = orders;
+        vm.orderDates = [...new Set(orders.map((order) => order.delivery_day))];
+        updateOrderDates(vm.ordersStartAt, vm.ordersEndsAt);
+      });
     } catch (error) {
       logFactory.showToaster('Erro', 'Não foi possível carregar os pedidos', 'error');
     } finally {
-      vm.loadingOrders = false;
+      $timeout();
+      // vm.loadingOrdersMessage = null;
     }
   }
 
