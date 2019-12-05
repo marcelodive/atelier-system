@@ -3,7 +3,7 @@
   Carregando...
 </div >
 <md-card layout-padding class="fade-in-up-down" ng-if="!ctrl.loadingOrder">
-  <form name=orderForm ng-submit="orderForm.$valid && ctrl.createOrder(ctrl.order)" novalidate>
+  <form name=orderForm ng-submit="ctrl.verifyFormValidation(orderForm.$valid) && ctrl.createOrder(ctrl.order)" novalidate>
     <md-subheader>Cliente</md-subheader>
     <div layout="column">
       <md-input-container class="md-block remove-bottom-margin" flex="50">

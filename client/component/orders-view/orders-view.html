@@ -7,7 +7,7 @@
 <div layout="column" ng-show="!ctrl.isAddingOrder" style="max-height: calc(100vh - 64px)">
   <md-content ng-if="ctrl.orders">
 
-    <div layout="row" layout-align="center center" layout-fill>
+    <div layout="row" layout-align="center center" layout-fill ng-if="!ctrl.showTextFilter">
       <span>
         Mostrar pedidos de
         <md-datepicker ng-model="ctrl.ordersStartAt" onkeydown="return false" ng-placeholder="30/01/2000"
@@ -20,7 +20,22 @@
         <md-button style="margin-left: 20px">
           <md-icon ng-click="ctrl.printOrders()" title="Imprimir">print</md-icon>
         </md-button>
+        <md-button style="margin-left: 20px">
+          <md-icon ng-click="ctrl.showTextFilter = true; ctrl.updateOrderDatesForTextSearch();">search</md-icon>
+        </md-button>
       </span>
+    </div>
+
+    <div layout="row" layout-align="center center" layout-fill ng-if="ctrl.showTextFilter">
+          <md-input-container class="md-block" flex-gt-sm="40" flex="100">
+            <label>Busca por texto</label>
+            <md-icon>search</md-icon>
+            <input ng-model="ctrl.orderTextFilter" ng-required="true">
+          </md-input-container>
+
+        <md-button style="margin-left: 20px">
+          <md-icon ng-click="ctrl.showTextFilter = false; ctrl.updateOrderDates(ctrl.ordersStartAt, ctrl.ordersEndsAt);">close</md-icon>
+        </md-button>
     </div>
 
     <div ng-if="ctrl.loadingOrdersMessages" layout="row" layout-align="center center" layout-fill>
@@ -146,7 +161,7 @@
           </md-table-container>
           <div layout="row" layout-align="space-between center">
             <span ng-show="order.discount">
-              <b>Desconto</b>: {{order.discount}}% ({{order.discount_justification}}).
+              <b>Desconto</b>: R${{ctrl.getDiscountInCash(order)}} ou {{order.discount}}% ({{order.discount_justification}}).
             </span>
             <span ng-show="!order.discount"></span>
             <span><b>Preço total<span ng-show="order.discount"> com desconto</span></b>:

@@ -9,6 +9,7 @@ function OrdersViewController (orderFactory, utilsFactory, logFactory, $timeout,
   const vm = this;
 
   vm.isAddingOrder = false;
+  vm.showTextFilter = false;
   vm.ordersStartAt = moment().utc().startOf('week');
   vm.ordersEndsAt = moment().utc().endOf('week');
 
@@ -31,11 +32,17 @@ function OrdersViewController (orderFactory, utilsFactory, logFactory, $timeout,
   vm.getDaysToDelivery = getDaysToDelivery;
   vm.updateOrderDates = updateOrderDates;
   vm.printOrders = printOrders;
+  vm.getDiscountInCash = getDiscountInCash;
+  vm.updateOrderDatesForTextSearch = updateOrderDatesForTextSearch;
 
   const today = new Date();
 
   function init () {
     loadOrders();
+  }
+
+  function updateOrderDatesForTextSearch () {
+    updateOrderDates(new Date(0, 1, 1), new Date(9999, 1, 1));
   }
 
   function printOrders () {
@@ -82,6 +89,14 @@ function OrdersViewController (orderFactory, utilsFactory, logFactory, $timeout,
   }
 
   function getOrdersByDate (orderDate) {
+    if (vm.showTextFilter) {
+      return vm.orderTextFilter ?
+        vm.orders
+          .filter((order) => JSON.stringify(order).toLowerCase().includes(vm.orderTextFilter.toLowerCase()))
+          .filter((order) => order.delivery_day.substring(0, 10) === orderDate.substring(0, 10)) :
+        vm.orders.filter((order) => order.delivery_day.substring(0, 10) === orderDate.substring(0, 10));
+    }
+
     return vm.orders.filter((order) =>
       order.delivery_day.substring(0, 10) === orderDate.substring(0, 10));
   }
@@ -191,11 +206,16 @@ function OrdersViewController (orderFactory, utilsFactory, logFactory, $timeout,
 
   function triggerAddingOrder () {
     vm.isAddingOrder = true;
+    $timeout(() => $scope.$apply(), 500);
   }
 
   function cancelAddingOrder () {
     vm.isAddingOrder = false;
     vm.orderToEdit = null;
+  }
+
+  function getDiscountInCash (order) {
+    return ((order.total_products_price / (1 - (order.discount / 100))) - order.total_products_price).toFixed(2);
   }
 
   init();

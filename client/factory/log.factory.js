@@ -6,7 +6,7 @@ angular.module('App')
       log(`${title} | ${text}`, type);
     }
 
-    function log(message, method = 'log') {
+    function log (message, method = 'log') {
       if (method === 'log') {
         $log.log(message);
       } else if (method === 'info') {

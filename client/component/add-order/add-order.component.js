@@ -28,8 +28,18 @@ function AddOrderController ($scope, $timeout, utilsFactory, logFactory, product
   vm.createOrder = createOrder;
   vm.updateCashDiscountAndTotalPrice = updateCashDiscountAndTotalPrice;
   vm.updatePercentageDiscountAndTotalPrice = updatePercentageDiscountAndTotalPrice;
+  vm.verifyFormValidation = verifyFormValidation;
 
   init();
+
+  function verifyFormValidation (isValid) {
+    if (!isValid) {
+      logFactory.showToaster('Atenção!', 'Alguns campos ainda não foram preenchidos', 'warning');
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   function updateCashDiscountAndTotalPrice () {
     vm.order.discountInCash = parseFloat(((vm.order.discount * getTotalProductsPrice()) / 100).toFixed(2));
@@ -37,7 +47,7 @@ function AddOrderController ($scope, $timeout, utilsFactory, logFactory, product
   }
 
   function updatePercentageDiscountAndTotalPrice () {
-    vm.order.discount = parseFloat(((vm.order.discountInCash / getTotalProductsPrice()) * 100).toFixed(2));
+    vm.order.discount = parseFloat(((vm.order.discountInCash / getTotalProductsPrice()) * 100).toFixed(3));
     vm.updateTotalProductsPrice('cash');
   }
 
@@ -63,6 +73,7 @@ function AddOrderController ($scope, $timeout, utilsFactory, logFactory, product
 
       vm.isSaving = false;
       vm.cancelCallback();
+      $timeout(() => $scope.$apply(), 1000);
     } catch (error) {
       logFactory.showToaster('Erro', 'Ocorreu um erro ao salvar o pedido, por favor, tente novamente', 'error');
       logFactory.log(error, 'error');
