@@ -6,7 +6,9 @@ angular.module('App')
         const decimals = '0'.concat(price).slice(-2); // this '0' avoid '2' becoming '20', for example
         return Number(price.substring(0, price.length - 2).concat('.').concat(decimals)).toFixed(2);
       } else {
-        return price.toFixed(2);
+        return price ?
+          price.toFixed(2) :
+          null;
       }
     }
 

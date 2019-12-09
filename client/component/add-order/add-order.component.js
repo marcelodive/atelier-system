@@ -47,7 +47,7 @@ function AddOrderController ($scope, $timeout, utilsFactory, logFactory, product
   }
 
   function updatePercentageDiscountAndTotalPrice () {
-    vm.order.discount = parseFloat(((vm.order.discountInCash / getTotalProductsPrice()) * 100).toFixed(3));
+    vm.order.discount = parseFloat(((vm.order.discountInCash / getTotalProductsPrice()) * 100).toFixed(5));
     vm.updateTotalProductsPrice('cash');
   }
 
@@ -165,8 +165,12 @@ function AddOrderController ($scope, $timeout, utilsFactory, logFactory, product
 
   function updateAutocompleteProduct (product) {
     const {autocompleteItem} = product;
-    product.name = autocompleteItem.name;
-    product.price = autocompleteItem.price;
+    product.name = autocompleteItem ?
+      autocompleteItem.name :
+      product.searchText;
+    product.price = autocompleteItem ?
+      autocompleteItem.price :
+      null;
   }
 
   async function buildAddressFromCEP (cep) {

@@ -1,7 +1,7 @@
 <span id="for-print" ng-if="ctrl.isPrinting">
     <div layout="row" layout-wrap style="min-width: 1000px" layout-align="space-between center">
       <div ng-repeat="orderDate in ctrl.filteredOrderDates track by $index"
-        style="max-width: 500px">
+        style="max-width: 500px" ng-if="ctrl.getOrdersByDate(orderDate).length">
         <div><b>Entrega: {{ctrl.formatDate(orderDate)}}</b>
           ({{ctrl.getDaysToDelivery(orderDate)}})
         </div>

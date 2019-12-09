@@ -17,25 +17,32 @@
         <md-datepicker ng-model="ctrl.ordersEndsAt" onkeydown="return false" ng-placeholder="30/01/2000"
           md-current-view="day" ng-change="ctrl.updateOrderDates(ctrl.ordersStartAt, ctrl.ordersEndsAt)">
         </md-datepicker>
-        <md-button style="margin-left: 20px">
-          <md-icon ng-click="ctrl.printOrders()" title="Imprimir">print</md-icon>
+        <md-button style="margin-left: 20px" ng-click="ctrl.printOrders()">
+          <md-icon title="Imprimir">print</md-icon>
         </md-button>
-        <md-button style="margin-left: 20px">
-          <md-icon ng-click="ctrl.showTextFilter = true; ctrl.updateOrderDatesForTextSearch();">search</md-icon>
+        <md-button style="margin-left: 20px" ng-click="ctrl.showTextFilter = true;
+            ctrl.updateOrderDatesForTextSearch();">
+          <md-icon>search</md-icon>
         </md-button>
       </span>
     </div>
 
     <div layout="row" layout-align="center center" layout-fill ng-if="ctrl.showTextFilter">
-          <md-input-container class="md-block" flex-gt-sm="40" flex="100">
-            <label>Busca por texto</label>
-            <md-icon>search</md-icon>
-            <input ng-model="ctrl.orderTextFilter" ng-required="true">
-          </md-input-container>
+      <md-input-container class="md-block" flex-gt-sm="40" flex="100">
+        <label>Busca por texto</label>
+        <md-icon>search</md-icon>
+        <input ng-model="ctrl.orderTextFilter" ng-required="true">
+      </md-input-container>
 
-        <md-button style="margin-left: 20px">
-          <md-icon ng-click="ctrl.showTextFilter = false; ctrl.updateOrderDates(ctrl.ordersStartAt, ctrl.ordersEndsAt);">close</md-icon>
-        </md-button>
+      <md-button style="margin-left: 20px" ng-click="ctrl.showTextFilter = false;
+          ctrl.updateOrderDates(ctrl.ordersStartAt, ctrl.ordersEndsAt);">
+        <md-icon>
+          close
+        </md-icon>
+      </md-button>
+      <md-button style="margin-left: 20px" ng-click="ctrl.printOrders()">
+        <md-icon title="Imprimir">print</md-icon>
+      </md-button>
     </div>
 
     <div ng-if="ctrl.loadingOrdersMessages" layout="row" layout-align="center center" layout-fill>
@@ -43,7 +50,7 @@
       {{ ctrl.loadingOrdersMessages }}...
     </div>
 
-    <section ng-repeat="orderDate in ctrl.filteredOrderDates">
+    <section ng-repeat="orderDate in ctrl.filteredOrderDates" ng-if="ctrl.getOrdersByDate(orderDate).length">
       <md-subheader><b>Entrega: {{ctrl.formatDate(orderDate)}}</b>
         ({{ctrl.getDaysToDelivery(orderDate)}})
       </md-subheader>
@@ -161,7 +168,8 @@
           </md-table-container>
           <div layout="row" layout-align="space-between center">
             <span ng-show="order.discount">
-              <b>Desconto</b>: R${{ctrl.getDiscountInCash(order)}} ou {{order.discount}}% ({{order.discount_justification}}).
+              <b>Desconto</b>: R${{ctrl.getDiscountInCash(order)}} ou {{order.discount | limitTo: 4}}%
+              ({{order.discount_justification}}).
             </span>
             <span ng-show="!order.discount"></span>
             <span><b>Preço total<span ng-show="order.discount"> com desconto</span></b>:
@@ -215,14 +223,12 @@
       </md-card>
     </section>
 
-    <div layout="row" layout-align="center center" layout-fill
-      ng-if="!ctrl.filteredOrderDates.length">
+    <div layout="row" layout-align="center center" layout-fill ng-if="!ctrl.filteredOrderDates.length">
       <br><br>
       Não há pedidos para este intervalo.
     </div>
 
-    <ng-include style="position: absolute; left: -9999px;"
-      src="'./component/orders-view/orders-print.html'">
+    <ng-include style="position: absolute; left: -9999px;" src="'./component/orders-view/orders-print.html'">
     </ng-include>
   </md-content>
   <md-content ng-if="!ctrl.orders">

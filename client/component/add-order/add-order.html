@@ -239,22 +239,23 @@
             md-search-text="product.searchText"
             md-items="item in ctrl.getMatchingProducts(product.searchText, ctrl.order.products)"
             md-item-text="item.name" md-clear-button="false" md-min-length="0"
-            placeholder="Ex. Bolo" md-search-text-change="ctrl.addNewProductRow(ctrl.order.products)"
+            placeholder="Ex. Bolo"
+            md-search-text-change="ctrl.updateAutocompleteProduct(product);ctrl.addNewProductRow(ctrl.order.products)"
             md-selected-item-change="ctrl.updateAutocompleteProduct(product);ctrl.addNewProductRow(ctrl.order.products)">
             <span md-highlight-text="product.searchText">{{item.name}} (R$ {{item.price}})</span>
           </md-autocomplete>
         </md-input-container>
-        {{}}
         <md-input-container class="md-block remove-margin" flex="10">
           <label>Preço (R$)</label>
-          <input type="string"
+          <input type="string" ng-required="product.name"
             ng-change="product.price = ctrl.formatPrice(product.price);
-              ctrl.updateTotalPrice(product); ctrl.addNewProductRow(ctrl.order.products)"
+              ctrl.updateTotalPrice(product);
+              ctrl.addNewProductRow(ctrl.order.products)"
             ng-model="product.price">
         </md-input-container>
         <md-input-container class="md-block remove-margin" flex="10">
           <label>Quantidade</label>
-          <input type="number" min="1" ng-model="product.quantity"
+          <input type="number" min="1" ng-model="product.quantity" ng-required="product.name"
             ng-change="ctrl.updateTotalPrice(product);ctrl.addNewProductRow(ctrl.order.products)">
         </md-input-container>
         <md-input-container class="md-block remove-margin" flex="10">

@@ -74,7 +74,7 @@ function OrdersViewController (orderFactory, utilsFactory, logFactory, $timeout,
       const afterStartDate = momentStartDate.diff(date, 'days');
       const beforeEndDate = momentEndDate.diff(date, 'days');
       return (afterStartDate <= 0 && beforeEndDate >= 0);
-    });
+    }).sort();
   }
 
   function getDaysToDelivery (orderDate) {
