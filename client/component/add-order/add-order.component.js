@@ -72,8 +72,9 @@ function AddOrderController ($scope, $timeout, utilsFactory, logFactory, product
         });
 
       vm.isSaving = false;
-      vm.cancelCallback();
-      $timeout(() => $scope.$apply(), 1000);
+      $timeout(() => {
+        vm.cancelCallback();
+      }, 500);
     } catch (error) {
       logFactory.showToaster('Erro', 'Ocorreu um erro ao salvar o pedido, por favor, tente novamente', 'error');
       logFactory.log(error, 'error');

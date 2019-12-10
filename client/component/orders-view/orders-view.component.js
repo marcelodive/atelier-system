@@ -212,6 +212,7 @@ function OrdersViewController (orderFactory, utilsFactory, logFactory, $timeout,
   function cancelAddingOrder () {
     vm.isAddingOrder = false;
     vm.orderToEdit = null;
+    loadOrders();
   }
 
   function getDiscountInCash (order) {

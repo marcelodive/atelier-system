@@ -10,7 +10,7 @@ angular.module('App')
     },
   });
 
-function AddProductController($scope, $timeout, logFactory, productFactory, utilsFactory) {
+function AddProductController ($scope, $timeout, logFactory, productFactory, utilsFactory) {
   const vm = this;
 
   vm.isSaving = false;
@@ -31,7 +31,7 @@ function AddProductController($scope, $timeout, logFactory, productFactory, util
     }
   });
 
-  function addNewProductRow() {
+  function addNewProductRow () {
     const mustAddNewRow = vm.productsToAdd.every(((product) => !!product.name));
 
     if (mustAddNewRow) {
@@ -39,16 +39,16 @@ function AddProductController($scope, $timeout, logFactory, productFactory, util
     }
   }
 
-  function formatPrice(product) {
+  function formatPrice (product) {
     product.price = utilsFactory.formatPrice(product.price);
   }
 
-  function closeEditing() {
+  function closeEditing () {
     vm.isSaving = false;
     vm.cancelCallback();
   }
 
-  async function editProduct(editedProduct) {
+  async function editProduct (editedProduct) {
     try {
       await productFactory.editProduct(editedProduct);
       vm.products = [...vm.products.filter((product) => product.id !== editedProduct.id), editedProduct];
@@ -58,7 +58,7 @@ function AddProductController($scope, $timeout, logFactory, productFactory, util
     }
   }
 
-  async function createProduct(products) {
+  async function createProduct (products) {
     vm.isSaving = true;
     if (vm.productToEdit) {
       const editedProduct = products.shift();
@@ -67,7 +67,7 @@ function AddProductController($scope, $timeout, logFactory, productFactory, util
 
     if (products.length) {
       const validProducts = products.filter((product) => product.name && product.price);
-      validProducts.forEach(async(product) => {
+      validProducts.forEach(async (product) => {
         try {
           const {data: createdProduct} = await productFactory.createProduct(product);
           vm.products.push(createdProduct);

@@ -5,6 +5,7 @@ const emailStatuses = require('../constants').emailStatuses;
 
 module.exports = function (Order) {
   Order.saveOrder = async (order) => {
+    console.log('Starting saving order');
     order.cep = Number(String(order.cep).replace('-', ''));
     const savedOrder = await Order.upsert(order);
     order.id = savedOrder.id;
@@ -16,31 +17,46 @@ module.exports = function (Order) {
   };
 
   function saveOrderInstallments (order) {
+    console.log('Starting saving installments');
     const {Installment} = app.models;
 
-    Installment.destroyAll({order_id: order.id});
-    order.installments.forEach(async (installment, index) => {
-      installment.order_id = order.id;
-      installment.payment_day = order.paymentDay[index];
-      Installment.upsert(installment);
+    console.log('Destroy installments');
+    Installment.destroyAll({order_id: order.id}).then(() => {
+      console.log('End destroy installments');
+      order.installments.forEach(async (installment, index) => {
+        console.log('Saving installments');
+        installment.id = null;
+        installment.order_id = order.id;
+        installment.payment_day = order.paymentDay[index];
+        Installment.create(installment);
+      });
     });
   }
 
   function saveOrderProducts (order) {
+    console.log('Start saving order products');
     const {OrderProduct} = app.models;
     const {Product} = app.models;
 
-    order.products.filter((product) => product.name)
-      .forEach(async (product) => {
-        product.order_id = order.id;
-        product.name = product.searchText;
-        OrderProduct.upsert(product);
+    console.log('Destroy OrderProducts');
+    OrderProduct.destroyAll({order_id: order.id}).then(() => {
+      console.log('End destroy OrderProducts');
+      order.products.filter((product) => product.name)
+        .forEach(async (product) => {
+          console.log('Saving OrderProducts');
+          product.id = null;
+          product.order_id = order.id;
+          product.name = product.searchText;
+          OrderProduct.create(product);
 
-        const productToUpdateOrAdd = (product.autocompleteItem) ?
-          product.autocompleteItem :
-          product;
-        Product.upsert(productToUpdateOrAdd);
-      });
+          const productToUpdateOrAdd = (product.autocompleteItem) ?
+            product.autocompleteItem :
+            product;
+          console.log('Upserting products');
+          Product.upsert(productToUpdateOrAdd)
+            .catch(() => console.log('error'));
+        });
+    });
   }
 
   Order.sendEmail = (orderId, cb) => {
