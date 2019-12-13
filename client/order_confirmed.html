@@ -11,7 +11,8 @@
       const timestamp = urlParams.get('timestamp');
       const emailData = {"orderId": orderId,"timestamp": timestamp};
 
-      $.post( 'http://localhost:3000/api/Orders/acceptOrder', {emailData})
+      // $.post( 'http://localhost:3000/api/Orders/acceptOrder', {emailData})
+      $.post( 'http://luiza-sales-site.umbler.net/api/Orders/acceptOrder', {emailData})
         .done(({template}) => { console.log('Pedido confirmado') });
     </script>
   </head>

@@ -10,7 +10,8 @@
       const timestamp = urlParams.get('timestamp');
       const emailData = {"orderId": orderId,"timestamp": timestamp};
 
-      $.post( 'http://localhost:3000/api/Orders/rejectOrder', {emailData})
+      // $.post( 'http://localhost:3000/api/Orders/rejectOrder', {emailData})
+      $.post( 'http://luiza-sales-site.umbler.net/api/', {emailData})
         .done(({template}) => { console.log('Pedido negado') });
     </script>
   </head>

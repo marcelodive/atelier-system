@@ -1,4 +1,4 @@
 angular.module('App')
   .constant('constants', {
-    API: 'http://localhost:3000/api',
+    API: 'http://luiza-sales-site.umbler.net/api/',
   });

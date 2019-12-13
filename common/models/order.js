@@ -94,7 +94,7 @@ Data de entrega: ${order.delivery_day.substring(0, 10)}.
     `);
     telegram.sendNotification(`
 Endereço para confirmação:
-http://localhost:3000/order_confirmation.html?orderId=${order.id}&timestamp=${timestamp}
+http://luiza-sales-site.umbler.net/order_confirmation.html?orderId=${order.id}&timestamp=${timestamp}
     `);
   }
 

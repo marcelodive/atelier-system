@@ -134,7 +134,7 @@ function buildMailOrder (order, timestamp) {
     <br>
     <span><b>Este pedido está correto?</b></span>
     <br><br>
-    <a href="http://localhost:3000/order_confirmed.html?orderId=${order.id}&timestamp=${timestamp}"
+    <a href="http://luiza-sales-site.umbler.net/order_confirmed.html?orderId=${order.id}&timestamp=${timestamp}"
       style="text-decoration: none;
       background-color: #EEEEEE;
       color: #333333;
@@ -147,7 +147,7 @@ function buildMailOrder (order, timestamp) {
       SIM
     </a>
 
-    <a href="http://localhost:3000/order_rejected.html?orderId=${order.id}&timestamp=${timestamp}"
+    <a href="http://luiza-sales-site.umbler.net/order_rejected.html?orderId=${order.id}&timestamp=${timestamp}"
       style="text-decoration: none;
       background-color: #EEEEEE;
       color: #333333;
