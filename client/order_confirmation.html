@@ -10,7 +10,7 @@
       const timestamp = urlParams.get('timestamp');
       const emailData = {"orderId": orderId,"timestamp": timestamp};
 
-      $.post( 'http://luiza-sales-site.umbler.net/api/', {emailData})
+      $.post( 'http://luiza-sales-site.umbler.net/api/Orders/getEmailHTML', {emailData})
       // $.post( 'http://localhost:3000/api/Orders/getEmailHTML', {emailData})
         .done(({template}) => {
           $('#email').append(template);
