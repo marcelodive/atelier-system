@@ -7,9 +7,9 @@
 <div layout="column" ng-show="!ctrl.isAddingOrder" style="max-height: calc(100vh - 64px)">
   <md-content ng-if="ctrl.orders">
 
-    <div layout="row" layout-align="center center" layout-fill ng-if="!ctrl.showTextFilter">
+    <div layout="row" layout-align="center center" layout-fill>
       <span>
-        Mostrar pedidos de
+        <span ng-if="!ctrl.showTextFilter">Mostrar pedidos de</span>
         <md-datepicker ng-model="ctrl.ordersStartAt" onkeydown="return false" ng-placeholder="30/01/2000"
           md-current-view="day" ng-change="ctrl.updateOrderDates(ctrl.ordersStartAt, ctrl.ordersEndsAt)">
         </md-datepicker>
@@ -21,28 +21,22 @@
           <md-icon title="Imprimir">print</md-icon>
         </md-button>
         <md-button style="margin-left: 20px" ng-click="ctrl.showTextFilter = true;
-            ctrl.updateOrderDatesForTextSearch();">
+            ctrl.updateOrderDatesForTextSearch();" ng-if="!ctrl.showTextFilter">
           <md-icon>search</md-icon>
         </md-button>
+        <span ng-if="ctrl.showTextFilter">
+          <md-input-container style="margin: 0" flex-gt-sm="20" flex="100">
+            <label>Busca por texto</label>
+            <input ng-model="ctrl.orderTextFilter" ng-required="true">
+          </md-input-container>
+          <md-button style="margin-left: 10px" ng-click="ctrl.showTextFilter = false;
+              ctrl.updateOrderDates(ctrl.ordersStartAt, ctrl.ordersEndsAt);">
+            <md-icon>
+              close
+            </md-icon>
+          </md-button>
+        </span>
       </span>
-    </div>
-
-    <div layout="row" layout-align="center center" layout-fill ng-if="ctrl.showTextFilter">
-      <md-input-container class="md-block" flex-gt-sm="40" flex="100">
-        <label>Busca por texto</label>
-        <md-icon>search</md-icon>
-        <input ng-model="ctrl.orderTextFilter" ng-required="true">
-      </md-input-container>
-
-      <md-button style="margin-left: 20px" ng-click="ctrl.showTextFilter = false;
-          ctrl.updateOrderDates(ctrl.ordersStartAt, ctrl.ordersEndsAt);">
-        <md-icon>
-          close
-        </md-icon>
-      </md-button>
-      <md-button style="margin-left: 20px" ng-click="ctrl.printOrders()">
-        <md-icon title="Imprimir">print</md-icon>
-      </md-button>
     </div>
 
     <div ng-if="ctrl.loadingOrdersMessages" layout="row" layout-align="center center" layout-fill>
