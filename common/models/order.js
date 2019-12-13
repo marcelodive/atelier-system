@@ -57,7 +57,8 @@ module.exports = function (Order) {
       .then((order) => {
         order = JSON.parse(JSON.stringify(order));
         const msg = buildMessage(order);
-        sgMail.setApiKey('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');
+        sgMail.setApiKey('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');
+        // sgMail.setApiKey('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');
         sgMail.send(msg);
         order.email_status = emailStatuses.sent;
         Order.upsert(order);
