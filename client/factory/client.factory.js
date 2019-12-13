@@ -30,7 +30,8 @@ angular.module('App')
         childrenList.push({
           name: child.name,
           birthday: child.birthday,
-          formattedBirthday: moment(child.birthday).format('MM/DD'),
+          formattedBirthday: moment(child.birthday).format('DD/MM'),
+          formattedBirthdayForSorting: moment(child.birthday).format('MM/DD'),
           age: moment(new Date()).diff(child.birthday, 'years'),
           client,
         });

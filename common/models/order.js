@@ -2,29 +2,24 @@ const app = require('../../server/server');
 const templates = require('../templates');
 const sgMail = require('@sendgrid/mail');
 const emailStatuses = require('../constants').emailStatuses;
+const telegram = require('../../server/boot/telegram');
 
 module.exports = function (Order) {
   Order.saveOrder = async (order) => {
-    console.log('Starting saving order');
     order.cep = Number(String(order.cep).replace('-', ''));
     const savedOrder = await Order.upsert(order);
     order.id = savedOrder.id;
 
     saveOrderInstallments(order);
     saveOrderProducts(order);
-
     return savedOrder;
   };
 
   function saveOrderInstallments (order) {
-    console.log('Starting saving installments');
     const {Installment} = app.models;
 
-    console.log('Destroy installments');
     Installment.destroyAll({order_id: order.id}).then(() => {
-      console.log('End destroy installments');
       order.installments.forEach(async (installment, index) => {
-        console.log('Saving installments');
         installment.id = null;
         installment.order_id = order.id;
         installment.payment_day = order.paymentDay[index];
@@ -34,27 +29,24 @@ module.exports = function (Order) {
   }
 
   function saveOrderProducts (order) {
-    console.log('Start saving order products');
     const {OrderProduct} = app.models;
     const {Product} = app.models;
 
-    console.log('Destroy OrderProducts');
     OrderProduct.destroyAll({order_id: order.id}).then(() => {
-      console.log('End destroy OrderProducts');
       order.products.filter((product) => product.name)
         .forEach(async (product) => {
-          console.log('Saving OrderProducts');
           product.id = null;
           product.order_id = order.id;
           product.name = product.searchText;
           OrderProduct.create(product);
 
-          const productToUpdateOrAdd = (product.autocompleteItem) ?
-            product.autocompleteItem :
-            product;
-          console.log('Upserting products');
-          Product.upsert(productToUpdateOrAdd)
-            .catch(() => console.log('error'));
+          const autocompleteProduct = product.autocompleteItem || product.formerAutocompleteItem;
+          const where = (autocompleteProduct) ?
+            {name: autocompleteProduct.name} :
+            {name: product.name};
+
+          Product.upsertWithWhere(where, {name: product.name, price: product.price})
+            .catch((error) => console.log(error));
         });
     });
   }
@@ -69,6 +61,7 @@ module.exports = function (Order) {
         sgMail.send(msg);
         order.email_status = emailStatuses.sent;
         Order.upsert(order);
+
         cb(null, true);
       })
       .catch((error) => { console.log(error); cb(null, false); });
@@ -88,7 +81,21 @@ module.exports = function (Order) {
       html: emailMessage,
     };
 
+    sendPosOrderCreatingTelegramMsg(order, timestamp);
+
     return emailObject;
+  }
+
+  function sendPosOrderCreatingTelegramMsg (order, timestamp) {
+    telegram.sendNotification(`
+Pedido criado/editado. Identificador para busca: ${order.id}-${timestamp}.
+Cliente: ${order.child.client.name},
+Data de entrega: ${order.delivery_day.substring(0, 10)}.
+    `);
+    telegram.sendNotification(`
+Endereço para confirmação:
+http://localhost:3000/order_confirmation.html?orderId=${order.id}&timestamp=${timestamp}
+    `);
   }
 
   function buildHtmlEmail (order, timestamp) {
@@ -108,16 +115,33 @@ module.exports = function (Order) {
   Order.acceptOrder = (emailData, cb) => {
     Order.findById(emailData.orderId).then((order) => {
       order.email_status = emailStatuses.accepted;
+      telegram.sendNotification(`Pedido '${order.id}-${emailData.timestamp}' aceito pelo cliente!`);
       Order.upsert(order);
     });
   };
 
   Order.rejectOrder = (emailData, cb) => {
     Order.findById(emailData.orderId).then((order) => {
-      order.email_status = emailStatuses.accepted;
+      order.email_status = emailStatuses.denied;
+      telegram.sendNotification(`Pedido '${order.id}-${emailData.timestamp}' recusado pelo cliente!`);
       Order.upsert(order);
     });
   };
+
+  Order.getEmailHTML = (emailData, cb) => {
+    Order.findById(emailData.orderId,
+      {'include': ['orderProducts', 'installments', {'child': 'client'}]})
+      .then((order) => {
+        order = JSON.parse(JSON.stringify(order));
+        const template = templates.buildMailOrder(order, emailData.timestamp);
+        cb(null, template);
+      });
+  };
+
+  Order.remoteMethod('getEmailHTML', {
+    accepts: {arg: 'emailData', type: 'Object'},
+    returns: {arg: 'template', type: 'Object'},
+  });
 
   Order.remoteMethod('saveOrder', {
     accepts: {arg: 'order', type: 'Object'},

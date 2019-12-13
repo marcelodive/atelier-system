@@ -200,7 +200,6 @@ function OrdersViewController (orderFactory, utilsFactory, logFactory, $timeout,
       logFactory.showToaster('Erro', 'Não foi possível carregar os pedidos', 'error');
     } finally {
       $timeout();
-      // vm.loadingOrdersMessage = null;
     }
   }
 

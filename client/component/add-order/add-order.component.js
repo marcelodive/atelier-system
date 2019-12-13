@@ -52,7 +52,6 @@ function AddOrderController ($scope, $timeout, utilsFactory, logFactory, product
   }
 
   async function createOrder (order) {
-    console.log(order);
     try {
       vm.isSaving = true;
       const {data: {order: newOrder}} = await orderFactory.createOrder(order);
@@ -195,6 +194,7 @@ function AddOrderController ($scope, $timeout, utilsFactory, logFactory, product
     clientsWithChildren.forEach((clientWithChildren) => {
       clientWithChildren.children.forEach((child) => {
         child.formattedBirthday = moment(child.birthday).format('DD/MM');
+        child.formattedBirthdayForSorting = moment(child.birthday).format('MM/DD');
         child.age = moment(new Date()).diff(child.birthday, 'years');
         const childWithClient = {...child, client: clientWithChildren};
         childrenWithClient.push(childWithClient);
@@ -234,6 +234,7 @@ function AddOrderController ($scope, $timeout, utilsFactory, logFactory, product
     vm.selectedChild.age = moment(today).diff(vm.selectedChild.birthday, 'years');
     vm.order.products = vm.orderToEdit.orderProducts.map(((product) => {
       product.autocompleteItem = angular.copy(product);
+      product.formerAutocompleteItem = angular.copy(product);
       return product;
     }));
     vm.order.products.forEach((product) => updateTotalPrice(product));

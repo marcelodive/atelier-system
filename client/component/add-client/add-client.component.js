@@ -72,6 +72,7 @@ function AddClientController($scope, clientFactory, childFactory, logFactory) {
           child.client_id = client.id;
           try {
             const {data: createdChild} = await childFactory.createChild(child);
+            logFactory.showToaster('Sucesso', `Criança ${child.name} adicionada com sucesso`, 'success');
             child.id = createdChild.id;
             addChildInList(child, client);
           } catch (error) {
@@ -94,6 +95,7 @@ function AddClientController($scope, clientFactory, childFactory, logFactory) {
       name: child.name,
       birthday: child.birthday,
       formattedBirthday: moment(child.birthday).format('DD/MM'),
+      formattedBirthdayForSorting: moment(child.birthday).format('MM/DD'),
       age: moment(new Date()).diff(child.birthday, 'years'),
       client,
     });

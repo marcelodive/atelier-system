@@ -282,12 +282,12 @@
             <span layout="row" layout-align="space-between center" ng-if="ctrl.order.has_discount" flex="30">
               <md-input-container class="md-block remove-margin" flex="15">
                 <label>Desconto (%)</label>
-                <input type="number" min="1" ng-change="ctrl.updateCashDiscountAndTotalPrice()"
+                <input type="number" min="0" ng-change="ctrl.updateCashDiscountAndTotalPrice()"
                   ng-model="ctrl.order.discount">
               </md-input-container>
               <md-input-container class="md-block remove-margin" flex="15">
                 <label>Desconto (R$)</label>
-                <input type="number" min="1"
+                <input type="number" min="0"
                   ng-change="ctrl.updatePercentageDiscountAndTotalPrice();"
                   ng-model="ctrl.order.discountInCash">
               </md-input-container>

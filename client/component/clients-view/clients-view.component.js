@@ -5,7 +5,7 @@ angular.module('App')
     controllerAs: 'ctrl',
   });
 
-function ClientsViewController($scope, $timeout, toolbarFactory, clientFactory, childFactory) {
+function ClientsViewController ($scope, $timeout, toolbarFactory, clientFactory, childFactory) {
   const vm = this;
 
   let childrenWithoutFilter = null;
@@ -17,22 +17,22 @@ function ClientsViewController($scope, $timeout, toolbarFactory, clientFactory, 
   vm.editClient = editClient;
   vm.filterChildren = filterChildren;
 
-  function triggerAddingUser() {
+  function triggerAddingUser () {
     vm.isAddingUser = true;
     toolbarFactory.setToolbarTitle('Adicionar cliente');
   }
 
-  function cancelAddingUser() {
+  function cancelAddingUser () {
     vm.isAddingUser = false;
     toolbarFactory.setToolbarTitle('Clientes');
   }
 
-  function editClient(client) {
+  function editClient (client) {
     vm.clientToEdit = client;
     vm.isAddingUser = true;
   }
 
-  function filterChildren(search) {
+  function filterChildren (search) {
     vm.children = (search) ?
       childrenWithoutFilter.filter((child) => {
         const hasChild = Object.values(child).filter((childProperty) =>
@@ -44,12 +44,12 @@ function ClientsViewController($scope, $timeout, toolbarFactory, clientFactory, 
       childrenWithoutFilter;
   }
 
-  function addClientChildrenInList(client) {
+  function addClientChildrenInList (client) {
     clientFactory.addClientInChildrenList(client, vm.children);
     childrenWithoutFilter = vm.children;
   }
 
-  function init() {
+  function init () {
     toolbarFactory.setToolbarTitle('Clientes');
 
     vm.clients = [];

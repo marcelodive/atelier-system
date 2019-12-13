@@ -5,7 +5,7 @@ angular.module('App')
     controllerAs: 'ctrl',
   });
 
-function ProductsViewController(toolbarFactory, productFactory) {
+function ProductsViewController (toolbarFactory, productFactory, $scope) {
   const vm = this;
 
   let productsWithoutFilter = null;
@@ -18,35 +18,36 @@ function ProductsViewController(toolbarFactory, productFactory) {
   vm.editProduct = editProduct;
   vm.filterProducts = filterProducts;
 
-  function filterProducts(search) {
+  function filterProducts (search) {
     vm.products = (search) ?
       getFilteredProducts(search) :
       productsWithoutFilter;
   }
 
-  function getFilteredProducts(search) {
+  function getFilteredProducts (search) {
     return productsWithoutFilter
       .filter((product) => Object.values(product).filter((productProperty) => String(productProperty)
         .toLowerCase().includes(search.toLowerCase())).length);
   }
 
-  function editProduct(product) {
+  function editProduct (product) {
     vm.productToEdit = product;
     vm.isAddingProduct = true;
   }
 
-  function cancelAddingProduct() {
+  function cancelAddingProduct () {
     vm.isAddingProduct = false;
     toolbarFactory.setToolbarTitle('Produtos');
     vm.productToEdit = null;
+    $scope.$apply();
   }
 
-  function triggerAddingProduct() {
+  function triggerAddingProduct () {
     vm.isAddingProduct = true;
     toolbarFactory.setToolbarTitle('Adicionar produto');
   }
 
-  function init() {
+  function init () {
     toolbarFactory.setToolbarTitle('Produtos');
 
     productFactory.getProducts().then((productData) => {

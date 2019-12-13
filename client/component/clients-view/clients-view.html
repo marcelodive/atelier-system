@@ -4,11 +4,14 @@
     <input ng-model="search" type="text" placeholder="Buscar" ng-change="ctrl.filterChildren(search)">
   </md-input-container>
   <md-table-container>
+    <div ng-if="!ctrl.children.length">
+      <p>Carregando clientes...</p>
+    </div>
     <table ng-if="ctrl.children.length" md-table class="greyGridTable">
       <thead md-head md-order="orderByDt">
         <tr md-row>
           <th class="center-text" md-column md-order-by="name">Criança</th>
-          <th class="center-text" md-column md-order-by="formattedBirthday">Aniversário (mês/dia)</th>
+          <th class="center-text" md-column md-order-by="formattedBirthdayForSorting">Aniversário (dia/mês)</th>
           <th class="center-text" md-column md-order-by="age">Idade</th>
           <th class="center-text" md-column md-order-by="client.name">Cliente</th>
           <th class="center-text" md-column md-order-by="client.cpf">CPF</th>

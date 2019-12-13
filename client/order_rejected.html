@@ -1,1 +1,20 @@
-<p>Não se preocupe, em breve entraremos em contato para fazer as correções necessários em seu pedido</p>
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Pedido negado</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const orderId = urlParams.get('orderId');
+      const timestamp = urlParams.get('timestamp');
+      const emailData = {"orderId": orderId,"timestamp": timestamp};
+
+      $.post( 'http://localhost:3000/api/Orders/rejectOrder', {emailData})
+        .done(({template}) => { console.log('Pedido negado') });
+    </script>
+  </head>
+  <body>
+      <p>Não se preocupe, em breve entraremos em contato para fazer as correções necessárias em seu pedido</p>
+  </body>
+</html>
