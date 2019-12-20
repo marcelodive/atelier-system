@@ -34,6 +34,8 @@ function OrdersViewController (orderFactory, utilsFactory, logFactory, $timeout,
   vm.printOrders = printOrders;
   vm.getDiscountInCash = getDiscountInCash;
   vm.updateOrderDatesForTextSearch = updateOrderDatesForTextSearch;
+  vm.getBiscuitOrders = getBiscuitOrders;
+  vm.getOrdersWithBiscuits = getOrdersWithBiscuits;
 
   const today = new Date();
 
@@ -56,8 +58,10 @@ function OrdersViewController (orderFactory, utilsFactory, logFactory, $timeout,
 
     $timeout(async () => {
       try {
-      // eslint-disable-next-line no-undef
+        // eslint-disable-next-line no-undef
         await html2pdf(document.getElementById('for-print'), options);
+        // eslint-disable-next-line no-undef
+        await html2pdf(document.getElementById('for-print-biscuit'), {...options, filename: 'pedidos-com-biscuit.pdf'});
       } catch (error) {
         logFactory.showToaster('Erro', 'Não foi possível imprimir os pedidos', 'error');
       } finally {
@@ -216,6 +220,14 @@ function OrdersViewController (orderFactory, utilsFactory, logFactory, $timeout,
 
   function getDiscountInCash (order) {
     return ((order.total_products_price / (1 - (order.discount / 100))) - order.total_products_price).toFixed(2);
+  }
+
+  function getBiscuitOrders (orderProducts) {
+    return orderProducts.filter(({name}) => name.toLowerCase().includes('biscuit'));
+  }
+
+  function getOrdersWithBiscuits (orders) {
+    return orders.filter((order) => order.orderProducts.some(({name}) => name.toLowerCase().includes('biscuit')));
   }
 
   init();
