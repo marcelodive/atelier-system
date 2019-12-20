@@ -159,6 +159,7 @@ function buildMailOrder (order, timestamp) {
       margin:20px;">
       NÃO
     </a>
+    <br><br><br>
   `;
 
   return emailOrder;
