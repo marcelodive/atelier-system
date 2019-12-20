@@ -274,7 +274,7 @@
           <span layout="column" flex="60">
             <md-input-container class="md-block remove-margin" flex>
               <md-checkbox ng-model="ctrl.order.has_discount" aria-label="Checkbox 1"
-                ng-change="ctrl.updateTotalProductsPrice()"
+                ng-change="ctrl.updateTotalProductsPrice(); ctrl.verifyDiscount();"
                 ng-true-value="1" ng-false-value="0">
                 Desconto
               </md-checkbox>

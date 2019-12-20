@@ -29,8 +29,17 @@ function AddOrderController ($scope, $timeout, utilsFactory, logFactory, product
   vm.updateCashDiscountAndTotalPrice = updateCashDiscountAndTotalPrice;
   vm.updatePercentageDiscountAndTotalPrice = updatePercentageDiscountAndTotalPrice;
   vm.verifyFormValidation = verifyFormValidation;
+  vm.verifyDiscount = verifyDiscount;
 
   init();
+
+  function verifyDiscount () {
+    if (!vm.order.has_discount) {
+      vm.order.discount = null;
+      vm.order.discountInCash = null;
+      vm.order.discount_justification = null;
+    }
+  }
 
   function verifyFormValidation (isValid) {
     if (!isValid) {
