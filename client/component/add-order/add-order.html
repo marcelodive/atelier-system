@@ -125,7 +125,7 @@
         <span layout="row" layout-align="center center" flex="40">
           <md-input-container class="md-block" flex-gt-sm="60" flex="100">
             <label>Festa</label>
-            <md-datepicker ng-model="ctrl.order.party_day" onkeydown="return false"
+            <md-datepicker ng-model-options="{timezone: 'utc'}" ng-model="ctrl.order.party_day" onkeydown="return false"
               md-is-open="ctrl.isPartyDayCalendarOpen" ng-click="ctrl.isPartyDayCalendarOpen = true"
               name="party_day" ng-placeholder="30/01/2000" md-current-view="year" ng-required="true"">
             </md-datepicker>
@@ -170,7 +170,7 @@
           <span layout="column" flex-gt-sm="20" flex="100">
             <md-input-container class="md-block remove-margin">
               <label>Entrega</label>
-              <md-datepicker ng-model="ctrl.order.delivery_day" onkeydown="return false"
+              <md-datepicker ng-model-options="{timezone: 'utc'}" ng-model="ctrl.order.delivery_day" onkeydown="return false"
                 md-is-open="ctrl.isDeliveryDayCalendarOpen" ng-click="ctrl.isDeliveryDayCalendarOpen = true"
                 name="delivery_day" ng-placeholder="30/01/2000" md-current-view="month" ng-required="true"">
               </md-datepicker>
@@ -201,7 +201,7 @@
         <span layout="column" flex-gt-sm="20" flex="100" ng-if="ctrl.order.delivery_by == 'correios'">
           <md-input-container class="md-block remove-margin">
             <label>Envio</label>
-            <md-datepicker ng-model="ctrl.order.delivery_day" onkeydown="return false"
+            <md-datepicker ng-model-options="{timezone: 'utc'}" ng-model="ctrl.order.delivery_day" onkeydown="return false"
               md-is-open="ctrl.isDeliveryDayCalendarOpen" ng-click="ctrl.isDeliveryDayCalendarOpen = true"
               name="delivery_day" ng-placeholder="30/01/2000" md-current-view="month" ng-required="true"">
             </md-datepicker>
@@ -328,7 +328,7 @@
         <span layout="row" ng-repeat="_ in [].constructor(ctrl.order.num_installments) track by $index" flex-gt-sm="50" flex="100">
           <md-input-container class="md-block" flex="50">
             <label>Parcela {{$index + 1}}</label>
-            <md-datepicker ng-model="ctrl.order.paymentDay[$index]" onkeydown="return false"
+            <md-datepicker ng-model-options="{timezone: 'utc'}" ng-model="ctrl.order.paymentDay[$index]" onkeydown="return false"
               md-is-open="ctrl.isPaymentDayCalendarOpen[$index]"
               ng-click="ctrl.isPaymentDayCalendarOpen[$index] = true"
               name="paymentDay" ng-placeholder="30/01/2000" md-current-view="month" ng-required="true"">

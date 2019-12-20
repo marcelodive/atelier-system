@@ -1,76 +1,83 @@
 <span id="for-print" ng-if="ctrl.isPrinting">
-    <div layout="row" layout-wrap style="min-width: 1000px" layout-align="space-between center">
-      <div ng-repeat="orderDate in ctrl.filteredOrderDates track by $index"
-        style="max-width: 500px" ng-if="ctrl.getOrdersByDate(orderDate).length">
+  <div layout="row" layout-fill layout-align="center center">
+    <h1>Pedidos:</h1>
+  </div>
+  <div layout="row" layout-wrap style="min-width: 1000px" layout-align="space-between">
+    <div ng-repeat="orderDate in ctrl.filteredOrderDates track by $index" flex="50"
+      style="max-width: 500px; padding: 5px; margin: 5px; border: 1px solid grey;" ng-if="ctrl.getOrdersByDate(orderDate).length">
+      <div ng-repeat="order in ctrl.getOrdersByDate(orderDate) track by $index">
         <div><b>Entrega: {{ctrl.formatDate(orderDate)}}</b>
           ({{ctrl.getDaysToDelivery(orderDate)}})
         </div>
-        <div ng-repeat="order in ctrl.getOrdersByDate(orderDate) track by $index">
-          <div>
-            <span>
-              <b>Criança</b>: {{order.child.name}} <br>
-              <b>Nascimento:</b> {{ctrl.formatBirthday(order.child.birthday)}}
-              <span>({{ctrl.childAge(order.child.birthday)}})</span>
-            </span>
-            <br>
-            <span>
-              <b>Responsável</b>: {{order.child.client.name}}
-            </span>
-          </div>
+        <div>
+          <span>
+            <b>Criança</b>: {{order.child.name}} <br>
+            <b>Nascimento:</b> {{ctrl.formatBirthday(order.child.birthday)}}
+            <span>({{ctrl.childAge(order.child.birthday)}})</span>
+          </span>
           <br>
           <span>
-            <b>Tema da festa</b>: {{order.theme}} <br>
-            <b>Cores</b>: {{order.colors}} <br>
-            <b>Anotações</b>: {{order.anotations}} <br>
+            <b>Responsável</b>: {{order.child.client.name}}
           </span>
-          <ul>
-            <li ng-repeat="(key, product) in order.orderProducts">
-              {{product.quantity}}x {{product.name}}
-            </li>
-          </ul>
-          <hr>
-          <br>
         </div>
         <br>
+        <span>
+          <b>Tema da festa</b>: {{order.theme}} <br>
+          <b>Cores</b>: {{order.colors}} <br>
+          <b>Anotações</b>: {{order.anotations}} <br>
+        </span>
+        <ul>
+          <li ng-repeat="(key, product) in order.orderProducts">
+            {{product.quantity}}x {{product.name}}
+          </li>
+        </ul>
+        <hr ng-if="!$last">
+        <br>
       </div>
+      <br>
     </div>
-  </span>
+  </div>
+</span>
 
-  <span id="for-print-biscuit" ng-if="ctrl.isPrinting">
-    <div layout="row" layout-wrap style="min-width: 1000px" layout-align="space-between center">
-      <div ng-repeat="orderDate in ctrl.filteredOrderDates track by $index"
-        style="max-width: 500px" ng-if="ctrl.getOrdersByDate(orderDate).length">
+<span id="for-print-biscuit" ng-if="ctrl.isPrinting">
+  <div layout="row" layout-fill layout-align="center center">
+    <h1>Biscuit:</h1>
+  </div>
+  <div layout="row" layout-wrap style="min-width: 1000px" layout-align="space-between">
+    <div ng-repeat="orderDate in ctrl.filteredOrderDates track by $index" flex="50"
+      style="max-width: 500px;  padding: 5px; margin: 5px; border: 1px solid grey;" ng-if="ctrl.getOrdersByDate(orderDate).length">
+      <div ng-repeat="order in ctrl.getOrdersWithBiscuits(ctrl.getOrdersByDate(orderDate)) track by $index">
         <div><b>Entrega: {{ctrl.formatDate(orderDate)}}</b>
           ({{ctrl.getDaysToDelivery(orderDate)}})
         </div>
-        <div ng-repeat="order in ctrl.getOrdersWithBiscuits(ctrl.getOrdersByDate(orderDate)) track by $index">
-          <div>
-            <span>
-              <b>Criança</b>: {{order.child.name}} <br>
-              <b>Nascimento:</b> {{ctrl.formatBirthday(order.child.birthday)}}
-              <span>({{ctrl.childAge(order.child.birthday)}})</span>
-            </span>
-            <br>
-            <span>
-              <b>Responsável</b>: {{order.child.client.name}}
-            </span>
-          </div>
+        <div>
+          <span>
+            <b>Criança</b>: {{order.child.name}} <br>
+            <b>Nascimento:</b> {{ctrl.formatBirthday(order.child.birthday)}}
+            <span>({{ctrl.childAge(order.child.birthday)}})</span>
+          </span>
           <br>
           <span>
-            <b>Tema da festa</b>: {{order.theme}} <br>
-            <b>Cores</b>: {{order.colors}} <br>
-            <b>Anotações</b>: {{order.anotations}} <br>
+            <b>Responsável</b>: {{order.child.client.name}}
           </span>
-          <ul>
-            <li ng-repeat="(key, product) in ctrl.getBiscuitOrders(order.orderProducts)">
-              {{product.quantity}}x {{product.name}}
-            </li>
-          </ul>
-          <hr>
-          <br>
         </div>
-        <div ng-if="!ctrl.getOrdersWithBiscuits(ctrl.getOrdersByDate(orderDate)).length">Nenhum produto de biscuit para este dia.</div>
+        <br>
+        <span>
+          <b>Tema da festa</b>: {{order.theme}} <br>
+          <b>Cores</b>: {{order.colors}} <br>
+          <b>Anotações</b>: {{order.anotations}} <br>
+        </span>
+        <ul>
+          <li ng-repeat="(key, product) in ctrl.getBiscuitOrders(order.orderProducts)">
+            {{product.quantity}}x {{product.name}}
+          </li>
+        </ul>
+        <hr ng-if="!$last">
         <br>
       </div>
+      <div ng-if="!ctrl.getOrdersWithBiscuits(ctrl.getOrdersByDate(orderDate)).length">Nenhum produto de biscuit para o
+        dia {{ctrl.formatDate(orderDate)}}.</div>
+      <br>
     </div>
-  </span>
+  </div>
+</span>

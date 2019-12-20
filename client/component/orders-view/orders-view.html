@@ -10,11 +10,11 @@
     <div layout="row" layout-align="center center" layout-fill>
       <span ng-if="!ctrl.showTextFilter">
         <span>Mostrar pedidos de</span>
-        <md-datepicker ng-model="ctrl.ordersStartAt" onkeydown="return false" ng-placeholder="30/01/2000"
+        <md-datepicker ng-model-options="{timezone: 'utc'}" ng-model="ctrl.ordersStartAt" onkeydown="return false" ng-placeholder="30/01/2000"
           md-current-view="day" ng-change="ctrl.updateOrderDates(ctrl.ordersStartAt, ctrl.ordersEndsAt)">
         </md-datepicker>
         &nbsp;até
-        <md-datepicker ng-model="ctrl.ordersEndsAt" onkeydown="return false" ng-placeholder="30/01/2000"
+        <md-datepicker ng-model-options="{timezone: 'utc'}" ng-model="ctrl.ordersEndsAt" onkeydown="return false" ng-placeholder="30/01/2000"
           md-current-view="day" ng-change="ctrl.updateOrderDates(ctrl.ordersStartAt, ctrl.ordersEndsAt)">
         </md-datepicker>
         <md-button style="margin-left: 20px" ng-click="ctrl.showTextFilter = true;

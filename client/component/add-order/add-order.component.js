@@ -231,6 +231,7 @@ function AddOrderController ($scope, $timeout, utilsFactory, logFactory, product
       logFactory.showToaster('Erro', 'Ocorreu um erro ao carregar', 'error');
     } finally {
       vm.loadingOrder = false;
+      $scope.$apply();
     }
   }
 

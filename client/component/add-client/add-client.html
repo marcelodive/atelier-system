@@ -61,7 +61,7 @@
           <md-input-container class="md-block">
             <label>Nascimento <span ng-if="ctrl.client.children.length > 1">{{$index + 1}}</span></label>
 
-            <md-datepicker ng-model="child.birthday" onkeydown="return false"
+            <md-datepicker ng-model-options="{timezone: 'utc'}" ng-model="child.birthday" onkeydown="return false"
               md-is-open="ctrl.isCalendarOpen[$index]" ng-click="ctrl.isCalendarOpen[$index] = true"
               name="birthday" ng-placeholder="30/01/2000" md-current-view="year" md-max-date="ctrl.today"
               ng-required="true" ng-change="ctrl.updateChildAge(child.birthday, child)">
