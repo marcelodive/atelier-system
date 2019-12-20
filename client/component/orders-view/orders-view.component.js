@@ -111,8 +111,13 @@ function OrdersViewController (orderFactory, utilsFactory, logFactory, $timeout,
   }
 
   async function changeDeliveredStatus (order) {
-    const {data: updatedOrder} = await orderFactory.changeDeliveredStatus(order);
-    order.delivered = updatedOrder.delivered;
+    try {
+      const {data: updatedOrder} = await orderFactory.changeDeliveredStatus(order);
+      order.delivered = updatedOrder.delivered;
+      logFactory.showToaster('Info', 'Status da entrega modificada com sucesso', 'note');
+    } catch (error) {
+      logFactory.showToaster('Erro', 'Não foi possível mudar o status da entrega', 'error');
+    }
   }
 
   function getOrderStatus (order) {
@@ -164,8 +169,13 @@ function OrdersViewController (orderFactory, utilsFactory, logFactory, $timeout,
   }
 
   async function changeInstallmentPaidStatus (installment) {
-    const {data: updatedInstallment} = await orderFactory.changeInstallmentPaidStatus(installment);
-    installment = updatedInstallment;
+    try {
+      const {data: updatedInstallment} = await orderFactory.changeInstallmentPaidStatus(installment);
+      installment = updatedInstallment;
+      logFactory.showToaster('Info', 'Status da parcela modificada com sucesso', 'note');
+    } catch (error) {
+      logFactory.showToaster('Erro', 'Não foi possível mudar o status da parcela', 'error');
+    }
   }
 
   function formatDate (date) {
