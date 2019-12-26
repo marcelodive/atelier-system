@@ -10,8 +10,8 @@ function OrdersViewController (orderFactory, utilsFactory, logFactory, $timeout,
 
   vm.isAddingOrder = false;
   vm.showTextFilter = false;
-  vm.ordersStartAt = moment().utc().startOf('week');
-  vm.ordersEndsAt = moment().utc().endOf('week');
+  vm.ordersStartAt = moment().startOf('week');
+  vm.ordersEndsAt = moment().endOf('week');
 
   vm.loadOrders = loadOrders;
   vm.triggerAddingOrder = triggerAddingOrder;
@@ -75,8 +75,9 @@ function OrdersViewController (orderFactory, utilsFactory, logFactory, $timeout,
     const momentStartDate = moment(startDate);
     const momentEndDate = moment(endDate);
     vm.filteredOrderDates = vm.orderDates.filter((date) => {
-      const afterStartDate = momentStartDate.diff(date, 'days');
-      const beforeEndDate = momentEndDate.diff(date, 'days');
+      const dateInMomentFormat = moment(date.slice(0, 10));
+      const afterStartDate = momentStartDate.diff(dateInMomentFormat, 'days');
+      const beforeEndDate = momentEndDate.diff(dateInMomentFormat, 'days');
       return (afterStartDate <= 0 && beforeEndDate >= 0);
     }).sort();
   }
