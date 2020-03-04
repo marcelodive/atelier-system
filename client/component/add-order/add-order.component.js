@@ -52,7 +52,6 @@ function AddOrderController ($scope, $timeout, utilsFactory, logFactory, product
         vm.updateAutocompleteProduct(product);
       }
     });
-
   }
 
   function verifyFormValidation (isValid) {
