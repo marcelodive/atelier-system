@@ -36,7 +36,7 @@ function AddProductController ($scope, $timeout, logFactory, productFactory, uti
     const mustAddNewRow = vm.productsToAdd.every(((product) => !!product.name));
 
     if (mustAddNewRow) {
-      vm.productsToAdd.push({});
+      vm.productsToAdd.push({tags: []});
     }
   }
 
@@ -68,12 +68,14 @@ function AddProductController ($scope, $timeout, logFactory, productFactory, uti
 
     if (products.length) {
       const validProducts = products.filter((product) => product.name && product.price);
-      validProducts.forEach(async (product) => {
+      validProducts.forEach(async (product, index) => {
         try {
           const {data: createdProduct} = await productFactory.createProduct(product);
-          vm.products.push(createdProduct);
-          closeEditing();
+          vm.products = [...vm.products, {...createdProduct, tags: product.tags}];
           logFactory.showToaster('Sucesso', `Produto ${createdProduct.name} salvo`, 'success');
+          if (index == (validProducts.length - 1)) {
+            $timeout(() => closeEditing());
+          }
         } catch (error) {
           logFactory.showToaster('Erro',
             `Ocorreu um erro ao salvar o produto ${product.name}, por favor, tente novamente`,

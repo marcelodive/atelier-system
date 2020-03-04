@@ -15,8 +15,15 @@ function ProductsViewController (toolbarFactory, productFactory, $scope) {
 
   vm.triggerAddingProduct = triggerAddingProduct;
   vm.cancelAddingProduct = cancelAddingProduct;
+  vm.deleteProduct = deleteProduct;
   vm.editProduct = editProduct;
   vm.filterProducts = filterProducts;
+
+  function deleteProduct (productToDelete) {
+    productFactory.deleteProduct(productToDelete.id);
+    vm.products = vm.products.filter((product) => product.id != productToDelete.id);
+    productsWithoutFilter = productsWithoutFilter.filter((product) => product.id != productToDelete.id);
+  }
 
   function filterProducts (search) {
     vm.products = (search) ?

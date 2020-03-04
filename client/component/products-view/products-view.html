@@ -16,6 +16,7 @@
           <th class="center-text" md-column md-order-by="tags">Pacote</th>
           <th class="center-text" md-column md-order-by="price">Preço (R$)</th>
           <th class="center-text" md-column></th>
+          <th class="center-text" md-column></th>
         </tr>
       </thead>
       <tbody md-body>
@@ -29,6 +30,11 @@
           <td>
             <md-button class="md-icon-button" aria-label="Editar" title="Editar">
               <md-icon ng-click="ctrl.editProduct(product)">edit</md-icon>
+            </md-button>
+          </td>
+          <td>
+            <md-button class="md-icon-button" aria-label="Remover" title="Remover">
+              <md-icon ng-click="ctrl.deleteProduct(product)">delete</md-icon>
             </md-button>
           </td>
         </tr>
