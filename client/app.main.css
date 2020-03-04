@@ -1,3 +1,9 @@
+[ng-click],
+[data-ng-click],
+[x-ng-click] {
+    cursor: pointer;
+}
+
 /* Tags */
 sidenav {
   background-color: white;

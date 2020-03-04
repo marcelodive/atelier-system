@@ -52,7 +52,10 @@ function ProductsViewController (toolbarFactory, productFactory, $scope) {
 
     productFactory.getProducts().then((productData) => {
       const {data: products} = productData;
-      vm.products = products;
+      vm.products = products.map((product) => {
+        const tags = product.tags ? product.tags.split(',') : [];
+        return {...product, tags};
+      });
       productsWithoutFilter = angular.copy(vm.products);
     });
   }

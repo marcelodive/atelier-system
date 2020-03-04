@@ -30,6 +30,7 @@ function AddOrderController ($scope, $timeout, utilsFactory, logFactory, product
   vm.updatePercentageDiscountAndTotalPrice = updatePercentageDiscountAndTotalPrice;
   vm.verifyFormValidation = verifyFormValidation;
   vm.verifyDiscount = verifyDiscount;
+  vm.addPackage = addPackage;
 
   init();
 
@@ -39,6 +40,19 @@ function AddOrderController ($scope, $timeout, utilsFactory, logFactory, product
       vm.order.discountInCash = null;
       vm.order.discount_justification = null;
     }
+  }
+
+  function addPackage (tag) {
+    vm.products.forEach((product) => {
+      const isProductAdded = vm.order.products.some((productOrder) =>  productOrder.id == product.id);
+      const productTags = product.tags ? product.tags.split(',') : [];
+      if (!isProductAdded && productTags.includes(tag)) {
+        product = {...product, autocompleteItem: product};
+        vm.order.products = [product, ...vm.order.products];
+        vm.updateAutocompleteProduct(product);
+      }
+    });
+
   }
 
   function verifyFormValidation (isValid) {
@@ -219,6 +233,12 @@ function AddOrderController ($scope, $timeout, utilsFactory, logFactory, product
       vm.order = {products: [{}]};
       const {data: products} = await productFactory.getProducts();
       vm.products = products;
+      const allTags = products.reduce((tags, product) => {
+        const productTags = product.tags ? product.tags.split(',') : [];
+        return [...tags, ...productTags];
+      }, []);
+
+      vm.tags = [... new Set(allTags)];
 
       const {data: clientsWithChildren} = await clientFactory.getClientsWithChildren();
       vm.clientsWithChildren = clientsWithChildren;

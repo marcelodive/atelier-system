@@ -1,3 +1,8 @@
+<style>
+  .md-chips {
+    box-shadow: 0 0px !important;
+  }
+</style>
 <div ng-if="ctrl.loadingOrder" layout="row" layout-align="center center">
   <br><br>
   Carregando...
@@ -232,6 +237,12 @@
 
     <md-subheader>Produtos</md-subheader>
     <div layout="column">
+      <span layout="row" layout-align="start center">
+        <strong>Adicionar pacote: </strong>
+        <md-button class="md-raised" ng-repeat="tag in ctrl.tags" ng-click="ctrl.addPackage(tag)">
+          {{tag}}
+        </md-button>
+      </span>
       <span layout="row" layout-align-gt-sm="space-between center" ng-repeat="(key, product) in ctrl.order.products" flex="100">
         <md-input-container class="md-block" flex="50">
           <label>Nome</label>

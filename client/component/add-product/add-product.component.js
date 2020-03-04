@@ -24,10 +24,11 @@ function AddProductController ($scope, $timeout, logFactory, productFactory, uti
 
   $timeout(() => {
     if (vm.productToEdit) {
+      vm.productToEdit.tags = vm.productToEdit.tags || [];
       vm.productsToAdd.push(vm.productToEdit);
       addNewProductRow();
     } else {
-      vm.productsToAdd = [{price: Number('0').toFixed(2)}];
+      vm.productsToAdd = [{price: Number('0').toFixed(2), tags: []}];
     }
   });
 

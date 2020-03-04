@@ -1,3 +1,8 @@
+<style>
+  td .md-chips {
+    box-shadow: 0 0px !important;
+  }
+</style>
 <md-card layout-padding ng-show="!ctrl.isAddingProduct">
   <md-input-container class="negative-container-padding">
     <md-icon>search</md-icon>
@@ -8,6 +13,7 @@
       <thead md-head md-order="orderByDt">
         <tr md-row>
           <th class="center-text" md-column md-order-by="name">Nome</th>
+          <th class="center-text" md-column md-order-by="tags">Pacote</th>
           <th class="center-text" md-column md-order-by="price">Preço (R$)</th>
           <th class="center-text" md-column></th>
         </tr>
@@ -15,6 +21,10 @@
       <tbody md-body>
         <tr md-row ng-repeat="(key, product) in ctrl.products | orderBy: orderByDt">
           <td>{{product.name}}</td>
+          <td>
+            <md-chips style="margin-top: -42px;" ng-model="product.tags" readonly="true">
+            </md-chips>
+          </td>
           <td>{{product.price}}</td>
           <td>
             <md-button class="md-icon-button" aria-label="Editar" title="Editar">
