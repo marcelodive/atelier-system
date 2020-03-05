@@ -5,7 +5,7 @@ angular.module('App')
     controllerAs: 'ctrl',
   });
 
-function ProductsViewController (toolbarFactory, productFactory, $scope) {
+function ProductsViewController (toolbarFactory, productFactory, $scope, $timeout) {
   const vm = this;
 
   let productsWithoutFilter = null;
@@ -46,7 +46,8 @@ function ProductsViewController (toolbarFactory, productFactory, $scope) {
     vm.isAddingProduct = false;
     toolbarFactory.setToolbarTitle('Produtos');
     vm.productToEdit = null;
-    $scope.$apply();
+    productsWithoutFilter = [...productsWithoutFilter, ...angular.copy(vm.products)];
+    $timeout(() => $scope.$apply());
   }
 
   function triggerAddingProduct () {

@@ -74,7 +74,7 @@ function AddProductController ($scope, $timeout, logFactory, productFactory, uti
           vm.products = [...vm.products, {...createdProduct, tags: product.tags}];
           logFactory.showToaster('Sucesso', `Produto ${createdProduct.name} salvo`, 'success');
           if (index == (validProducts.length - 1)) {
-            $timeout(() => closeEditing());
+            $timeout(() => closeEditing(), 3000);
           }
         } catch (error) {
           logFactory.showToaster('Erro',
