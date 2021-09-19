@@ -6,7 +6,7 @@ let bot = {};
 startTelegramBot();
 
 function startTelegramBot () {
-  const token = '944173870:AAEAOZ-Gq92u04d7PlxYH0anfaJmw0nmqC4';
+  const token = 'YOUR_BOT_TOKEN';
   bot = new TelegramBot(token, {polling: true});
 
   const telegramConfigFile = fs.readFileSync('./server/telegram.json');
